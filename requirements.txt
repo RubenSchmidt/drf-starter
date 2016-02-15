@@ -1,2 +1,4 @@
 Django==1.9.2
+PyJWT==1.4.0
 djangorestframework==3.3.2
+djangorestframework-jwt==1.7.2
