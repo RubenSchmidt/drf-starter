@@ -1,0 +1,19 @@
+from django.conf.urls import url, include
+from kordecms import views
+from rest_framework import routers
+
+
+urlpatterns = [
+    # url(r'rest/jobtitles', views.get_all_job_titles),
+    # url(r'rest/userratings/(?P<id>\d+)', views.get_ratings_view),
+
+    url(r'^users$', views.UserList.as_view(), name='user-list'),
+    url(r'^users/(?P<pk>\d+)$', views.UserDetail.as_view(), name='user-detail'),
+    url(r'^users/(?P<pk>\d+)/articles$', views.UserArticleList.as_view(), name='user-articles-list'),
+
+    url(r'^articles$', views.ArticleList.as_view(), name='article-list'),
+    url(r'^articles/(?P<pk>\d+)$', views.ArticleDetail.as_view(), name='article-detail'),
+    url(r'^articles/(?P<pk>\d+)/comments$', views.ArticleCommentList.as_view(), name='article-comments-list'),
+
+    url(r'^comments/(?P<pk>\d+)$', views.ArticleCommentDetail.as_view(), name='article-comment-detail'),
+]

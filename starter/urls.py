@@ -13,20 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.conf.urls import url, include
 import rest_framework_jwt.views
-from rest_framework import routers
-from startapp import views
-
-router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
-router.register(r'groups', views.GroupViewSet)
+from django.conf.urls import url, include
+from django.contrib import admin
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    url(r'^api/', include('kordecms.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-token-auth/', rest_framework_jwt.views.obtain_jwt_token),
 ]
