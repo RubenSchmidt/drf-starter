@@ -6,15 +6,15 @@ var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute']);
 kordeCms.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            controller: 'AdminCtrl',
+            controller: 'DashboardCtrl',
             templateUrl: '/static/partials/dashboard.html'
         })
         .when('/articles', {
-            controller: 'AdminCtrl',
+            controller: 'ArticlesCtrl',
             templateUrl: '/static/partials/articles.html'
         })
         .when('/pages', {
-            controller: 'AdminCtrl',
+            controller: 'PagesCtrl',
             templateUrl: '/static/partials/pages.html'
         })
 });
@@ -160,6 +160,12 @@ kordeCms.controller('PagesCtrl',
     }]);
 
 kordeCms.controller('DashboardCtrl',
+    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
+
+
+    }]);
+
+kordeCms.controller('ArticlesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
 
 
