@@ -8,29 +8,34 @@ kordeCms.factory('PageFactory',
         return ({
             get: get,
             list: list,
+            listElements: listElements,
             create: create,
             update: update,
             destroy: destroy
         });
 
-        function get(id) {
-            return $http.get(endpoint + '/' + id)
+        function get(pageslug) {
+            return $http.get(endpoint + '/' + pageslug)
         }
 
         function list() {
             return $http.get(endpoint)
         }
 
+        function listElements(pageslug){
+            return $http.get(endpoint+'/'+pageslug+'/'+'elements')
+        }
+
         function create(user) {
             return $http.post(endpoint, user)
         }
 
-        function update(user) {
-            return $http.put(endpoint + '/' + user.id, user)
+        function update(pageslug, page) {
+            return $http.put(endpoint + '/' + pageslug, page)
         }
 
-        function destroy(id) {
-            return $http.delete('/pages/' + id)
+        function destroy(pageslug) {
+            return $http.delete('/pages/' + pageslug)
         }
     }]);
 kordeCms.factory('UserFactory',
