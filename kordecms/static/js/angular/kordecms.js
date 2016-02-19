@@ -13,6 +13,10 @@ kordeCms.config(function($routeProvider) {
             controller: 'AdminCtrl',
             templateUrl: '/static/partials/articles.html'
         })
+        .when('/pages', {
+            controller: 'AdminCtrl',
+            templateUrl: '/static/partials/pages.html'
+        })
 });
 
 kordeCms.factory('PageFactory',

@@ -27,6 +27,13 @@ body {
     }
 }
 
+.article-wrapper {
+    width: auto;
+    padding:20px;
+    background-color:#f8f8f8;
+    border-radius: 5px;
+}
+
 .sidebar {
     background: #333;
 }
