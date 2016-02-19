@@ -16,11 +16,11 @@ class PageElement(models.Model):
         verbose_name=_('Element type'),
         choices=TYPE_CHOICES)
 
-    text = models.TextField(
+    body = models.TextField(
         verbose_name=_('Element text'),
         blank=True)
 
-    src = models.ImageField(
+    image_src = models.ImageField(
         verbose_name=_('Element image source'),
         blank=True, null=True)
 
@@ -40,7 +40,7 @@ class Article(models.Model):
     """
     Article model for korde CMS.
     """
-    text = models.TextField(
+    body = models.TextField(
         blank=True,
         verbose_name=_('text'))
 
