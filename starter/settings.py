@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'startapp',
     'kordecms',
-    'rest_framework'
+    'rest_framework',
+    'taggit'
 ]
 
 MIDDLEWARE_CLASSES = [

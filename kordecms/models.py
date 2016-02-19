@@ -1,11 +1,39 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from taggit.managers import TaggableManager
+
+
+class PageElement(models.Model):
+    TYPE_IMAGE = 0
+    TYPE_TEXT = 1
+    TYPE_CHOICES = (
+        (TYPE_IMAGE, _('Image element')),
+        (TYPE_TEXT, _('Text element'))
+    )
+
+    type = models.IntegerField(
+        verbose_name=_('Element type'),
+        choices=TYPE_CHOICES)
+
+    text = models.TextField(
+        verbose_name=_('Element text'),
+        blank=True)
+
+    src = models.ImageField(
+        verbose_name=_('Element image source'),
+        blank=True, null=True)
+
+    class Meta:
+        verbose_name = _('Page element')
+
+    def __str__(self):
+        return '{},{}'.format(self.id, self.type)
 
 
 class Article(models.Model):
     """
-    Article model for korde CMS, created with rich text editor
+    Article model for korde CMS.
     """
     text = models.TextField(
         blank=True,
@@ -32,6 +60,8 @@ class Article(models.Model):
         auto_now_add=True,
         verbose_name=_('created at'))
 
+    tags = TaggableManager()
+
     class Meta:
         verbose_name = _('article')
 
@@ -47,10 +77,13 @@ class Article(models.Model):
 
 
 class ArticleComment(models.Model):
+    """
+    Article comments for korde CMS
+    """
     text = models.TextField(
         blank=True,
-        verbose_name=_('comment text')
-    )
+        verbose_name=_('comment text'))
+
     article = models.ForeignKey(
         Article,
         on_delete=models.CASCADE,
@@ -69,3 +102,19 @@ class ArticleComment(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.id, self.article)
+
+
+class ArticleImage(models.Model):
+    """
+    Article image, related with an article.
+    """
+
+    article = models.ForeignKey(
+        Article,
+        on_delete=models.SET_NULL,
+        verbose_name=_('article'))
+
+    src = models.ImageField(
+        verbose_name=_('article image'))
+
+    tags = TaggableManager()
