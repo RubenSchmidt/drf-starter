@@ -4,6 +4,11 @@ from kordecms.permissions import ArticleAuthorCanEditPermission, SafeMethodsOnly
 from kordecms.serializers import ArticleSerializer, ArticleCommentSerializer, UserSerializer, PageSerializer, \
     PageElementSerializer
 from rest_framework import permissions, generics
+from django.shortcuts import render
+
+
+def index_view(request):
+    return render(request, 'index.html', {})
 
 
 class PageList(generics.ListCreateAPIView):

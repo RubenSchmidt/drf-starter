@@ -1,15 +1,18 @@
 /**
  * Created by rubenschmidt on 16.02.2016.
  */
-var kordeCms = angular.module("kordeCms.api", ['ngCookies', 'ngResource']);
+var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute']);
 
 kordeCms.config(function($routeProvider) {
     $routeProvider
-        .when('/admin', {
-            controller: 'fileController',
-            templateUrl: '/partials/file.html'
+        .when('/', {
+            controller: 'AdminCtrl',
+            templateUrl: '/static/partials/dashboard.html'
         })
-        .otherwise({ redirectTo: '/' });
+        .when('/articles', {
+            controller: 'AdminCtrl',
+            templateUrl: '/static/partials/articles.html'
+        })
 });
 
 kordeCms.factory('PageFactory',
@@ -143,5 +146,5 @@ kordeCms.directive('halloEditor', function() {
 kordeCms.controller('AdminCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function($scope, PageFactory, ArticleFactory, UserFactory){
 
-
-}]);
+        console.log("hei");
+    }]);

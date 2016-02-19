@@ -6,6 +6,7 @@ from rest_framework import routers
 urlpatterns = [
     # url(r'rest/jobtitles', views.get_all_job_titles),
     # url(r'rest/userratings/(?P<id>\d+)', views.get_ratings_view),
+    url(r'^admin', views.index_view, name='index-view'),
 
     url(r'^pages$', views.PageList.as_view(), name='page-list'),
     url(r'^pages/(?P<slug>[-_\w]+)$', views.PageDetail.as_view(), name='page-detail'),
