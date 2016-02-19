@@ -116,5 +116,5 @@ class ArticleImage(models.Model):
 
     src = models.ImageField(
         verbose_name=_('article image'))
-
+    # Tags, example image.tags.add("red", "green", "delicious")
     tags = TaggableManager()
