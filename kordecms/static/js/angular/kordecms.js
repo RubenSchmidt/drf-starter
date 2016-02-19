@@ -3,7 +3,7 @@
  */
 var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute']);
 
-kordeCms.config(function($routeProvider) {
+kordeCms.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             controller: 'AdminCtrl',
@@ -39,8 +39,8 @@ kordeCms.factory('PageFactory',
             return $http.get(endpoint)
         }
 
-        function listElements(pageslug){
-            return $http.get(endpoint+'/'+pageslug+'/'+'elements')
+        function listElements(pageslug) {
+            return $http.get(endpoint + '/' + pageslug + '/' + 'elements')
         }
 
         function create(user) {
@@ -118,27 +118,27 @@ kordeCms.factory('ArticleFactory',
         }
     }]);
 
-kordeCms.directive('halloEditor', function() {
+kordeCms.directive('halloEditor', function () {
     return {
         restrict: 'A',
         require: '?ngModel',
-        link: function(scope, element, attrs, ngModel) {
+        link: function (scope, element, attrs, ngModel) {
             if (!ngModel) {
                 return;
             }
 
             element.hallo({
-               plugins: {
-                 'halloformat': {"bold": true, "italic": true, "strikethrough": true, "underline": true},
-                 'halloheadings': [1,2,3],
-                 'hallojustify' : {}
-               }
+                plugins: {
+                    'halloformat': {"bold": true, "italic": true, "strikethrough": true, "underline": true},
+                    'halloheadings': [1, 2, 3],
+                    'hallojustify': {}
+                }
             });
 
-            ngModel.$render = function() {
+            ngModel.$render = function () {
                 element.html(ngModel.$viewValue || '');
             };
-            element.on('hallodeactivated', function() {
+            element.on('hallodeactivated', function () {
                 ngModel.$setViewValue(element.html());
                 scope.$apply();
             });
@@ -147,8 +147,20 @@ kordeCms.directive('halloEditor', function() {
 });
 
 
-kordeCms.controller('AdminCtrl',
-    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function($scope, PageFactory, ArticleFactory, UserFactory){
+kordeCms.controller('PagesCtrl',
+    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
+        PageFactory.list().then(function(response){
+            //Success
+            $scope.pages = response.data;
+            console.log(response.data);
+        }, function(response){
+            //Error
+        })
 
-        console.log("hei");
+    }]);
+
+kordeCms.controller('DashboardCtrl',
+    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
+
+
     }]);
