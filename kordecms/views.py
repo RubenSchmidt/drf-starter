@@ -1,8 +1,41 @@
 from django.contrib.auth.models import User
-from kordecms.models import Article, ArticleComment
+from kordecms.models import Page, Article, ArticleComment, PageElement
 from kordecms.permissions import ArticleAuthorCanEditPermission, SafeMethodsOnlyPermission
-from kordecms.serializers import ArticleSerializer, ArticleCommentSerializer, UserSerializer
+from kordecms.serializers import ArticleSerializer, ArticleCommentSerializer, UserSerializer, PageSerializer, \
+    PageElementSerializer
 from rest_framework import permissions, generics
+
+
+class PageList(generics.ListCreateAPIView):
+    model = Page
+    queryset = Page.objects.all()
+    serializer_class = PageSerializer
+    permission_classes = [
+        permissions.IsAdminUser
+    ]
+
+
+class PageDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = Page
+    queryset = Page.objects.all()
+    serializer_class = PageSerializer
+    permission_classes = [
+        permissions.IsAdminUser
+    ]
+
+
+class PageElementList(generics.ListAPIView):
+    model = PageElement
+    queryset = PageElement.objects.all()
+    serializer_class = PageElementSerializer
+    lookup_field = 'slug'
+    permission_classes = [
+        permissions.IsAdminUser
+    ]
+
+    def get_queryset(self):
+        queryset = super(PageElementList, self).get_queryset()
+        return queryset.filter(page_slug=self.kwargs.get('slug'))
 
 
 class UserList(generics.ListCreateAPIView):
@@ -14,7 +47,7 @@ class UserList(generics.ListCreateAPIView):
     ]
 
 
-class UserDetail(generics.RetrieveAPIView):
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     model = User
     queryset = User.objects.all()
     serializer_class = UserSerializer

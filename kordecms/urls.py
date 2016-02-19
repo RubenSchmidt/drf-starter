@@ -7,6 +7,10 @@ urlpatterns = [
     # url(r'rest/jobtitles', views.get_all_job_titles),
     # url(r'rest/userratings/(?P<id>\d+)', views.get_ratings_view),
 
+    url(r'^pages$', views.PageList.as_view(), name='page-list'),
+    url(r'^pages/(?P<slug>[-_\w]+)/$', views.PageDetail.as_view(), name='page-detail'),
+    url(r'^pages/(?P<slug>[-_\w]+)/$/elements$', views.PageElementList.as_view(), name='page-element-detail'),
+
     url(r'^users$', views.UserList.as_view(), name='user-list'),
     url(r'^users/(?P<pk>\d+)$', views.UserDetail.as_view(), name='user-detail'),
     url(r'^users/(?P<pk>\d+)/articles$', views.UserArticleList.as_view(), name='user-articles-list'),

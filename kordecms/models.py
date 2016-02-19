@@ -1,7 +1,39 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
+
+
+class Page(models.Model):
+    name = models.CharField(
+        max_length=200,
+        unique=True,
+        db_index=True,
+        verbose_name=_('Pagename')
+    )
+
+    slug = models.SlugField(
+        verbose_name=_('Page slug'),
+        unique=True,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = _('Page')
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # Newly created object, so set slug
+            self.slug = slugify(self.name)
+
+        super(Page, self).save(*args, **kwargs)
+
+    def get_page_elements(self):
+        return Page.objects.filter(page=self)
 
 
 class PageElement(models.Model):
@@ -11,6 +43,11 @@ class PageElement(models.Model):
         (TYPE_IMAGE, _('Image element')),
         (TYPE_TEXT, _('Text element'))
     )
+
+    page = models.ForeignKey(
+        Page,
+        on_delete=models.CASCADE,
+        verbose_name=_('Parent page'))
 
     type = models.IntegerField(
         verbose_name=_('Element type'),
