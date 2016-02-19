@@ -3,6 +3,15 @@
  */
 var kordeCms = angular.module("kordeCms.api", ['ngCookies', 'ngResource']);
 
+kordeCms.config(function($routeProvider) {
+    $routeProvider
+        .when('/admin', {
+            controller: 'fileController',
+            templateUrl: '/partials/file.html'
+        })
+        .otherwise({ redirectTo: '/' });
+});
+
 kordeCms.factory('PageFactory',
     ['$http', function ($http) {
         var endpoint = '/pages';
