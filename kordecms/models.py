@@ -24,6 +24,11 @@ class PageElement(models.Model):
         verbose_name=_('Element image source'),
         blank=True, null=True)
 
+    description = models.TextField(
+        blank=True,
+        verbose_name=_('Element description')
+    )
+
     class Meta:
         verbose_name = _('Page element')
 
