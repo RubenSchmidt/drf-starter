@@ -112,7 +112,8 @@ class ArticleImage(models.Model):
     article = models.ForeignKey(
         Article,
         on_delete=models.SET_NULL,
-        verbose_name=_('article'))
+        verbose_name=_('article'),
+        null=True)
 
     src = models.ImageField(
         verbose_name=_('article image'))
