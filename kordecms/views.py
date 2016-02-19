@@ -19,6 +19,7 @@ class PageDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Page
     queryset = Page.objects.all()
     serializer_class = PageSerializer
+    lookup_field = 'slug'
     permission_classes = [
         permissions.IsAdminUser
     ]
@@ -35,7 +36,7 @@ class PageElementList(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super(PageElementList, self).get_queryset()
-        return queryset.filter(page_slug=self.kwargs.get('slug'))
+        return queryset.filter(page__slug=self.kwargs.get('slug'))
 
 
 class UserList(generics.ListCreateAPIView):

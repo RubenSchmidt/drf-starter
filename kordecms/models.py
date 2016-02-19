@@ -70,7 +70,7 @@ class PageElement(models.Model):
         verbose_name = _('Page element')
 
     def __str__(self):
-        return '{},{}'.format(self.id, self.type)
+        return '{},{}'.format(self.description, self.page)
 
 
 class Article(models.Model):
