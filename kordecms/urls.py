@@ -1,12 +1,16 @@
 from django.conf.urls import url, include
 from kordecms import views
 from rest_framework import routers
+import rest_framework_jwt.views
 
 
 urlpatterns = [
     # url(r'rest/jobtitles', views.get_all_job_titles),
     # url(r'rest/userratings/(?P<id>\d+)', views.get_ratings_view),
     url(r'^admin', views.index_view, name='index-view'),
+
+    url(r'^api-token-auth/', rest_framework_jwt.views.obtain_jwt_token),
+    url(r'^api-token-verify/', rest_framework_jwt.views.verify_jwt_token),
 
     url(r'^pages$', views.PageList.as_view(), name='page-list'),
     url(r'^pages/(?P<slug>[-_\w]+)$', views.PageDetail.as_view(), name='page-detail'),

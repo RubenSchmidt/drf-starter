@@ -13,7 +13,6 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-import rest_framework_jwt.views
 from django.conf.urls import url, include
 from django.contrib import admin
 
@@ -22,5 +21,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^api/', include('kordecms.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^api-token-auth/', rest_framework_jwt.views.obtain_jwt_token),
+
 ]
