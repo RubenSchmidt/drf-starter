@@ -35,15 +35,17 @@ body {
 }
 
 .page-panel {
-    max-width:500px;
+    max-width:590px;
     width:300px;
     height: auto;
+    max-height:300px;
     min-height:200px;
     float: left;
     padding:20px;
     padding-top: 0;
-    margin:30px;
+    margin:20px;
     background-color: #428bca;
+    overflow: scroll;
 }
 
 .page-panel img {

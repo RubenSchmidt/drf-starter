@@ -8,14 +8,20 @@
     <!-- /.row -->
     <div class="row" ng-repeat="elementRow in pageElements">
         <div class="col-lg-12">
-            <div class="page-panel" ng-repeat="element in elementRow">
+            <div class="page-panel" ng-repeat="element in elementRow" ng-click="openEditorModal(element)">
                 <h3 class="page-name">{{ element.description }}</h3>
                 <div class="divider"></div>
                 <div class="page-thumbnail" ng-if="element.type === 1">
                     {{ element.body }}
                 </div>
-                <img src="{{ element.image_src }}" ng-if="element.type === 0" />
+                <img src="{{ element.image_src }}" ng-if="element.type === 0"/>
             </div>
         </div>
     </div>
+    <div ng-show="showEditorModal" ng-click="closeEditorModal()">
+        Fuck deg og sånn
+    </div>
 </div>
+
+
+

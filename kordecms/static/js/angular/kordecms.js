@@ -260,7 +260,7 @@ kordeCms.controller('PagesCtrl',
 
 kordeCms.controller('EditPageCtrl',
     ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory) {
-
+        $scope.showEditorModal = false;
         $scope.pageImages = [];
         $scope.pageTexts = [];
 
@@ -271,7 +271,6 @@ kordeCms.controller('EditPageCtrl',
             PageFactory.listElements($scope.page.slug).then(function (response) {
                 //Success
                 $scope.pageElements = response.data;
-                console.log(response.data);
 
             }, function (response) {
                 //Error
@@ -283,6 +282,14 @@ kordeCms.controller('EditPageCtrl',
             //Error
         })
 
+        $scope.openEditorModal = function(element){
+            $scope.activeElement = element;
+            $scope.showEditorModal = true;
+        }
+
+        $scope.closeEditorModal = function(){
+            $scope.showEditorModal = false;
+        }
 
     }]);
 
