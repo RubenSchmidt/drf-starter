@@ -7,11 +7,18 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-m-6">
-
-        </div>
-        <div class="col-m-6">
-
+        <div class="col-lg-12">
+            <div ng-repeat="page in pages">
+                <a class="edit-page-link" href="#/pages/{{ page.slug }}">
+                    <div class="page-panel">
+                        <h3 class="page-name">{{ page.name }}</h3>
+                        <div class="divider"></div>
+                        <div class="page-thumbnail">
+                            <p>Huh uwfg pibg wbibg wb bwåobg <br> widjg wigjn onw g</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </div>

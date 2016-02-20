@@ -13,6 +13,10 @@ kordeCms.config(function ($routeProvider) {
             controller: 'ArticlesCtrl',
             templateUrl: '/static/partials/articles.html'
         })
+         .when('/pages/:pageSlug/', {
+            controller: 'EditPageCtrl',
+            templateUrl: '/static/partials/edit-page.html'
+        })
         .when('/pages', {
             controller: 'PagesCtrl',
             templateUrl: '/static/partials/pages.html'
@@ -237,15 +241,30 @@ kordeCms.controller('PagesCtrl',
         PageFactory.list().then(function(response){
             //Success
             $scope.pages = response.data;
+
         }, function(response){
             //Error
         })
 
     }]);
 
+kordeCms.controller('EditPageCtrl',
+    ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory) {
+
+        PageFactory.get($routeParams.pageSlug).then(function(response){
+            //Success
+            $scope.page = response.data;
+
+        }, function(response){
+            //Error
+        })
+
+
+    }]);
+
 kordeCms.controller('DashboardCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'AuthService', function ($scope, PageFactory, ArticleFactory, UserFactory, AuthService) {
-    AuthService.login('ruben', '12345678asd').then(function(response){
+    AuthService.login('olemno', 'bajskorv').then(function(response){
         //Success
 
     }, function(response){

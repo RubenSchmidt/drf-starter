@@ -34,6 +34,23 @@ body {
     border-radius: 5px;
 }
 
+.page-panel {
+    max-width:500px;
+    width:300px;
+    height: auto;
+    min-height:200px;
+    float: left;
+    padding:20px;
+    padding-top: 0;
+    margin:30px;
+    background-color: #428bca;
+}
+
+.page-panel:hover {
+    background-color: #2e6da4;
+    cursor: pointer;
+}
+
 .sidebar {
     background: #333;
 }
@@ -128,6 +145,10 @@ body {
 .navbar-top-links .dropdown-user {
     right: 0;
     left: auto;
+}
+
+.edit-page-link {
+    color:black;
 }
 
 .sidebar .sidebar-nav.navbar-collapse {
