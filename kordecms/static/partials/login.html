@@ -1,13 +1,22 @@
 <div class="loginbox">
-    <div class="container">
-		<form class="form">
+    <div class="container" ng-hide="loading">
+        <form class="form">
             <h1>Log inn</h1>
             <p ng-if="errors.non_field_errors">{{ errors.non_field_errors[0] }}</p>
-			<input type="text" placeholder="Brukernavn" ng-model="username">
+            <input type="text" placeholder="Brukernavn" ng-model="username">
             <p ng-if="errors.username">{{ errors.username[0] }}</p>
-			<input type="password" placeholder="Passord" ng-model="password">
+            <input type="password" placeholder="Passord" ng-model="password">
             <p ng-if="errors.password">{{ errors.password[0] }}</p>
-			<button type="submit" id="login-button" ng-click="login()">Login</button>
-		</form>
-	</div>
+            <button type="submit" id="login-button" ng-click="login()">Login</button>
+        </form>
+    </div>
+
+    <div class="loader" ng-show="loading">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+        <div class="bar4"></div>
+        <div class="bar5"></div>
+        <div class="bar6"></div>
+    </div>
 </div>

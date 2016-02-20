@@ -13,7 +13,7 @@ kordeCms.config(function ($routeProvider) {
             controller: 'ArticlesCtrl',
             templateUrl: '/static/partials/articles.html'
         })
-         .when('/pages/:pageSlug/', {
+        .when('/pages/:pageSlug/', {
             controller: 'EditPageCtrl',
             templateUrl: '/static/partials/edit-page.html'
         })
@@ -202,7 +202,7 @@ kordeCms.factory('AuthService',
                             user = false;
                             deferred.reject(response);
                         }
-                    }, function(response){
+                    }, function (response) {
                         //Handle error
                         user = false;
                         deferred.reject(response);
@@ -261,30 +261,30 @@ kordeCms.controller('EditPageCtrl',
         $scope.pageImages = [];
         $scope.pageTexts = [];
 
-        PageFactory.get($routeParams.pageSlug).then(function(response){
+        PageFactory.get($routeParams.pageSlug).then(function (response) {
             //Success
             $scope.page = response.data;
 
-            PageFactory.listElements($scope.page.slug).then(function(response){
+            PageFactory.listElements($scope.page.slug).then(function (response) {
                 //Success
                 $scope.pageElements = response.data;
-                $scope.pageElements.forEach(function(element){
+                $scope.pageElements.forEach(function (element) {
 
-                    if (element.type == 1){
+                    if (element.type == 1) {
                         //Type text
                         //Add element to text elements
                         $scope.pageTexts.push(element);
-                    }else if(element.type = 0){
+                    } else if (element.type = 0) {
                         //Type image
                         $scope.pageImages.push(element);
                     }
                 })
 
-            }, function(response){
+            }, function (response) {
 
             })
 
-        }, function(response){
+        }, function (response) {
             //Error
         })
 
@@ -313,15 +313,20 @@ kordeCms.controller('NavbarCtrl',
 
 
 kordeCms.controller('LoginCtrl',
-    ['$scope', '$location' , 'AuthService', function ($scope, $location , AuthService) {
+    ['$scope', '$location', 'AuthService', '$timeout', function ($scope, $location, AuthService, $timeout) {
+        $scope.loading = false;
         $scope.login = function () {
-            AuthService.login($scope.username, $scope.password).then(function(response) {
-                    //Success
+            $scope.loading = true;
+            AuthService.login($scope.username, $scope.password).then(function (response) {
+                //Success
+                $timeout(function () {
+                    //Delay it 1 sec, so you can watch the beautiful loading indicator
+                    $scope.loading = false;
                     $location.path('/');
-
-                }, function(response){
-                    //Error
-                    $scope.errors = response.data;
+                }, 1000);
+            }, function (response) {
+                //Error
+                $scope.errors = response.data;
             })
         }
     }]);
