@@ -46,6 +46,11 @@ body {
     background-color: #428bca;
 }
 
+.page-panel img {
+    width: 260px;
+    height:auto;
+}
+
 .page-panel:hover {
     background-color: #2e6da4;
     cursor: pointer;
