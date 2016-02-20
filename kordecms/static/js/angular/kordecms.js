@@ -227,9 +227,14 @@ kordeCms.directive('halloEditor', function () {
                 plugins: {
                     'halloformat': {"bold": true, "italic": true, "strikethrough": true, "underline": true},
                     'halloheadings': [1, 2, 3],
-                    'hallojustify': {}
+                    'hallojustify': {},
+                    'hallolists': {},
+                    'halloimage': {},
+                    'halloreundo': {}
                 }
             });
+
+            console.log("kom inn");
 
             ngModel.$render = function () {
                 element.html(ngModel.$viewValue || '');
