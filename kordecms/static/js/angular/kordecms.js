@@ -231,10 +231,9 @@ kordeCms.directive('halloEditor', function () {
                     'hallolists': {},
                     'halloimage': {},
                     'halloreundo': {}
-                }
+                },
+                toolbar: 'halloToolbarFixed'
             });
-
-            console.log("kom inn");
 
             ngModel.$render = function () {
                 element.html(ngModel.$viewValue || '');
