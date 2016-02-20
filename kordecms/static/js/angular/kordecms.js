@@ -13,7 +13,7 @@ kordeCms.config(function ($routeProvider) {
             controller: 'ArticlesCtrl',
             templateUrl: '/static/partials/articles.html'
         })
-         .when('/pages/:pageSlug/', {
+        .when('/pages/:pageSlug/', {
             controller: 'EditPageCtrl',
             templateUrl: '/static/partials/edit-page.html'
         })
@@ -21,13 +21,19 @@ kordeCms.config(function ($routeProvider) {
             controller: 'PagesCtrl',
             templateUrl: '/static/partials/pages.html'
         })
+        .when('/login', {
+            controller: 'LoginCtrl',
+            templateUrl: '/static/partials/login.html'
+        })
+        .otherwise('/login')
 });
 kordeCms.run(function ($rootScope, $location, $route, AuthService) {
-    AuthService.getAuthStatus().then(function(){
+    AuthService.getAuthStatus().then(function () {
         //Success
-    }, function(){
+    }, function () {
         //Error, user is not authenticated
-        console.log("not logged in");
+        $location.path('/login');
+        $route.reload();
     });
 });
 
@@ -133,7 +139,7 @@ kordeCms.factory('ArticleFactory',
     }]);
 
 kordeCms.factory('AuthService',
-    ['$q', '$timeout', '$http','$cookies',
+    ['$q', '$timeout', '$http', '$cookies',
         function ($q, $timeout, $http, $cookies) {
 
             // create user variable
@@ -156,22 +162,22 @@ kordeCms.factory('AuthService',
                 return user;
             }
 
-            function getAuthStatus(){
+            function getAuthStatus() {
                 var deferred = $q.defer();
 
-                if ($cookies.get('token')){
+                if ($cookies.get('token')) {
                     $http.defaults.headers.common.Authorization = 'JWT ' + $cookies.get('token');
-                    $http.post('/api/api-token-auth/',{'token': $cookies.get('token')}).then(function(response){
-                    //Handle success
-                    //Usertoken went through and the user is authenticated
-                    user = true;
-                    deferred.resolve();
-                }, function(response){
-                    //Handle error
-                    deferred.reject();
-                });
-                }else {
-                    deferred.reject();
+                    $http.post('/api/api-token-verify/', {'token': $cookies.get('token')}).then(function (response) {
+                        //Handle success
+                        //Usertoken went through and the user is authenticated
+                        user = true;
+                        deferred.resolve();
+                    }, function (response) {
+                        //Handle error
+                        deferred.reject(response);
+                    });
+                } else {
+                    deferred.reject('No token');
                 }
                 return deferred.promise;
             }
@@ -186,26 +192,27 @@ kordeCms.factory('AuthService',
 
                     .then(function (response) {
                         // handle success
-                        if(response.status === 200 && response.data.token){
+                        if (response.status === 200 && response.data.token) {
                             user = true;
                             $http.defaults.headers.common.Authorization = 'JWT ' + response.data.token;
                             $cookies.put('token', response.data.token);
-                            deferred.resolve();
+                            deferred.resolve(response);
 
                         } else {
                             user = false;
-                            deferred.reject();
+                            deferred.reject(response);
                         }
-                    }, function(response){
-                        // handle error
+                    }, function (response) {
+                        //Handle error
+                        user = false;
+                        deferred.reject(response);
                     });
-
                 // return promise object
                 return deferred.promise;
 
             }
 
-}]);
+        }]);
 
 kordeCms.directive('halloEditor', function () {
     return {
@@ -238,24 +245,46 @@ kordeCms.directive('halloEditor', function () {
 
 kordeCms.controller('PagesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
-        PageFactory.list().then(function(response){
+        PageFactory.list().then(function (response) {
             //Success
             $scope.pages = response.data;
 
-        }, function(response){
+        }, function (response) {
             //Error
+            $scope.error = response.data;
         })
-
     }]);
 
 kordeCms.controller('EditPageCtrl',
     ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory) {
 
-        PageFactory.get($routeParams.pageSlug).then(function(response){
+        $scope.pageImages = [];
+        $scope.pageTexts = [];
+
+        PageFactory.get($routeParams.pageSlug).then(function (response) {
             //Success
             $scope.page = response.data;
 
-        }, function(response){
+            PageFactory.listElements($scope.page.slug).then(function (response) {
+                //Success
+                $scope.pageElements = response.data;
+                $scope.pageElements.forEach(function (element) {
+
+                    if (element.type == 1) {
+                        //Type text
+                        //Add element to text elements
+                        $scope.pageTexts.push(element);
+                    } else if (element.type = 0) {
+                        //Type image
+                        $scope.pageImages.push(element);
+                    }
+                })
+
+            }, function (response) {
+
+            })
+
+        }, function (response) {
             //Error
         })
 
@@ -264,13 +293,6 @@ kordeCms.controller('EditPageCtrl',
 
 kordeCms.controller('DashboardCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'AuthService', function ($scope, PageFactory, ArticleFactory, UserFactory, AuthService) {
-    AuthService.login('olemno', 'bajskorv').then(function(response){
-        //Success
-
-    }, function(response){
-        //Error
-        console.log(response);
-    })
 
     }]);
 
@@ -284,4 +306,33 @@ kordeCms.controller('ArticlesCtrl',
             //Error
         })
 
+    }]);
+
+kordeCms.controller('NavbarCtrl',
+    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
+        $scope.showNavbar = false;
+        //Watch the route change, if we are at different page than login, show the navbar.
+        $scope.$on('$routeChangeStart', function (next, current) {
+            $scope.showNavbar = current.$$route.originalPath !== '/login';
+        });
+    }]);
+
+
+kordeCms.controller('LoginCtrl',
+    ['$scope', '$location', 'AuthService', '$timeout', function ($scope, $location, AuthService, $timeout) {
+        $scope.loading = false;
+        $scope.login = function () {
+            $scope.loading = true;
+            AuthService.login($scope.username, $scope.password).then(function (response) {
+                //Success
+                $timeout(function () {
+                    //Delay it 1 sec, so you can watch the beautiful loading indicator
+                    $scope.loading = false;
+                    $location.path('/');
+                }, 1000);
+            }, function (response) {
+                //Error
+                $scope.errors = response.data;
+            })
+        }
     }]);
