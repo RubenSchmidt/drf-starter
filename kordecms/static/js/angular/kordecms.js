@@ -278,9 +278,10 @@ kordeCms.directive('kordeEditable', ['$rootScope', function ($rootScope) {
             if (!attrs.kordeModel) {
                 return;
             }
+            var kordeModelValue;
 
             scope.$watch(attrs.kordeModel, function (value) {
-                scope.kordeModelValue = value;
+                kordeModelValue = value;
             });
 
             element.hallo({
@@ -301,7 +302,7 @@ kordeCms.directive('kordeEditable', ['$rootScope', function ($rootScope) {
                 ngModel.$setViewValue(element.html());
                 scope.$apply();
                 //Send the broadcast event
-                $rootScope.$broadcast('rootScope:doneEditing', scope.kordeModelValue);
+                $rootScope.$broadcast('rootScope:doneEditing', kordeModelValue);
             });
 
         }
