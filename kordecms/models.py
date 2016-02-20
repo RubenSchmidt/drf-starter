@@ -44,6 +44,16 @@ class PageElement(models.Model):
         (TYPE_TEXT, _('Text element'))
     )
 
+    row = models.IntegerField(
+        verbose_name=_('row')
+    )
+
+    col = models.IntegerField(
+        verbose_name=_('column'),
+        null=True,
+        blank=True
+    )
+
     page = models.ForeignKey(
         Page,
         on_delete=models.CASCADE,
@@ -57,9 +67,19 @@ class PageElement(models.Model):
         verbose_name=_('Element text'),
         blank=True)
 
+    def get_image_folder_path(self, filename):
+        return 'page/{}/{}'.format(self.page.id, filename)
+
     image_src = models.ImageField(
         verbose_name=_('Element image source'),
-        blank=True, null=True)
+        blank=True, null=True,
+        upload_to=get_image_folder_path)
+
+    image_url = models.CharField(
+        verbose_name=_('image url'),
+        max_length=200,
+        blank=True
+    )
 
     description = models.TextField(
         blank=True,
@@ -71,6 +91,12 @@ class PageElement(models.Model):
 
     def __str__(self):
         return '{},{}'.format(self.description, self.page)
+
+    def save(self, *args, **kwargs):
+        if self.image_src:
+            self.image_url = self.image_src.url
+
+        super(PageElement, self).save(*args, **kwargs)
 
 
 class Article(models.Model):

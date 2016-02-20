@@ -271,19 +271,11 @@ kordeCms.controller('EditPageCtrl',
             PageFactory.listElements($scope.page.slug).then(function (response) {
                 //Success
                 $scope.pageElements = response.data;
-                $scope.pageElements.forEach(function (element) {
-
-                    if (element.type == 1) {
-                        //Type text
-                        //Add element to text elements
-                        $scope.pageTexts.push(element);
-                    } else if (element.type = 0) {
-                        //Type image
-                        $scope.pageImages.push(element);
-                    }
-                })
+                console.log(response.data);
 
             }, function (response) {
+                //Error
+                $scope.error = response.data;
 
             })
 
