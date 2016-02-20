@@ -120,7 +120,7 @@
             editable: _this.options.editable,
             label: label,
             command: "insert" + type + "List",
-            icon: "icon-list-" + (label.toLowerCase()),
+            icon: "fa fa-list-" + (label.toLowerCase()),
             cssClass: _this.options.buttonCssClass
           });
           return buttonset.append(buttonElement);
@@ -259,7 +259,7 @@
           buttonHolder = jQuery('<span></span>');
           buttonHolder.hallobutton({
             label: 'Link',
-            icon: 'icon-link',
+            icon: 'fa fa-link',
             editable: _this.options.editable,
             command: null,
             queryState: false,
@@ -835,7 +835,7 @@
             uuid: _this.options.uuid,
             editable: _this.options.editable,
             label: label,
-            icon: cmd === 'undo' ? 'icon-undo' : 'icon-repeat',
+            icon: cmd === 'undo' ? 'fa fa-undo' : 'fa fa-repeat',
             command: cmd,
             queryState: false,
             cssClass: _this.options.buttonCssClass
@@ -912,7 +912,7 @@
         buttonHolder = jQuery('<span></span>');
         buttonHolder.hallobutton({
           label: 'Images',
-          icon: 'icon-picture',
+          icon: 'fa fa-file-image-o',
           editable: this.options.editable,
           command: null,
           queryState: false,
@@ -2017,7 +2017,7 @@
             editable: _this.options.editable,
             label: alignment,
             command: "justify" + alignment,
-            icon: "icon-align-" + (alignment.toLowerCase()),
+            icon: "fa fa-align-" + (alignment.toLowerCase()),
             cssClass: _this.options.buttonCssClass
           });
           return buttonset.append(buttonElement);
@@ -2113,7 +2113,7 @@
         var hoverclass, id, opts, _base, _ref,
           _this = this;
         if ((_ref = (_base = this.options).icon) == null) {
-          _base.icon = "icon-" + (this.options.label.toLowerCase());
+          _base.icon = "fa fa-" + (this.options.label.toLowerCase());
         }
         id = "" + this.options.uuid + "-" + this.options.label;
         opts = this.options;
@@ -2254,7 +2254,7 @@
       },
       _create: function() {
         var _base, _ref;
-        return (_ref = (_base = this.options).icon) != null ? _ref : _base.icon = "icon-" + (this.options.label.toLowerCase());
+        return (_ref = (_base = this.options).icon) != null ? _ref : _base.icon = "fa fa-" + (this.options.label.toLowerCase());
       },
       _init: function() {
         var target,

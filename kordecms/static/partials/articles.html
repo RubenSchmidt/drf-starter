@@ -10,8 +10,8 @@
         <div class="col-xs-12">
             <div class="article-wrapper">
                 <h2 class="article-header">{{ article.title }}</h2>
-                <div hallo-editor ng-model="article.body">{{ article.body}}</div>
+                <div hallo-editor ng-model="article.body" ng-bind-html="article.body">{{ article.body}}</div>
             </div>
         </div>
     </div>
-</div>
+</div>gi

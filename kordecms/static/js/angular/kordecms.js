@@ -1,7 +1,7 @@
 /**
  * Created by rubenschmidt on 16.02.2016.
  */
-var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute']);
+var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute', 'ngSanitize']);
 
 kordeCms.config(function ($routeProvider) {
     $routeProvider
@@ -229,7 +229,6 @@ kordeCms.directive('halloEditor', function () {
                     'halloheadings': [1, 2, 3],
                     'hallojustify': {},
                     'hallolists': {},
-                    'halloimage': {},
                     'halloreundo': {}
                 },
                 toolbar: 'halloToolbarFixed'
