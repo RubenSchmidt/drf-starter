@@ -1,0 +1,13 @@
+<div class="loginbox">
+    <div class="container">
+		<form class="form">
+            <h1>Log inn</h1>
+            <p ng-if="errors.non_field_errors">{{ errors.non_field_errors[0] }}</p>
+			<input type="text" placeholder="Brukernavn" ng-model="username">
+            <p ng-if="errors.username">{{ errors.username[0] }}</p>
+			<input type="password" placeholder="Passord" ng-model="password">
+            <p ng-if="errors.password">{{ errors.password[0] }}</p>
+			<button type="submit" id="login-button" ng-click="login()">Login</button>
+		</form>
+	</div>
+</div>
