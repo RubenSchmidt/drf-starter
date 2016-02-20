@@ -138,6 +138,25 @@ kordeCms.factory('ArticleFactory',
         }
     }]);
 
+
+kordeCms.factory('GlobalEditorService',
+    ['$rootScope', 'ArticleFactory', function ($rootScope, ArticleFactory) {
+        return $rootScope.$on('rootScope:doneEditing', function (event, data) {
+            switch (data.class_type) {
+                case 'Article':
+                    console.log('article ');
+                    //Either article or image
+                    ArticleFactory.update(data).then(function (response) {
+                        //Success
+
+                    }, function (reponse) {
+                        //Error
+                        console.log(response);
+                    })
+            }
+        });
+    }]);
+
 kordeCms.factory('AuthService',
     ['$q', '$timeout', '$http', '$cookies',
         function ($q, $timeout, $http, $cookies) {
@@ -237,13 +256,57 @@ kordeCms.directive('halloEditor', function () {
             ngModel.$render = function () {
                 element.html(ngModel.$viewValue || '');
             };
-            element.on('hallodeactivated', function () {
+            element.on('hallomodified', function () {
                 ngModel.$setViewValue(element.html());
                 scope.$apply();
             });
         }
     };
 });
+
+kordeCms.directive('kordeEditable', ['$rootScope', function ($rootScope) {
+    return {
+        restrict: 'A',
+        require: '?ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            if (!ngModel) {
+                return;
+            }
+            if (!scope.editorMode) {
+                return;
+            }
+            if (!attrs.kordeModel) {
+                return;
+            }
+
+            scope.$watch(attrs.kordeModel, function (value) {
+                scope.kordeModelValue = value;
+            });
+
+            element.hallo({
+                plugins: {
+                    'halloformat': {"bold": true, "italic": true, "strikethrough": true, "underline": true},
+                    'halloheadings': [1, 2, 3],
+                    'hallojustify': {},
+                    'hallolists': {},
+                    'halloreundo': {}
+                },
+                toolbar: 'halloToolbarFixed'
+            });
+
+            ngModel.$render = function () {
+                element.html(ngModel.$viewValue || '');
+            };
+            element.on('hallodeactivated', function () {
+                ngModel.$setViewValue(element.html());
+                scope.$apply();
+                //Send the broadcast event
+                $rootScope.$broadcast('rootScope:doneEditing', scope.kordeModelValue);
+            });
+
+        }
+    }
+}]);
 
 
 kordeCms.controller('PagesCtrl',
@@ -294,17 +357,19 @@ kordeCms.controller('EditPageCtrl',
     }]);
 
 kordeCms.controller('DashboardCtrl',
-    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'AuthService', function ($scope, PageFactory, ArticleFactory, UserFactory, AuthService) {
-
+    ['$scope', 'GlobalEditorService', function ($scope, GlobalEditorService) {
+        $scope.editorMode = true;
+        $scope.test = 'Hei på deg';
     }]);
 
 kordeCms.controller('ArticlesCtrl',
-    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
-        ArticleFactory.list().then(function(response){
+    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
+        $scope.editorMode = true;
+        ArticleFactory.list().then(function (response) {
             //Success
             $scope.articles = response.data;
 
-        }, function(response){
+        }, function (response) {
             //Error
         })
 

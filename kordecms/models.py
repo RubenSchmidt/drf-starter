@@ -5,6 +5,21 @@ from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 
 
+class KordeEditableModel(models.Model):
+    class_type = models.CharField(
+        verbose_name=_('classtype'),
+        max_length=50,
+        blank=True
+    )
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        self.class_type = self.__class__.__name__
+        super(KordeEditableModel, self).save(*args, **kwargs)
+
+
 class Page(models.Model):
     name = models.CharField(
         max_length=200,
@@ -36,7 +51,7 @@ class Page(models.Model):
         return Page.objects.filter(page=self)
 
 
-class PageElement(models.Model):
+class PageElement(KordeEditableModel):
     TYPE_IMAGE = 0
     TYPE_TEXT = 1
     TYPE_CHOICES = (
@@ -99,7 +114,7 @@ class PageElement(models.Model):
         super(PageElement, self).save(*args, **kwargs)
 
 
-class Article(models.Model):
+class Article(KordeEditableModel):
     """
     Article model for korde CMS.
     """
