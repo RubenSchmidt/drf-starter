@@ -4,17 +4,15 @@
   background-size: auto, auto, 100% 1000px, 100% 1000px;
   background-repeat: no-repeat;
   position: absolute;
-  top: 50%;
   left: 0;
   width: 100%;
-  height: 400px;
-  margin-top: -200px;
+  height: 100%;
   overflow: hidden; }
   .loginbox .container {
     max-width: 600px;
     margin: 0 auto;
     padding: 80px 0;
-    height: 400px;
+    height: 100%;
     text-align: center; }
     .loginbox .container h1 {
       font-size: 40px;
