@@ -140,19 +140,29 @@ kordeCms.factory('ArticleFactory',
 
 
 kordeCms.factory('GlobalEditorService',
-    ['$rootScope', 'ArticleFactory', function ($rootScope, ArticleFactory) {
+    ['$rootScope', 'ArticleFactory','PageFactory', function ($rootScope, ArticleFactory, PageFactory) {
         return $rootScope.$on('rootScope:doneEditing', function (event, data) {
             switch (data.class_type) {
                 case 'Article':
-                    console.log('article ');
                     //Either article or image
                     ArticleFactory.update(data).then(function (response) {
                         //Success
 
-                    }, function (reponse) {
+                    }, function (response) {
                         //Error
                         console.log(response);
-                    })
+                    });
+                    break;
+                case 'PageElement':
+                    if(data.type === 1){
+                        PageFactory.update(data).then(function(response){
+                            //Success
+
+                        }, function (response) {
+                            //Error
+                            console.log(response);
+                        })
+                    }
             }
         });
     }]);
