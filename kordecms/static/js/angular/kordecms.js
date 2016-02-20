@@ -337,6 +337,7 @@ kordeCms.controller('LoginCtrl',
                 }, 1000);
             }, function (response) {
                 //Error
+                $scope.loading = false;
                 $scope.errors = response.data;
             })
         }
