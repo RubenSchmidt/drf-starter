@@ -6,11 +6,11 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    <div class="row">
+    <div class="row" ng-repeat="article in articles">
         <div class="col-xs-12">
             <div class="article-wrapper">
-                <h2 class="article-header">Tittel som er fin</h2>
-                <div hallo-editor ng-model="variabelnavn"></div>
+                <h2 class="article-header">{{ article.title }}</h2>
+                <div hallo-editor ng-model="{{ article.body}}"></div>
             </div>
         </div>
     </div>

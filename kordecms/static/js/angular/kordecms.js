@@ -276,6 +276,12 @@ kordeCms.controller('DashboardCtrl',
 
 kordeCms.controller('ArticlesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
+        ArticleFactory.list().then(function(response){
+            //Success
+            $scope.articles = response.data;
 
+        }, function(response){
+            //Error
+        })
 
     }]);
