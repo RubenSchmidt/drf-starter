@@ -174,10 +174,10 @@ kordeCms.factory('AuthService',
                         deferred.resolve();
                     }, function (response) {
                         //Handle error
-                        deferred.reject();
+                        deferred.reject(response);
                     });
                 } else {
-                    deferred.reject();
+                    deferred.reject('No token');
                 }
                 return deferred.promise;
             }
