@@ -8,11 +8,11 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-lg-12">
-            <div class="page-panel">
-                <h3 class="page-name">{{ page.name }}</h3>
+            <div class="page-panel" ng-repeat="element in pageTexts">
+                <h3 class="page-name">{{ element.description }}</h3>
                 <div class="divider"></div>
                 <div class="page-thumbnail">
-                    <p>Huh uwfg pibg wbibg wb bwåobg <br> widjg wigjn onw g</p>
+                    {{ element.body }}
                 </div>
             </div>
         </div>

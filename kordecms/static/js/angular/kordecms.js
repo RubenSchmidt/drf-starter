@@ -258,9 +258,31 @@ kordeCms.controller('PagesCtrl',
 kordeCms.controller('EditPageCtrl',
     ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory) {
 
+        $scope.pageImages = [];
+        $scope.pageTexts = [];
+
         PageFactory.get($routeParams.pageSlug).then(function(response){
             //Success
             $scope.page = response.data;
+
+            PageFactory.listElements($scope.page.slug).then(function(response){
+                //Success
+                $scope.pageElements = response.data;
+                $scope.pageElements.forEach(function(element){
+
+                    if (element.type == 1){
+                        //Type text
+                        //Add element to text elements
+                        $scope.pageTexts.push(element);
+                    }else if(element.type = 0){
+                        //Type image
+                        $scope.pageImages.push(element);
+                    }
+                })
+
+            }, function(response){
+
+            })
 
         }, function(response){
             //Error
@@ -283,7 +305,7 @@ kordeCms.controller('ArticlesCtrl',
 kordeCms.controller('NavbarCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
         $scope.showNavbar = false;
-
+        //Watch the route change, if we are at different page than login, show the navbar.
         $scope.$on('$routeChangeStart', function (next, current) {
             $scope.showNavbar = current.$$route.originalPath !== '/login';
         });
@@ -298,8 +320,8 @@ kordeCms.controller('LoginCtrl',
                     $location.path('/');
 
                 }, function(response){
+                    //Error
                     $scope.errors = response.data;
-                    console.log(response.data);
             })
         }
     }]);
