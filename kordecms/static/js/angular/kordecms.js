@@ -12,6 +12,10 @@ kordeCms.config(function ($routeProvider) {
         .when('/articles/:articleId', {
             controller: 'EditArticleCtrl',
             templateUrl: '/static/partials/edit-article.html'
+            })
+        .when('/users', {
+            controller : 'UsersCtrl',
+            templateUrl: '/static/partials/users.html'
         })
         .when('/articles', {
             controller: 'ArticlesCtrl',
@@ -376,40 +380,7 @@ kordeCms.directive('halloEditor', function () {
                     'halloheadings': [1, 2, 3],
                     'hallojustify': {},
                     'hallolists': {},
-                    'halloreundo': {},
-                    'halloimage': {}
-                },
-                toolbar: 'halloToolbarFixed'
-            });
-
-            ngModel.$render = function () {
-                element.html(ngModel.$viewValue || '');
-            };
-            element.on('hallomodified', function () {
-                ngModel.$setViewValue(element.html());
-                scope.$apply();
-            });
-        }
-    };
-});
-
-kordeCms.directive('halloEditorImage', function () {
-    return {
-        restrict: 'A',
-        require: '?ngModel',
-        link: function (scope, element, attrs, ngModel) {
-            if (!ngModel) {
-                return;
-            }
-
-            element.hallo({
-                plugins: {
-                    'halloformat': {"bold": true, "italic": true, "strikethrough": true, "underline": true},
-                    'halloheadings': [1, 2, 3],
-                    'hallojustify': {},
-                    'hallolists': {},
-                    'halloreundo': {},
-                    'halloimage': {}
+                    'halloreundo': {}
                 },
                 toolbar: 'halloToolbarFixed'
             });
@@ -738,4 +709,15 @@ kordeCms.controller('PageElementCtrl',
                 console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
             });
         };
+    }]);
+
+
+kordeCms.controller('UsersCtrl',
+    ['$scope' , 'UserFactory', function ($scope, UserFactory) {
+        UserFactory.list().then(function(response){
+            //Success
+            $scope.users = response.data;
+        }, function(response){
+            //Error
+        });
     }]);
