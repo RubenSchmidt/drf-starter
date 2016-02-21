@@ -140,6 +140,70 @@ kordeCms.factory('ArticleFactory',
     }]);
 
 
+kordeCms.factory('SweetAlert', [ '$timeout', '$window', function ( $timeout, $window ) {
+
+	var swal = $window.swal;
+
+	var self = function ( arg1, arg2, arg3 ) {
+		$timeout(function() {
+			if( typeof(arg2) === 'function' ) {
+				swal(arg1, function(isConfirm) {
+					$timeout( function() {
+						arg2(isConfirm);
+					});
+				}, arg3 );
+			} else {
+				swal( arg1, arg2, arg3 );
+			}
+		});
+	};
+
+	//public methods
+	var props = {
+		swal: swal,
+		adv: function( object ) {
+			$timeout(function() {
+				swal( object );
+			});
+		},
+		timed: function( title, message, type, time ) {
+			$timeout(function() {
+				swal( {
+					title: title,
+					text: message,
+					type: type,
+					timer: time
+				} );
+			});
+		},
+		success: function(title, message) {
+			$timeout(function(){
+				swal( title, message, 'success' );
+			});
+		},
+		error: function(title, message) {
+			$timeout(function(){
+				swal( title, message, 'error' );
+			});
+		},
+		warning: function(title, message) {
+			$timeout(function(){
+				swal( title, message, 'warning' );
+			});
+		},
+		info: function(title, message) {
+			$timeout(function(){
+				swal( title, message, 'info' );
+			});
+		}
+	};
+
+	angular.extend(self, props);
+
+	return self;
+}]);
+
+
 kordeCms.factory('GlobalEditorService',
     ['$rootScope', 'ArticleFactory', 'PageFactory', function ($rootScope, ArticleFactory, PageFactory) {
         return $rootScope.$on('rootScope:doneEditing', function (event, data) {
@@ -245,7 +309,6 @@ kordeCms.factory('AuthService',
 
             function logout() {
                 //Just remove the token from the header and the cookies
-                console.log("kom inn");
                 user = false;
                 delete $http.defaults.headers.common.Authorization;
                 $cookies.remove('token');
@@ -363,12 +426,13 @@ kordeCms.controller('EditPageCtrl',
 
         }, function (response) {
             //Error
-        })
+            $scope.error = response.data;
+        });
 
         $scope.openEditorModal = function (element) {
             $scope.activeElement = element;
             $scope.showEditorModal = true;
-        }
+        };
 
         $scope.closeEditorModal = function () {
             $scope.showEditorModal = false;
@@ -396,7 +460,7 @@ kordeCms.controller('ArticlesCtrl',
     }]);
 
 kordeCms.controller('NavbarCtrl',
-    ['$scope', '$location', '$route' ,'AuthService', function ($scope, $location, $route ,AuthService) {
+    ['$scope', '$location', '$route', 'AuthService','SweetAlert', function ($scope, $location, $route, AuthService, SweetAlert) {
         $scope.showNavbar = false;
         //Watch the route change, if we are at different page than login, show the navbar.
         $scope.$on('$routeChangeStart', function (next, current) {
@@ -404,10 +468,21 @@ kordeCms.controller('NavbarCtrl',
         });
 
         $scope.logout = function () {
-            AuthService.logout();
-            //Redirect to the loginpage
-            $location.path('/login');
-            $route.reload();
+            //Show alert popup
+            SweetAlert.swal({
+                title: 'Vil du logge ut?',
+                showCancelButton: true,
+                confirmButtonText: 'Ja',
+                cancelButtonText: 'Nei',
+                closeOnConfirm: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    AuthService.logout();
+                    //Redirect to the loginpage
+                    $location.path('/login');
+                    $route.reload();
+                }
+            });
         }
     }]);
 

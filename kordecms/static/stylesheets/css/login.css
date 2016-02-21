@@ -18,7 +18,9 @@
       font-size: 40px;
       -webkit-transition-duration: 1s;
       transition-duration: 1s;
-      font-weight: 200; }
+      font-weight: 200;
+      color: #ffffff;
+      padding-bottom: 20px; }
     .loginbox .container form {
       padding: 20px 0;
       position: relative;
