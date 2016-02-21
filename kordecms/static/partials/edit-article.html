@@ -1,0 +1,30 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Lag ny artikkel</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="article-wrapper-edit">
+            <form ng-submit="createArticle()" class="article">
+                <h3>Tittel:</h3>
+                <div hallo-editor name="title" type="text" class="feedback-input" placeholder="Tittel"
+                     ng-model="article.title"></div>
+                <h3>Innhold:</h3>
+
+                <div>
+                    <div hallo-editor-image name="body" class="feedback-input text-area" placeholder="Innhold"
+                         ng-model="article.body"></div>
+                    <i class="image-upload fa fa-picture-o fa-3x" ng-click="uploadImage()"></i>
+                </div>
+
+                <input type="checkbox" name="publish" class="feedback-checkbox" ng-model="article.is_published"/>
+                <label for="publish">Publisér annonsen (kan gjøres senere)</label>
+
+                <input class="article-submit" type="submit" value="Lagre"/>
+            </form>
+        </div>
+    </div>
+</div>

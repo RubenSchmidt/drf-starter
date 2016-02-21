@@ -9,6 +9,10 @@ kordeCms.config(function ($routeProvider) {
             controller: 'DashboardCtrl',
             templateUrl: '/static/partials/dashboard.html'
         })
+        .when('/articles/:articleId', {
+            controller: 'EditArticleCtrl',
+            templateUrl: '/static/partials/edit-article.html'
+        })
         .when('/articles', {
             controller: 'ArticlesCtrl',
             templateUrl: '/static/partials/articles.html'
@@ -591,6 +595,73 @@ kordeCms.controller('ArticlesCtrl',
                 //error
                 console.log(response);
             });
+        }
+
+        $scope.uploadImage = function(){
+
+        }
+
+    }]);
+
+kordeCms.controller('EditArticleCtrl',
+    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
+        $scope.editorMode = true;
+        $scope.newTagInput = {};
+        $scope.article = {};
+
+        $scope.articleHasTags = function (article) {
+            return article.tag_string.length > 0;
+        };
+
+        $scope.createArticle = function () {
+            if (!$scope.article.title) {
+                //error
+            } else if (!$scope.article.body) {
+                //error
+            } else {
+                ArticleFactory.create($scope.article).then(function (response) {
+                    //Success
+                    $scope.articles.unshift(response.data);
+                    $scope.article = {};
+
+                }, function (response) {
+                    //error
+                    console.log(response);
+                });
+            }
+
+        };
+
+        $scope.addTag = function (article) {
+            var list = article.tag_string.split(',');
+            var id = article.id.toString();
+            if (list.indexOf($scope.newTagInput[id]) < 0 && $scope.newTagInput[id]) {
+                article.tag_string += article.tag_string.length > 0 ? "," + $scope.newTagInput[id] : $scope.newTagInput[id];
+                $scope.newTagInput[id] = '';
+                ArticleFactory.update(article).then(function (response) {
+                    //Success
+                }, function (response) {
+                    //error
+                });
+            }
+        };
+        $scope.deleteTag = function (tag_name, article) {
+            var list = article.tag_string.split(',');
+            var index = list.indexOf(tag_name);
+            if (index > -1) {
+                list.splice(index, 1);
+            }
+            article.tag_string = list.join()
+            ArticleFactory.update(article).then(function (response) {
+                //Success
+            }, function (response) {
+                //error
+                console.log(response);
+            });
+        }
+
+        $scope.uploadImage = function(){
+
         }
 
     }]);
