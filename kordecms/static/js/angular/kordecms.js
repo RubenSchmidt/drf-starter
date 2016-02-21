@@ -28,6 +28,7 @@ kordeCms.config(function ($routeProvider) {
         .otherwise('/login')
 });
 kordeCms.run(function ($rootScope, $location, $route, AuthService) {
+    //Get the auth status of the user, if it goes trough we have a valid token.
     AuthService.getAuthStatus().then(function () {
         //Success
     }, function () {
@@ -140,7 +141,7 @@ kordeCms.factory('ArticleFactory',
 
 
 kordeCms.factory('GlobalEditorService',
-    ['$rootScope', 'ArticleFactory','PageFactory', function ($rootScope, ArticleFactory, PageFactory) {
+    ['$rootScope', 'ArticleFactory', 'PageFactory', function ($rootScope, ArticleFactory, PageFactory) {
         return $rootScope.$on('rootScope:doneEditing', function (event, data) {
             switch (data.class_type) {
                 case 'Article':
@@ -154,8 +155,8 @@ kordeCms.factory('GlobalEditorService',
                     });
                     break;
                 case 'PageElement':
-                    if(data.type === 1){
-                        PageFactory.update(data).then(function(response){
+                    if (data.type === 1) {
+                        PageFactory.update(data).then(function (response) {
                             //Success
 
                         }, function (response) {
@@ -179,6 +180,7 @@ kordeCms.factory('AuthService',
                 isLoggedIn: isLoggedIn,
                 getUserStatus: getUserStatus,
                 login: login,
+                logout: logout,
                 getAuthStatus: getAuthStatus
             });
 
@@ -241,6 +243,13 @@ kordeCms.factory('AuthService',
 
             }
 
+            function logout() {
+                //Just remove the token from the header and the cookies
+                console.log("kom inn");
+                user = false;
+                delete $http.defaults.headers.common.Authorization;
+                $cookies.remove('token');
+            }
         }]);
 
 kordeCms.directive('halloEditor', function () {
@@ -356,12 +365,12 @@ kordeCms.controller('EditPageCtrl',
             //Error
         })
 
-        $scope.openEditorModal = function(element){
+        $scope.openEditorModal = function (element) {
             $scope.activeElement = element;
             $scope.showEditorModal = true;
         }
 
-        $scope.closeEditorModal = function(){
+        $scope.closeEditorModal = function () {
             $scope.showEditorModal = false;
         }
 
@@ -387,12 +396,19 @@ kordeCms.controller('ArticlesCtrl',
     }]);
 
 kordeCms.controller('NavbarCtrl',
-    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
+    ['$scope', '$location', '$route' ,'AuthService', function ($scope, $location, $route ,AuthService) {
         $scope.showNavbar = false;
         //Watch the route change, if we are at different page than login, show the navbar.
         $scope.$on('$routeChangeStart', function (next, current) {
             $scope.showNavbar = current.$$route.originalPath !== '/login';
         });
+
+        $scope.logout = function () {
+            AuthService.logout();
+            //Redirect to the loginpage
+            $location.path('/login');
+            $route.reload();
+        }
     }]);
 
 
