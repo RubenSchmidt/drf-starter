@@ -8,7 +8,15 @@
     <!-- /.row -->
     <div class="row">
         <div class="article-wrapper">
+            <h2 class="article-header">Opprett ny artikkel:</h2>
+            <form ng-submit="createArticle()">
+                <input name="title" type="text" class="feedback-input" placeholder="Tittel" ng-model="article.title"/>
+                <textarea name="body" class="feedback-input" placeholder="Innhold" ng-model="article.body"></textarea>
+                <input type="checkbox" name="publish" class="feedback-checkbox"ng-model="articleForm.is_published"/>
+                <label for="publish">Publisér annonsen (kan gjøres senere)</label>
 
+                <input type="submit" value="Lagre" />
+            </form>
         </div>
     </div>
     <div class="row" ng-repeat="article in articles">
@@ -18,11 +26,13 @@
             </h2>
             <div korde-editable ng-model="article.body" korde-model="article"></div>
             <h4>Rediger tagger: </h4>
-            <div class="tag turqoise" ng-repeat="tag in article.tag_string.split(',')" ng-show="articleHasTags(article)">{{ tag }}
+            <div class="tag turqoise" ng-repeat="tag in article.tag_string.split(',')"
+                 ng-show="articleHasTags(article)">{{ tag }}
                 <i class="delete-icon" ng-click="deleteTag(tag, article)">&times</i>
             </div>
             <div class="tag input-tag turqoise">
-                <input type="text" ng-model="newTagInput[article.id]" placeholder="#tag..." on-press-enter="addTag(article)"/>
+                <input type="text" ng-model="newTagInput[article.id]" placeholder="#tag..."
+                       on-press-enter="addTag(article)"/>
             </div>
             <i class="add-icon fa fa-plus" ng-click="addTag(article)"></i>
             <div style="clear:both"></div>

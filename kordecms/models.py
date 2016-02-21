@@ -172,6 +172,10 @@ class Article(KordeEditableModel):
         max_length=300
     )
 
+    is_published = models.BooleanField(
+        default=False
+    )
+
     class Meta:
         verbose_name = _('article')
 
@@ -186,6 +190,8 @@ class Article(KordeEditableModel):
                 self.tags.add(tag_name.strip())
 
         super(Article, self).save(*args, **kwargs)  # Call the "real" save() method.
+
+
 
     @property
     def tags_list(self):

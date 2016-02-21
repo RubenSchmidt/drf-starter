@@ -115,17 +115,16 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class ArticleMixin(object):
     model = Article
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().order_by('-created_at')
     serializer_class = ArticleSerializer
 
     permission_classes = [
         ArticleAuthorCanEditPermission
     ]
 
-    def pre_save(self, obj):
+    def perform_create(self, serializer ):
         """Force author to the current user on save"""
-        obj.author = self.request.user
-        return super(ArticleMixin, self).pre_save(obj)
+        serializer.save(author=self.request.user)
 
 
 class ArticleList(ArticleMixin, generics.ListCreateAPIView):

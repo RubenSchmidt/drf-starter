@@ -467,6 +467,7 @@ kordeCms.controller('ArticlesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
         $scope.editorMode = true;
         $scope.newTagInput = {};
+        $scope.article = {};
 
         $scope.articleHasTags = function(article){
             return article.tag_string.length > 0;
@@ -479,6 +480,18 @@ kordeCms.controller('ArticlesCtrl',
         }, function (response) {
             //Error
         });
+
+        $scope.createArticle = function(){
+            ArticleFactory.create($scope.article).then(function (response) {
+                //Success
+                $scope.articles.unshift(response.data);
+                $scope.article = {};
+            }, function (response) {
+               //error
+                console.log(response);
+            });
+        };
+
         $scope.addTag = function (article) {
             var list = article.tag_string.split(',');
             var id = article.id.toString();
