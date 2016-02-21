@@ -58,7 +58,7 @@ kordeCms.factory('PageElementFactory',
             return $http.get(endpoint + '/' + id)
         }
 
-        function update(element){
+        function update(element) {
             return $http.put(endpoint + '/' + id, element)
         }
 
@@ -476,7 +476,6 @@ kordeCms.controller('EditPageCtrl',
             //Error
             $scope.error = response.data;
         });
-            PageFactory.updateImageElement(file, elementId, elementRow, $scope.page.id).then(function (resp) {
     }]);
 
 kordeCms.controller('DashboardCtrl',
