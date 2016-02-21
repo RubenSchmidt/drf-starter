@@ -13,6 +13,10 @@ kordeCms.config(function ($routeProvider) {
             controller: 'ArticlesCtrl',
             templateUrl: '/static/partials/articles.html'
         })
+        .when('/pageelement/:id', {
+            controller: 'PageElementCtrl',
+            templateUrl: '/static/partials/page-element.html'
+        })
         .when('/pages/:pageSlug/', {
             controller: 'EditPageCtrl',
             templateUrl: '/static/partials/edit-page.html'
@@ -39,6 +43,34 @@ kordeCms.run(function ($rootScope, $location, $route, AuthService) {
 });
 
 kordeCms.value('apiUrl', '/api');
+
+
+kordeCms.factory('PageElementFactory',
+    ['$http', 'Upload', 'apiUrl', function ($http, Upload, apiUrl) {
+        var endpoint = apiUrl + '/pageelements';
+
+        return ({
+            get: get,
+            update: update,
+            updateImageElement: updateImageElement
+        });
+        function get(id) {
+            return $http.get(endpoint + '/' + id)
+        }
+
+        function update(element){
+            return $http.put(endpoint + '/' + id, element)
+        }
+
+        function updateImageElement(element, file) {
+            return Upload.upload({
+                url: endpoint + '/' + element.id,
+                method: 'PUT',
+                data: element,
+                file: file
+            });
+        }
+    }]);
 
 kordeCms.factory('PageFactory',
     ['$http', 'Upload', 'apiUrl', function ($http, Upload, apiUrl) {
@@ -73,11 +105,11 @@ kordeCms.factory('PageFactory',
             return $http.put(endpoint + '/' + pageslug, page)
         }
 
-        function updateImageElement(file, elementId, elementRow , pageId) {
+        function updateImageElement(file, elementId, elementRow, pageId) {
             return Upload.upload({
                 url: endpoint + '/elements/' + elementId,
                 method: 'PUT',
-                data: {id: elementId, type: 0, row: elementRow ,page: pageId},
+                data: {id: elementId, type: 0, row: elementRow, page: pageId},
                 file: file
             });
         }
@@ -404,8 +436,8 @@ kordeCms.directive('kordeEditable', ['$rootScope', function ($rootScope) {
 kordeCms.directive('onPressEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-                scope.$apply(function (){
+            if (event.which === 13) {
+                scope.$apply(function () {
                     scope.$eval(attrs.onPressEnter);
                 });
                 event.preventDefault();
@@ -444,17 +476,6 @@ kordeCms.controller('EditPageCtrl',
             //Error
             $scope.error = response.data;
         });
-
-        $scope.upload = function (file, elementId, elementRow) {
-            PageFactory.updateImageElement(file, elementId, elementRow ,$scope.page.id).then(function (resp) {
-                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-            }, function (resp) {
-                console.log('Error status: ' + resp.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
-        };
     }]);
 
 kordeCms.controller('DashboardCtrl',
@@ -469,7 +490,7 @@ kordeCms.controller('ArticlesCtrl',
         $scope.newTagInput = {};
         $scope.article = {};
 
-        $scope.articleHasTags = function(article){
+        $scope.articleHasTags = function (article) {
             return article.tag_string.length > 0;
         }
 
@@ -481,13 +502,13 @@ kordeCms.controller('ArticlesCtrl',
             //Error
         });
 
-        $scope.createArticle = function(){
+        $scope.createArticle = function () {
             ArticleFactory.create($scope.article).then(function (response) {
                 //Success
                 $scope.articles.unshift(response.data);
                 $scope.article = {};
             }, function (response) {
-               //error
+                //error
                 console.log(response);
             });
         };
@@ -568,4 +589,30 @@ kordeCms.controller('LoginCtrl',
                 $scope.errors = response.data;
             })
         }
+    }]);
+
+kordeCms.controller('PageElementCtrl',
+    ['$scope', '$routeParams', 'GlobalEditorService', 'PageElementFactory', function ($scope, $routeParams, GlobalEditorService, PageElementFactory) {
+        $scope.editorMode = true;
+
+        PageElementFactory.get($routeParams.id).then(function (response) {
+            //Success
+            $scope.element = response.data;
+            console.log(response.data);
+        }, function (response) {
+            //Error
+        });
+
+        $scope.upload = function (file) {
+            $scope.element.image_src = file;
+            PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
+                console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
+                $scope.element = response.data;
+            }, function (response) {
+                console.log('Error status: ' + response.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+        };
     }]);

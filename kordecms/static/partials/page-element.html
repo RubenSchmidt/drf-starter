@@ -1,0 +1,12 @@
+<div class="page-wrapper">
+    <div class="element-description">
+        <div ngf-drop="upload($file)" ngf-drag-over-class="'dragover'"
+             ng-if="element.type === 0">
+            <img src="{{ element.image_src }}"/>
+        </div>
+
+        <span class="title">
+        {{ element.description }}
+        </span>
+    </div>
+</div>
