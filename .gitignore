@@ -1,6 +1,7 @@
 .DS_Store
 kordecms/migrations/
 kordecms/media/*
+media/
 venv
 .idea/*
 db.sqlite3

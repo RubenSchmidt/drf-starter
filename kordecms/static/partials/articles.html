@@ -1,17 +1,21 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Articles</h1>
+            <h1 class="page-header">Artikler</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
+    <div class="row">
+        <div class="article-wrapper">
+
+        </div>
+    </div>
     <div class="row" ng-repeat="article in articles">
-        <div class="col-xs-12">
-            <div class="article-wrapper">
-                <h2 class="article-header">{{ article.title }}</h2>
-                <div korde-editable ng-model="article.body" korde-model="article">{{ article.body}}</div>
-            </div>
+        <div class="article-wrapper">
+            <h2 class="article-header"><div korde-editable ng-model="article.title" korde-model="article"></div></h2>
+            <div korde-editable ng-model="article.body" korde-model="article"></div>
+            <div korde-editable ng-model="article.tags" korde-model="article"></div>
         </div>
     </div>
 </div>
