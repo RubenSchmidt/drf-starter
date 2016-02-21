@@ -2,7 +2,7 @@
     <div class="container" ng-hide="loading">
         <form class="form">
             <h1>Innlogging</h1>
-            <p ng-if="errors.non_field_errors">{{ errors.non_field_errors[0] }}</p>
+            <p class="error" ng-if="errors.non_field_errors">{{ errors.non_field_errors[0] }}</p>
             <input type="text" placeholder="Brukernavn" ng-model="username">
             <p ng-if="errors.username">{{ errors.username[0] }}</p>
             <input type="password" placeholder="Passord" ng-model="password">

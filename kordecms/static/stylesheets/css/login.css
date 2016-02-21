@@ -25,6 +25,8 @@
       padding: 20px 0;
       position: relative;
       z-index: 2; }
+      .loginbox .container form .error {
+        color: #ffffff; }
       .loginbox .container form input {
         -webkit-appearance: none;
         -moz-appearance: none;
