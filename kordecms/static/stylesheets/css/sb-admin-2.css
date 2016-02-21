@@ -63,14 +63,17 @@ textarea {
     transition: all 0.3s;
     margin-top: 15px;
     font-weight: 700;
-    background: white;
+    background: linear-gradient(to left, white 50%, #32ADA1 50%);
+    background-size: 200% 100%;
+    background-position:right bottom;
     color: #32ADA1;
     border: 3px solid #32ADA1;
+    transition:all 0.5s ease;
 }
 
 [type="submit"]:hover {
+    background-position:left bottom;
     border-radius: 5px;
-    background: #32ADA1;
     color: white;
     border: 3px solid #32ADA1;
 }
