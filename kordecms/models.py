@@ -59,6 +59,12 @@ class Page(models.Model):
             self.slug = slugify(self.name)
         super(Page, self).save(*args, **kwargs)
 
+    @property
+    def thumbnail_url(self):
+        if self.thumbnail:
+            return self.thumbnail.url
+        return None
+
     def get_page_elements(self):
         return Page.objects.filter(page=self)
 
@@ -99,12 +105,6 @@ class PageElement(KordeEditableModel):
         blank=True, null=True,
         upload_to='pageelements/%Y/%m/%d/')
 
-    image_url = models.CharField(
-        verbose_name=_('image url'),
-        max_length=200,
-        blank=True
-    )
-
     description = models.TextField(
         blank=True,
         verbose_name=_('Element description')
@@ -116,6 +116,11 @@ class PageElement(KordeEditableModel):
     def __str__(self):
         return '{},{}'.format(self.description, self.page)
 
+    @property
+    def image_url(self):
+        if self.image_src:
+            return self.image_src.url
+        return None
 
 
 class Article(KordeEditableModel):
