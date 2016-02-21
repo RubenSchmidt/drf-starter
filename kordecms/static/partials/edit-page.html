@@ -8,11 +8,12 @@
     <!-- /.row -->
     <div class="row" ng-repeat="elementRow in pageElements">
         <div class="col-lg-12 thumbnails-box">
-            <a class="page-thumbnail blue" ng-repeat="element in elementRow">
+            <a class="page-thumbnail green" ng-repeat="element in elementRow">
                 <div ngf-drop="upload($file, element.id, element.row)" ngf-drag-over-class="'dragover'"
                      ng-if="element.type === 0">
                     <img src="{{ element.image_src }}"/>
                 </div>
+
                 <span class="title">
                 {{ element.description }}
                 </span>
