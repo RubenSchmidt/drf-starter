@@ -34,6 +34,22 @@ class Page(models.Model):
         blank=True
     )
 
+    def get_image_folder_path(self, filename):
+        return 'page/{}/thumbnails/{}'.format(self.id, filename)
+
+    thumbnail = models.ImageField(
+        verbose_name=_('Page thumbnail'),
+        null=True,
+        blank=True,
+        upload_to=get_image_folder_path
+    )
+
+    thumbnail_url = models.CharField(
+        verbose_name=_('image url'),
+        max_length=200,
+        blank=True
+    )
+
     class Meta:
         verbose_name = _('Page')
 
@@ -44,6 +60,9 @@ class Page(models.Model):
         if not self.id:
             # Newly created object, so set slug
             self.slug = slugify(self.name)
+
+        if self.thumbnail:  # If the page has a thumbnail we save the url to the image
+            self.thumbnail_url = self.thumbnail.url
 
         super(Page, self).save(*args, **kwargs)
 

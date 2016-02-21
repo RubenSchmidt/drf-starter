@@ -33,6 +33,26 @@ class PageDetail(generics.RetrieveUpdateDestroyAPIView):
     ]
 
 
+class PageElementDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = PageElement
+    queryset = PageElement.objects.all()
+    serializer_class = PageElementSerializer
+    permission_classes = [
+        permissions.IsAdminUser
+    ]
+
+    def perform_update(self, serializer):
+        obj = serializer.validated_data
+        # Type is image
+        if obj['type'] == 0:
+            # New image file is uploaded
+            if self.request.FILES.get('file'):
+                serializer.save(image_src=self.request.FILES.get('file'))
+                return
+        # save the normal way
+        serializer.save()
+
+
 class PageElementList(generics.ListAPIView):
     model = PageElement
     queryset = PageElement.objects.all()

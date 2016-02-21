@@ -1,7 +1,7 @@
 /**
  * Created by rubenschmidt on 16.02.2016.
  */
-var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute', 'ngSanitize']);
+var kordeCms = angular.module("kordeCms", ['ngCookies', 'ngRoute', 'ngSanitize', 'ngFileUpload']);
 
 kordeCms.config(function ($routeProvider) {
     $routeProvider
@@ -41,7 +41,7 @@ kordeCms.run(function ($rootScope, $location, $route, AuthService) {
 kordeCms.value('apiUrl', '/api');
 
 kordeCms.factory('PageFactory',
-    ['$http', 'apiUrl', function ($http, apiUrl) {
+    ['$http', 'Upload', 'apiUrl', function ($http, Upload, apiUrl) {
         var endpoint = apiUrl + '/pages';
         return ({
             get: get,
@@ -49,6 +49,7 @@ kordeCms.factory('PageFactory',
             listElements: listElements,
             create: create,
             update: update,
+            updateImageElement: updateImageElement,
             destroy: destroy
         });
 
@@ -70,6 +71,15 @@ kordeCms.factory('PageFactory',
 
         function update(pageslug, page) {
             return $http.put(endpoint + '/' + pageslug, page)
+        }
+
+        function updateImageElement(file, elementId, elementRow , pageId) {
+            return Upload.upload({
+                url: endpoint + '/elements/' + elementId,
+                method: 'PUT',
+                data: {id: elementId, type: 0, row: elementRow ,page: pageId},
+                file: file
+            });
         }
 
         function destroy(pageslug) {
@@ -417,38 +427,34 @@ kordeCms.controller('PagesCtrl',
     }]);
 
 kordeCms.controller('EditPageCtrl',
-    ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory) {
-        $scope.showEditorModal = false;
-        $scope.pageImages = [];
-        $scope.pageTexts = [];
+    ['$scope', '$routeParams', 'PageFactory', 'Upload', function ($scope, $routeParams, PageFactory, Upload) {
+        $scope.page = {};
 
         PageFactory.get($routeParams.pageSlug).then(function (response) {
             //Success
             $scope.page = response.data;
-
             PageFactory.listElements($scope.page.slug).then(function (response) {
                 //Success
                 $scope.pageElements = response.data;
             }, function (response) {
                 //Error
                 $scope.error = response.data;
-
             })
-
         }, function (response) {
             //Error
             $scope.error = response.data;
         });
 
-        $scope.openEditorModal = function (element) {
-            $scope.activeElement = element;
-            $scope.showEditorModal = true;
+        $scope.upload = function (file, elementId, elementRow) {
+            PageFactory.updateImageElement(file, elementId, elementRow ,$scope.page.id).then(function (resp) {
+                console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+            }, function (resp) {
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
         };
-
-        $scope.closeEditorModal = function () {
-            $scope.showEditorModal = false;
-        }
-
     }]);
 
 kordeCms.controller('DashboardCtrl',

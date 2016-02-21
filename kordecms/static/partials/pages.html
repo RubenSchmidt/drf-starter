@@ -7,18 +7,13 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-12">
-            <div ng-repeat="page in pages">
-                <a class="edit-page-link" href="#/pages/{{ page.slug }}">
-                    <div class="page-panel">
-                        <h3 class="page-name">{{ page.name }}</h3>
-                        <div class="divider"></div>
-                        <div class="page-thumbnail">
-                            <p>Huh uwfg pibg wbibg wb bwåobg <br> widjg wigjn onw g</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
+        <div class="col-lg-12 pages-box">
+            <a ng-href="#/pages/{{ page.slug }}" class="page-thumbnail blue" ng-repeat="page in pages">
+                <img src="{{ page.thumbnail_url }}" ng-if="page.thumbnail_url">
+                <span class="title">
+                {{ page.name }}
+                </span>
+            </a>
         </div>
     </div>
 </div>
