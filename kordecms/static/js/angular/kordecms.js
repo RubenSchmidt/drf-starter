@@ -476,6 +476,7 @@ kordeCms.controller('EditPageCtrl',
             //Error
             $scope.error = response.data;
         });
+            PageFactory.updateImageElement(file, elementId, elementRow, $scope.page.id).then(function (resp) {
     }]);
 
 kordeCms.controller('DashboardCtrl',
@@ -503,15 +504,33 @@ kordeCms.controller('ArticlesCtrl',
         });
 
         $scope.createArticle = function () {
-            ArticleFactory.create($scope.article).then(function (response) {
+            if (!$scope.article.title) {
+                //error
+            } else if (!$scope.article.body) {
+                //error
+            } else {
+                ArticleFactory.create($scope.article).then(function (response) {
+                    //Success
+                    $scope.articles.unshift(response.data);
+                    $scope.article = {};
+
+                }, function (response) {
+                    //error
+                    console.log(response);
+                });
+            }
+
+        };
+
+        $scope.deleteArticle = function (article, index) {
+            ArticleFactory.destroy(article.id).then(function (response) {
                 //Success
-                $scope.articles.unshift(response.data);
-                $scope.article = {};
+                $scope.articles.splice(index, 1);
             }, function (response) {
                 //error
                 console.log(response);
             });
-        };
+        }
 
         $scope.addTag = function (article) {
             var list = article.tag_string.split(',');

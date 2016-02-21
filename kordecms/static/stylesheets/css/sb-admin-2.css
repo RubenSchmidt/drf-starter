@@ -12,7 +12,7 @@ body {
     width: 100%;
 }
 
-form {
+form.article {
     max-width: 620px;
     margin: 50px 0 0 0;
 }
@@ -46,13 +46,11 @@ form {
     border: 2px solid #32ADA1;
 }
 
-textarea {
-    height: 150px;
-    line-height: 150%;
-    resize: vertical;
+.text-area {
+    min-height:200px;
 }
 
-[type="submit"] {
+.article-submit {
     font-family: 'Montserrat', Arial, Helvetica, sans-serif;
     width: 100%;
     border-radius: 5px;
@@ -67,15 +65,15 @@ textarea {
     background-size: 200% 100%;
     background-position:right bottom;
     color: #32ADA1;
-    border: 3px solid #32ADA1;
+    border: 2px solid #32ADA1;
     transition:all 0.5s ease;
 }
 
-[type="submit"]:hover {
+.article-submit:hover {
     background-position:left bottom;
     border-radius: 5px;
     color: white;
-    border: 3px solid #32ADA1;
+    border: 2px solid #32ADA1;
 }
 
 .tag {
@@ -143,13 +141,37 @@ i.add-icon:hover {
 }
 
 .article-wrapper {
+    display:inline-block;
     width: auto;
+    min-width:600px;
+    max-width:1000px;
     padding: 20px;
     background-color: transparent;
     border-radius: 5px;
 }
 
+.hr {
+    padding:0;
+    margin:auto;
+    width:97%;
+    height:1px;
+    background: lightgray;
+}
 
+.delete-button {
+    float:right;
+    display: none;
+    position: relative;
+    top: 20px;
+    right: -20px;
+    width:30px;
+    height:auto;
+}
+
+.article-wrapper:hover .delete-button{
+    display:block;
+    cursor:pointer;
+}
 
 .page-panel {
     max-width: 590px;
