@@ -1,8 +1,8 @@
-.pages-box {
+.thumbnails-box {
   /* Mixins */
   /* Colors */
   /* Thumbnail Element */ }
-  .pages-box .page-thumbnail {
+  .thumbnails-box .page-thumbnail {
     position: relative;
     display: inline-block;
     width: 300px;
@@ -17,15 +17,15 @@
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
     transform: translateZ(0); }
-    .pages-box .page-thumbnail.green {
+    .thumbnails-box .page-thumbnail.green {
       background: #1b5a2a; }
-    .pages-box .page-thumbnail.blue {
+    .thumbnails-box .page-thumbnail.blue {
       background: #1c3c5a; }
-    .pages-box .page-thumbnail.red {
+    .thumbnails-box .page-thumbnail.red {
       background: #5a1f1a; }
-    .pages-box .page-thumbnail.purple {
+    .thumbnails-box .page-thumbnail.purple {
       background: #331f5a; }
-    .pages-box .page-thumbnail img {
+    .thumbnails-box .page-thumbnail img {
       position: absolute;
       top: 0;
       left: 0;
@@ -42,7 +42,7 @@
       -webkit-filter: blur(2px);
       -moz-filter: blur(2px);
       filter: blur(2px); }
-    .pages-box .page-thumbnail .title {
+    .thumbnails-box .page-thumbnail .title {
       position: absolute;
       left: 0;
       top: 40%;
@@ -60,28 +60,28 @@
       -webkit-transform: translateZ(0);
       -moz-transform: translateZ(0);
       transform: translateZ(0); }
-    .pages-box .page-thumbnail:hover {
+    .thumbnails-box .page-thumbnail:hover {
       z-index: 999;
       -webkit-transform: scale(1.1) rotate(0.1deg);
       -moz-transform: scale(1.1) rotate(0.1deg);
       transform: scale(1.1) rotate(0.1deg);
       box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.5); }
-      .pages-box .page-thumbnail:hover .title {
+      .thumbnails-box .page-thumbnail:hover .title {
         -webkit-transform: scale(0.85) rotate(0.1deg);
         -moz-transform: scale(0.85) rotate(0.1deg);
         transform: scale(0.85) rotate(0.1deg);
         color: rgba(255, 255, 255, 0); }
-      .pages-box .page-thumbnail:hover img {
+      .thumbnails-box .page-thumbnail:hover img {
         opacity: 1;
         -webkit-filter: blur(0);
         -moz-filter: blur(0);
         filter: blur(0); }
-    .pages-box .page-thumbnail:active {
+    .thumbnails-box .page-thumbnail:active {
       -webkit-transform: scale(1.08) rotate(0.1deg);
       -moz-transform: scale(1.08) rotate(0.1deg);
       transform: scale(1.08) rotate(0.1deg);
       box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.7); }
-      .pages-box .page-thumbnail:active img {
+      .thumbnails-box .page-thumbnail:active img {
         opacity: 0.7; }
 
 /*# sourceMappingURL=pages.css.map */
