@@ -34,14 +34,11 @@ class Page(models.Model):
         blank=True
     )
 
-    def get_image_folder_path(self, filename):
-        return 'page/{}/thumbnails/{}'.format(self.id, filename)
-
     thumbnail = models.ImageField(
         verbose_name=_('Page thumbnail'),
         null=True,
         blank=True,
-        upload_to=get_image_folder_path
+        upload_to='pagethumbnails/%Y/%m/%d/'
     )
 
     thumbnail_url = models.CharField(
@@ -60,10 +57,6 @@ class Page(models.Model):
         if not self.id:
             # Newly created object, so set slug
             self.slug = slugify(self.name)
-
-        if self.thumbnail:  # If the page has a thumbnail we save the url to the image
-            self.thumbnail_url = self.thumbnail.url
-
         super(Page, self).save(*args, **kwargs)
 
     def get_page_elements(self):
@@ -101,13 +94,10 @@ class PageElement(KordeEditableModel):
         verbose_name=_('Element text'),
         blank=True)
 
-    def get_image_folder_path(self, filename):
-        return 'page/{}/{}'.format(self.page.id, filename)
-
     image_src = models.ImageField(
         verbose_name=_('Element image source'),
         blank=True, null=True,
-        upload_to=get_image_folder_path)
+        upload_to='pageelements/%Y/%m/%d/')
 
     image_url = models.CharField(
         verbose_name=_('image url'),
@@ -126,11 +116,6 @@ class PageElement(KordeEditableModel):
     def __str__(self):
         return '{},{}'.format(self.description, self.page)
 
-    def save(self, *args, **kwargs):
-        if self.image_src:
-            self.image_url = self.image_src.url
-
-        super(PageElement, self).save(*args, **kwargs)
 
 
 class Article(KordeEditableModel):
@@ -190,8 +175,6 @@ class Article(KordeEditableModel):
                 self.tags.add(tag_name.strip())
 
         super(Article, self).save(*args, **kwargs)  # Call the "real" save() method.
-
-
 
     @property
     def tags_list(self):
