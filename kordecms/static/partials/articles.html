@@ -7,13 +7,18 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="article-wrapper">
+        <div class="article-wrapper article-wrapper-edit">
             <h2 class="article-header">Opprett ny artikkel:</h2>
             <form ng-submit="createArticle()" class="article">
                 <h3>Tittel:</h3>
                 <div hallo-editor name="title" type="text" class="feedback-input" placeholder="Tittel" ng-model="article.title" ></div>
-                <h3>Tekst:</h3>
-                <div hallo-editor name="body" class="feedback-input text-area" placeholder="Innhold" ng-model="article.body" ></div>
+                <h3>Innhold:</h3>
+
+                <div>
+                    <div hallo-editor-image name="body" class="feedback-input text-area" placeholder="Innhold" ng-model="article.body" ></div>
+                    <i class="image-upload fa fa-picture-o fa-3x" ng-click="uploadImage(article)" ></i>
+                </div>
+
                 <input type="checkbox" name="publish" class="feedback-checkbox" ng-model="article.is_published"/>
                 <label for="publish">Publisér annonsen (kan gjøres senere)</label>
 
@@ -21,7 +26,7 @@
             </form>
         </div>
     </div>
-    <h2 class="article-header">Deres artikler:</h2>
+    <h2 class="article-header" ng-if="articles.length>0">Deres artikler:</h2>
     <div class="row" ng-repeat="article in articles">
         <div class="hr"></div>
         <div class="article-wrapper">

@@ -46,6 +46,11 @@ form.article {
     border: 2px solid #32ADA1;
 }
 
+.image-upload {
+    float:  left;
+    margin-left:30px;
+}
+
 .text-area {
     min-height:200px;
 }
@@ -148,6 +153,10 @@ i.add-icon:hover {
     padding: 20px;
     background-color: transparent;
     border-radius: 5px;
+}
+
+.article-wrapper-edit {
+    min-width:600px;
 }
 
 .hr {
