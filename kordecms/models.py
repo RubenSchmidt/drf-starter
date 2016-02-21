@@ -143,7 +143,15 @@ class Article(KordeEditableModel):
         auto_now_add=True,
         verbose_name=_('created at'))
 
-    tags = TaggableManager()
+    tags = TaggableManager(
+        blank=True
+    )
+
+    tag_string = models.CharField(
+        verbose_name=_('Tag string'),
+        blank=True,
+        max_length=300
+    )
 
     class Meta:
         verbose_name = _('article')
@@ -153,7 +161,16 @@ class Article(KordeEditableModel):
 
     def save(self, *args, **kwargs):
         self.author_name = '{} {}'.format(self.author.first_name, self.author.last_name)
+        if len(self.tag_string) > 0:
+            tag_list = self.tag_string.split(',')
+            for tag_name in tag_list:
+                self.tags.add(tag_name.strip())
+
         super(Article, self).save(*args, **kwargs)  # Call the "real" save() method.
+
+    @property
+    def tags_list(self):
+        return [tag.name for tag in self.tags.all()]
 
     def get_number_of_comments(self):
         return ArticleComment.objects.filter(article=self).count()

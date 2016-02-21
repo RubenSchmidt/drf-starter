@@ -12,6 +12,55 @@ body {
     width: 100%;
 }
 
+.tag {
+    float:left;
+    position:relative;
+    display: inline-block;
+    height:auto;
+    width:auto;
+    padding:5px 7px 5px 10px;
+    margin-right:10px;
+    font-size:16px;
+}
+
+.input-tag {
+    padding:5px;
+}
+
+.tag i.delete-icon{
+    float:right;
+    position: relative;
+    top:-8px;
+    right:-4px;
+}
+
+.tag input {
+    padding:0px;
+    padding-left:5px;
+    margin: 0px;
+    max-width:80px;
+    width:auto;
+    border:none;
+}
+
+i.add-icon{
+    float:left;
+    margin-left:1px;
+    margin-top:7px;
+    font-size:22px;
+}
+
+i.add-icon:hover{
+    cursor:pointer;
+    margin-left:0px;
+    font-size:24px;
+}
+
+.tag i:hover{
+    cursor: pointer;
+    color:white;
+}
+
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;

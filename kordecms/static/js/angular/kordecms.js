@@ -140,67 +140,67 @@ kordeCms.factory('ArticleFactory',
     }]);
 
 
-kordeCms.factory('SweetAlert', [ '$timeout', '$window', function ( $timeout, $window ) {
+kordeCms.factory('SweetAlert', ['$timeout', '$window', function ($timeout, $window) {
 
-	var swal = $window.swal;
+    var swal = $window.swal;
 
-	var self = function ( arg1, arg2, arg3 ) {
-		$timeout(function() {
-			if( typeof(arg2) === 'function' ) {
-				swal(arg1, function(isConfirm) {
-					$timeout( function() {
-						arg2(isConfirm);
-					});
-				}, arg3 );
-			} else {
-				swal( arg1, arg2, arg3 );
-			}
-		});
-	};
+    var self = function (arg1, arg2, arg3) {
+        $timeout(function () {
+            if (typeof(arg2) === 'function') {
+                swal(arg1, function (isConfirm) {
+                    $timeout(function () {
+                        arg2(isConfirm);
+                    });
+                }, arg3);
+            } else {
+                swal(arg1, arg2, arg3);
+            }
+        });
+    };
 
-	//public methods
-	var props = {
-		swal: swal,
-		adv: function( object ) {
-			$timeout(function() {
-				swal( object );
-			});
-		},
-		timed: function( title, message, type, time ) {
-			$timeout(function() {
-				swal( {
-					title: title,
-					text: message,
-					type: type,
-					timer: time
-				} );
-			});
-		},
-		success: function(title, message) {
-			$timeout(function(){
-				swal( title, message, 'success' );
-			});
-		},
-		error: function(title, message) {
-			$timeout(function(){
-				swal( title, message, 'error' );
-			});
-		},
-		warning: function(title, message) {
-			$timeout(function(){
-				swal( title, message, 'warning' );
-			});
-		},
-		info: function(title, message) {
-			$timeout(function(){
-				swal( title, message, 'info' );
-			});
-		}
-	};
+    //public methods
+    var props = {
+        swal: swal,
+        adv: function (object) {
+            $timeout(function () {
+                swal(object);
+            });
+        },
+        timed: function (title, message, type, time) {
+            $timeout(function () {
+                swal({
+                    title: title,
+                    text: message,
+                    type: type,
+                    timer: time
+                });
+            });
+        },
+        success: function (title, message) {
+            $timeout(function () {
+                swal(title, message, 'success');
+            });
+        },
+        error: function (title, message) {
+            $timeout(function () {
+                swal(title, message, 'error');
+            });
+        },
+        warning: function (title, message) {
+            $timeout(function () {
+                swal(title, message, 'warning');
+            });
+        },
+        info: function (title, message) {
+            $timeout(function () {
+                swal(title, message, 'info');
+            });
+        }
+    };
 
-	angular.extend(self, props);
+    angular.extend(self, props);
 
-	return self;
+    return self;
 }]);
 
 
@@ -391,6 +391,18 @@ kordeCms.directive('kordeEditable', ['$rootScope', function ($rootScope) {
     }
 }]);
 
+kordeCms.directive('onPressEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.onPressEnter);
+                });
+                event.preventDefault();
+            }
+        });
+    };
+});
 
 kordeCms.controller('PagesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
@@ -417,7 +429,6 @@ kordeCms.controller('EditPageCtrl',
             PageFactory.listElements($scope.page.slug).then(function (response) {
                 //Success
                 $scope.pageElements = response.data;
-
             }, function (response) {
                 //Error
                 $scope.error = response.data;
@@ -449,18 +460,51 @@ kordeCms.controller('DashboardCtrl',
 kordeCms.controller('ArticlesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
         $scope.editorMode = true;
+        $scope.newTagInput = {};
+
+        $scope.articleHasTags = function(article){
+            return article.tag_string.length > 0;
+        }
+
         ArticleFactory.list().then(function (response) {
             //Success
             $scope.articles = response.data;
-
+            console.log(response.data);
         }, function (response) {
             //Error
-        })
+        });
+        $scope.addTag = function (article) {
+            var list = article.tag_string.split(',');
+            var id = article.id.toString();
+            if (list.indexOf($scope.newTagInput[id]) < 0 && $scope.newTagInput[id]) {
+                article.tag_string += article.tag_string.length > 0 ? "," + $scope.newTagInput[id] : $scope.newTagInput[id];
+                $scope.newTagInput[id] = '';
+                ArticleFactory.update(article).then(function (response) {
+                    //Success
+                }, function (response) {
+                    //error
+                });
+            }
+        };
+        $scope.deleteTag = function (tag_name, article) {
+            var list = article.tag_string.split(',');
+            var index = list.indexOf(tag_name);
+            if (index > -1) {
+                list.splice(index, 1);
+            }
+            article.tag_string = list.join()
+            ArticleFactory.update(article).then(function (response) {
+                //Success
+            }, function (response) {
+                //error
+                console.log(response);
+            });
+        }
 
     }]);
 
 kordeCms.controller('NavbarCtrl',
-    ['$scope', '$location', '$route', 'AuthService','SweetAlert', function ($scope, $location, $route, AuthService, SweetAlert) {
+    ['$scope', '$location', '$route', 'AuthService', 'SweetAlert', function ($scope, $location, $route, AuthService, SweetAlert) {
         $scope.showNavbar = false;
         //Watch the route change, if we are at different page than login, show the navbar.
         $scope.$on('$routeChangeStart', function (next, current) {

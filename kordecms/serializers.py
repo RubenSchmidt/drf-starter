@@ -20,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Article
 
