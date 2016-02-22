@@ -38,7 +38,7 @@ kordeCms.config(function ($routeProvider) {
             templateUrl: '/static/partials/login.html'
         })
         .when('/new-user', {
-           /* controller: 'LoginCtrl',*/
+            controller: 'NewUserCtrl',
             templateUrl: '/static/partials/new-user.html'
         })
         .otherwise('/login')
@@ -726,4 +726,39 @@ kordeCms.controller('UsersCtrl',
         }, function (response) {
             //Error
         });
+    }]);
+
+kordeCms.controller('NewUserCtrl'
+      ['$scope', 'UserFactory', function ($scope, UserFactory) {
+
+        var createUser = function () {
+            if (!$scope.horizontal-form.username) {
+                //error
+            } else if (!$scope.horizontal-form.email) {
+                //error
+            } else if (!$scope.horizontal-form.first_name) {
+                //error
+            } else if (!$scope.horizontal-form.last_name) {
+                //error
+
+            } else {
+                ArticleFactory.create($scope.article).then(function (response) {
+                    //Success
+                    $scope.article = {};
+
+                }, function (response) {
+                    //error
+                    console.log(response);
+                });
+            }
+
+        };
+
+
+        /*UserFactory.list().then(function (response) {
+            //Success
+            $scope.users = response.data;
+        }, function (response) {
+            //Error
+        });*/
     }]);

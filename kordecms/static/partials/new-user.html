@@ -10,36 +10,40 @@
             <fieldset>
                 <div class="form-group">
                     <div class="col-md-10">
-                        <input id="fname" name="name" type="text" placeholder="Brukernavn" class="korde-very-thin contact-field">
+                        <input id="username" name="username" type="text" placeholder="Brukernavn" class="korde-very-thin contact-field">
                     </div>
                 </div>
                 <div class="form-group ">
                     <div class="col-md-10">
-                        <input id="lname" name="name" type="text" placeholder="E-post" class="korde-very-thin contact-field">
+                        <input id="email" name="email" type="text" placeholder="E-post" class="korde-very-thin contact-field">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-10">
-                        <input id="email" name="email" type="text" placeholder="Fornavn" class="korde-very-thin contact-field">
+                        <input id="firstname" name="first_name" type="text" placeholder="Fornavn" class="korde-very-thin contact-field">
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-10">
-                        <input id="phone" name="phone" type="text" placeholder="Etternavn" class="korde-very-thin contact-field">
+                        <input id="lastname" name="last_name" type="text" placeholder="Etternavn" class="korde-very-thin contact-field">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-10 checkbox">
-                        <label><input type="checkbox" value="">Bruker</label>
-                        <label><input type="checkbox" value="">Admin</label>
+                    <div class="col-md-2 checkbox">
+                        <div class="col-md-6">
+                            <label><input type="checkbox" name="is_user" value="">Bruker</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label><input type="checkbox" name="is_admin" value="">Admin</label>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-md-12">
-                        <button class="contact-button inline-button uppercase font-size-20 korde-thin margin-top-35">Send inn</button>
+                        <button class="btn btn-success">Opprett bruker</button>
                     </div>
                 </div>
             </fieldset>
