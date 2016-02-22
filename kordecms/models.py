@@ -57,12 +57,6 @@ class Page(models.Model):
         upload_to='pagethumbnails/%Y/%m/%d/'
     )
 
-    thumbnail_url = models.CharField(
-        verbose_name=_('image url'),
-        max_length=200,
-        blank=True
-    )
-
     class Meta:
         verbose_name = _('Page')
 
@@ -100,7 +94,9 @@ class PageElement(KordeEditableModel):
         Page,
         on_delete=models.CASCADE,
         verbose_name=_('Parent page'),
-        related_name='elements')
+        related_name='elements',
+        null=True,
+        blank=True)
 
     type = models.IntegerField(
         verbose_name=_('Element type'),
@@ -207,7 +203,9 @@ class ArticleElement(models.Model):
         Article,
         verbose_name=_('Parent article'),
         on_delete=models.CASCADE,
-        related_name='elements'
+        related_name='elements',
+        null=True,
+        blank=True
     )
 
     # Either image or text
