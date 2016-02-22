@@ -163,10 +163,9 @@ class ArticleCommentMixin(object):
     serializer_class = ArticleCommentSerializer
     queryset = ArticleComment.objects.all()
 
-    def pre_save(self, obj):
+    def perform_create(self, serializer):
         """Force author to the current user on save"""
-        obj.author = self.request.user
-        return super(ArticleCommentMixin, self).pre_save(obj)
+        serializer.save(author=self.request.user)
 
 
 class ArticleCommentList(ArticleCommentMixin, generics.ListAPIView):
