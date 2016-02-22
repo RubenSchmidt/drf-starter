@@ -1,14 +1,14 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Lag ny artikkel</h1>
+            <h1 class="page-header">{{ pageHeader() }}</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
     <div class="row">
         <div class="article-wrapper-edit">
-            <form ng-submit="createArticle()" class="article">
+            <form ng-submit="saveArticle()" class="article">
                 <h3>Tittel:</h3>
                 <div hallo-editor name="title" type="text" class="feedback-input" placeholder="Tittel"
                      ng-model="article.title"></div>
@@ -27,4 +27,23 @@
             </form>
         </div>
     </div>
+</div>
+
+<div id="image-upload-modal" ng-show="showImageUpload">
+    <div class="delete-button-article">
+        <i class="fa fa-times fa-2x" ng-click="closeImageUpload()"></i>
+    </div>
+    <div class="test-div">
+        <div class="element-description">
+            <div ngf-drop="upload($file)" ngf-drag-over-class="'dragover'"
+                 ng-if="element.type === 0">
+                <img src="{{ element.image_src }}"/>
+            </div>
+
+        <span class="title">
+        {{ element.description }}
+        </span>
+        </div>
+    </div>
+
 </div>
