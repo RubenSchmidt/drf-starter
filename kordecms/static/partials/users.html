@@ -6,12 +6,39 @@
         <!-- /.col-lg-12 -->
     </div>
     <!-- /.row -->
-    <div class="row" ng-repeat="user in users">
-        <div class="col-m-6">
-            <div korde-editable korde-model="test" ng-model="test"> Denne</div>
+    <div class="row">
+        <div class="col-md-3">
+            <p> Navn</p>
         </div>
-        <div class="col-m-6">
-
+        <div class="col-md-3">
+            <p> Rolle </p>
+        </div>
+        <div class="col-md-3">
+            <p> Siste innlogging </p>
+        </div>
+    </div>
+    <div class="row" ng-repeat="user in users">
+        <div class="col-md-3">
+            <p> {{ user.first_name }} {{ user.last_name }}</p>
+        </div>
+        <div class="col-md-3">
+            <p> {{ getRole(user) }} </p>
+        </div>
+        <div class="col-md-3">
+            <p> {{ user.last_login | date: "dd.MM.yyyy" }} </p>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-danger">Slett</button>
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-primary">Endre</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <a href="#/new-user">
+                <button type="button" class="btn btn-success center-block">Legg til ny bruker</button>
+            </a>
         </div>
     </div>
 </div>

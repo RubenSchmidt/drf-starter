@@ -37,6 +37,10 @@ kordeCms.config(function ($routeProvider) {
             controller: 'LoginCtrl',
             templateUrl: '/static/partials/login.html'
         })
+        .when('/new-user', {
+           /* controller: 'LoginCtrl',*/
+            templateUrl: '/static/partials/new-user.html'
+        })
         .otherwise('/login')
 });
 kordeCms.run(function ($rootScope, $location, $route, AuthService) {
@@ -693,7 +697,14 @@ kordeCms.controller('UsersCtrl',
     ['$scope', 'UserFactory', function ($scope, UserFactory) {
 
 
-
+        $scope.getRole = function(user){
+            if (user.is_staff){
+                return "Admin";
+            }
+            else{
+                return "Bruker";
+            }
+        }
 
         UserFactory.list().then(function (response) {
             //Success
