@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class PageElementSerializer(serializers.ModelSerializer):
+    # Set the page to read only so we bypass the null check when updating a page and it elements
     image_url = serializers.ReadOnlyField()
 
     class Meta:
@@ -11,7 +12,7 @@ class PageElementSerializer(serializers.ModelSerializer):
 
 
 class PageSerializer(serializers.ModelSerializer):
-    elements = PageElementSerializer(many=True, read_only=True)
+    elements = PageElementSerializer(many=True)
     thumbnail_url = serializers.ReadOnlyField()
 
     class Meta:
@@ -22,8 +23,10 @@ class PageSerializer(serializers.ModelSerializer):
         Pops the element array and saves all of the elements individually.
         """
         elements_data = validated_data.pop('elements')
+        print(elements_data)
         page = Page.objects.create(**validated_data)
         for element_data in elements_data:
+            print(element_data)
             PageElement.objects.create(page=page, **element_data)
         return page
 
@@ -40,9 +43,7 @@ class ArticleElementSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     # Creates a nested relationship with all its elements, the related name is set in ArticleElement
-    # TODO expand this with create and update to become a nested post endpoint
-    # http://www.django-rest-framework.org/api-guide/relations/
-    elements = ArticleElementSerializer(many=True, read_only=True)
+    elements = ArticleElementSerializer(many=True)
 
     class Meta:
         model = Article
