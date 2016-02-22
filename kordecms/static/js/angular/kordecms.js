@@ -506,16 +506,45 @@ kordeCms.controller('ArticlesCtrl',
     }]);
 
 kordeCms.controller('EditArticleCtrl',
-    ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
+    ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
         $scope.editorMode = true;
         $scope.newTagInput = {};
         $scope.article = {};
+        var isNew = true;
+
+        ArticleFactory.get($routeParams.articleId).then(function (response) {
+            //Success
+            $scope.article = response.data;
+            isNew = false;
+            console.log(response.data);
+        }, function (response) {
+            //Error
+            $scope.article = {};
+            isNew = true;
+            console.log("No article found");
+        });
+
+        $scope.pageHeader = function(){
+            return isNew ? "Skriv en ny artikkel" : "Rediger artikkel";
+        };
 
         $scope.articleHasTags = function (article) {
             return article.tag_string.length > 0;
         };
 
-        $scope.createArticle = function () {
+        $scope.saveArticle = function(){
+            if(newArticle){
+                createArticle();
+            } else {
+                ArticleFactory.update(article).then(function(response){
+                    //Success
+                }, function(response){
+                    console.log(response);
+                });
+            }
+        };
+
+        var createArticle = function () {
             if (!$scope.article.title) {
                 //error
             } else if (!$scope.article.body) {
@@ -523,7 +552,6 @@ kordeCms.controller('EditArticleCtrl',
             } else {
                 ArticleFactory.create($scope.article).then(function (response) {
                     //Success
-                    $scope.articles.unshift(response.data);
                     $scope.article = {};
 
                 }, function (response) {
@@ -563,8 +591,26 @@ kordeCms.controller('EditArticleCtrl',
         }
 
         $scope.uploadImage = function () {
-
+            $scope.showImageUpload = true;
         }
+
+        $scope.closeImageUpload = function(){
+            $scope.showImageUpload = false;
+        }
+
+        $scope.upload = function (file) {
+            $scope.element.image_src = file;
+            PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
+                console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
+                $scope.showImageUpload = false;
+                $scope.element = response.data;
+            }, function (response) {
+                console.log('Error status: ' + response.status);
+            }, function (evt) {
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+            });
+        };
 
     }]);
 

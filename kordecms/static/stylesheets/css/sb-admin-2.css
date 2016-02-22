@@ -17,9 +17,8 @@ form.article {
     margin: 50px 0 0 0;
 }
 
-
 .feedback-label {
-    margin-bottom:20px;
+    margin-bottom: 20px;
     font-size: 18px;
     font-weight: 500;
     color: black;
@@ -47,12 +46,49 @@ form.article {
 }
 
 .image-upload {
-    float:  left;
-    margin-left:30px;
+    display: block;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    cursor: pointer;
 }
 
+#image-upload-modal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -300px;
+    margin-top: -200px;
+
+    width: 600px;
+    height: 400px;
+    opacity: 0.8;
+    background: gray;
+}
+
+.delete-button-article {
+    position: relative;
+    top: 10px;
+    right: -570px;
+    width: 30px;
+    height: auto;
+}
+
+.test-div {
+    background:blue;
+    width:500px;
+    height:300px;
+    position:absolute;
+    margin:50px;
+}
+
+.delete-button-article:hover {
+    cursor:pointer;
+}
+
+
 .text-area {
-    min-height:200px;
+    min-height: 200px;
 }
 
 .article-submit {
@@ -68,14 +104,14 @@ form.article {
     font-weight: 700;
     background: linear-gradient(to left, white 50%, #32ADA1 50%);
     background-size: 200% 100%;
-    background-position:right bottom;
+    background-position: right bottom;
     color: #32ADA1;
     border: 2px solid #32ADA1;
-    transition:all 0.5s ease;
+    transition: all 0.5s ease;
 }
 
 .article-submit:hover {
-    background-position:left bottom;
+    background-position: left bottom;
     border-radius: 5px;
     color: white;
     border: 2px solid #32ADA1;
@@ -146,47 +182,47 @@ i.add-icon:hover {
 }
 
 .article-wrapper {
-    display:inline-block;
+    display: inline-block;
     width: auto;
-    min-width:600px;
-    max-width:1000px;
+    min-width: 600px;
+    max-width: 1000px;
     padding: 20px;
     background-color: transparent;
     border-radius: 5px;
 }
 
 .article-wrapper-edit {
-    display:inline-block;
+    display: inline-block;
     width: auto;
-    min-width:600px;
-    max-width:1000px;
+    min-width: 600px;
+    max-width: 1000px;
     padding: 20px;
-    padding-top:0;
+    padding-top: 0;
     background-color: transparent;
     border-radius: 5px;
 }
 
 .hr {
-    padding:0;
-    margin:auto;
-    width:97%;
-    height:1px;
+    padding: 0;
+    margin: auto;
+    width: 97%;
+    height: 1px;
     background: lightgray;
 }
 
 .delete-button {
-    float:right;
+    float: right;
     display: none;
     position: relative;
     top: 20px;
     right: -20px;
-    width:30px;
-    height:auto;
+    width: 30px;
+    height: auto;
 }
 
-.article-wrapper:hover .delete-button{
-    display:block;
-    cursor:pointer;
+.article-wrapper:hover .delete-button {
+    display: block;
+    cursor: pointer;
 }
 
 .page-panel {
