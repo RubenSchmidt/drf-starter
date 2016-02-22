@@ -28,7 +28,7 @@
             <p> {{ user.last_login | date: "dd.MM.yyyy" }} </p>
         </div>
         <div class="col-md-1">
-            <button type="button" class="btn btn-danger">Slett</button>
+            <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)">Slett</button>
         </div>
         <div class="col-md-1">
             <button type="button" class="btn btn-primary">Endre</button>

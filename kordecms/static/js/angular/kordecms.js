@@ -708,8 +708,7 @@ kordeCms.controller('PageElementCtrl',
 
 
 kordeCms.controller('UsersCtrl',
-    ['$scope', 'UserFactory', function ($scope, UserFactory) {
-
+    ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
 
         $scope.getRole = function(user){
             if (user.is_staff){
@@ -718,6 +717,12 @@ kordeCms.controller('UsersCtrl',
             else{
                 return "Bruker";
             }
+        }
+
+        $scope.deleteUser = function(userId){
+            UserFactory.destroy(userId);
+            $scope.users = $filter('filter')($scope.users, {id: '!'+userId});
+
         }
 
         UserFactory.list().then(function (response) {
@@ -730,7 +735,7 @@ kordeCms.controller('UsersCtrl',
 
 
 kordeCms.controller('NewUserCtrl',
-      ['$scope', 'UserFactory', function ($scope, UserFactory) {
+      ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
         $scope.saveUser = function() {
             createUser()
         };
@@ -751,7 +756,7 @@ kordeCms.controller('NewUserCtrl',
                 }
                 UserFactory.create($scope.user).then(function (response) {
                     //Success
-
+                    $location.path('/users')
                 }, function (response) {
                     //error
                     console.log(response);
