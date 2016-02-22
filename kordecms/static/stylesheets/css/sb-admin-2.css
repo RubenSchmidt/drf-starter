@@ -325,6 +325,10 @@ i.add-icon:hover {
     margin: -13px 0 0 15px;
 }
 
+.navbar-default {
+    border:0;
+}
+
 .turqoise {
     background: #32ADA1;
 }

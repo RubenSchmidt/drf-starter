@@ -1,0 +1,7 @@
+
+
+@mixin has-background-image() {
+  display: inline-block;
+  background-position: center center;
+  background-size: cover;
+}
