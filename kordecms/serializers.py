@@ -3,6 +3,13 @@ from kordecms.models import Page, Article, ArticleComment, PageElement, ArticleE
 from django.contrib.auth.models import User
 
 
+class PageElementSerializer(serializers.ModelSerializer):
+    image_url = serializers.ReadOnlyField()
+
+    class Meta:
+        model = PageElement
+
+
 class PageSerializer(serializers.ModelSerializer):
     elements = PageElementSerializer(many=True, read_only=True)
     thumbnail_url = serializers.ReadOnlyField()
@@ -21,17 +28,9 @@ class PageSerializer(serializers.ModelSerializer):
         return page
 
 
-class PageElementSerializer(serializers.ModelSerializer):
-    image_url = serializers.ReadOnlyField()
-
-    class Meta:
-        model = PageElement
-
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-
 
 
 class ArticleElementSerializer(serializers.ModelSerializer):
@@ -63,5 +62,3 @@ class ArticleSerializer(serializers.ModelSerializer):
 class ArticleCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleComment
-
-

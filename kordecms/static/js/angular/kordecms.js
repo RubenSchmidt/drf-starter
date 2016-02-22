@@ -731,6 +731,7 @@ kordeCms.controller('UsersCtrl',
 
 kordeCms.controller('NewUserCtrl',
       ['$scope', 'UserFactory', function ($scope, UserFactory) {
+
         $scope.saveUser = function() {
             createUser()
         };
