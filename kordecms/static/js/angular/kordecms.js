@@ -130,7 +130,7 @@ kordeCms.factory('PageFactory',
             return $http.delete('/pages/' + pageslug)
         }
     }]);
-kordeCms.factory('UserFactory',
+    kordeCms.factory('UserFactory',
     ['$http', 'apiUrl', function ($http, apiUrl) {
         var endpoint = apiUrl + '/users';
         return ({
@@ -728,37 +728,38 @@ kordeCms.controller('UsersCtrl',
         });
     }]);
 
-kordeCms.controller('NewUserCtrl'
-      ['$scope', 'UserFactory', function ($scope, UserFactory) {
 
+kordeCms.controller('NewUserCtrl',
+      ['$scope', 'UserFactory', function ($scope, UserFactory) {
+        $scope.saveUser = function() {
+            createUser()
+        };
         var createUser = function () {
-            if (!$scope.horizontal-form.username) {
+            if (!$scope.user.username) {
                 //error
-            } else if (!$scope.horizontal-form.email) {
+            } else if (!$scope.user.email) {
                 //error
-            } else if (!$scope.horizontal-form.first_name) {
+            } else if (!$scope.user.first_name) {
                 //error
-            } else if (!$scope.horizontal-form.last_name) {
+            } else if (!$scope.user.last_name) {
                 //error
 
             } else {
-                ArticleFactory.create($scope.article).then(function (response) {
+                if($scope.user.is_staff == "admin")
+                {
+                    $scope.user.is_staff = true
+                }
+                UserFactory.create($scope.user).then(function (response) {
                     //Success
-                    $scope.article = {};
 
                 }, function (response) {
                     //error
                     console.log(response);
+                    $scope.errors = response.data;
                 });
             }
 
         };
 
-
-        /*UserFactory.list().then(function (response) {
-            //Success
-            $scope.users = response.data;
-        }, function (response) {
-            //Error
-        });*/
     }]);
+
