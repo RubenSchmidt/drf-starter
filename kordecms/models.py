@@ -4,6 +4,22 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 from taggit.managers import TaggableManager
 
+# Enum used for page and article elements
+TYPE_IMAGE = 0
+TYPE_TEXT = 1
+ELEMENT_TYPE_CHOICES = (
+    (TYPE_IMAGE, _('Image element')),
+    (TYPE_TEXT, _('Text element'))
+)
+
+# Enum used with article elements.
+ELEMENT_HALF = 0
+ELEMENT_FULL = 1
+ELEMENT_WIDTH_CHOICES = (
+    (ELEMENT_FULL, _('Full element')),
+    (ELEMENT_HALF, _('Half element'))
+)
+
 
 class KordeEditableModel(models.Model):
     class_type = models.CharField(
@@ -70,13 +86,6 @@ class Page(models.Model):
 
 
 class PageElement(KordeEditableModel):
-    TYPE_IMAGE = 0
-    TYPE_TEXT = 1
-    TYPE_CHOICES = (
-        (TYPE_IMAGE, _('Image element')),
-        (TYPE_TEXT, _('Text element'))
-    )
-
     row = models.IntegerField(
         verbose_name=_('row')
     )
@@ -125,12 +134,9 @@ class PageElement(KordeEditableModel):
 
 class Article(KordeEditableModel):
     """
-    Article model for korde CMS.
+    Article model. Contains no paragraphs or images. Only Meta info about article
     """
-    body = models.TextField(
-        blank=True,
-        verbose_name=_('text'))
-
+    # TODO use signals to notify the article model of the child elements on post_save to update last_updated
     title = models.TextField(
         blank=True,
         verbose_name=_('title'))
@@ -173,7 +179,6 @@ class Article(KordeEditableModel):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.author_name = '{} {}'.format(self.author.first_name, self.author.last_name)
         if len(self.tag_string) > 0:
             tag_list = self.tag_string.split(',')
             for tag_name in tag_list:
@@ -189,9 +194,46 @@ class Article(KordeEditableModel):
         return ArticleComment.objects.filter(article=self).count()
 
 
+class ArticleElement(models.Model):
+    """
+    Article element.
+    Can either be image or text.
+    Can either be half or full.
+    Both text and image can be null, but one of them should be set accordingly.
+    """
+    # TODO implement check on save for existance of text or image if text or image element is chosen
+    article = models.ForeignKey(
+        Article,
+        verbose_name=_('Parent article'),
+        on_delete=models.CASCADE,
+    )
+
+    # Either image or text
+    type = models.IntegerField(
+        verbose_name=_('Element type'),
+        choices=ELEMENT_TYPE_CHOICES)
+
+    # Either half or full
+    width_type = models.IntegerField(
+        verbose_name=_('Element width type'),
+        choices=ELEMENT_WIDTH_CHOICES
+    )
+
+    text = models.TextField(
+        verbose_name=_('article paragraph'),
+        blank=True
+    )
+
+    image_src = models.ImageField(
+        verbose_name=_('article image'),
+        upload_to='articleimages/%Y/%m/%d/',
+        null=True,
+        blank=True)
+
+
 class ArticleComment(models.Model):
     """
-    Article comments for korde CMS
+    Article comments, made by other users
     """
     text = models.TextField(
         blank=True,
@@ -215,21 +257,3 @@ class ArticleComment(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.id, self.article)
-
-
-class ArticleImage(models.Model):
-    """
-    Article image, related with an article.
-    """
-
-    article = models.ForeignKey(
-        Article,
-        on_delete=models.SET_NULL,
-        verbose_name=_('article'),
-        null=True)
-
-    src = models.ImageField(
-        verbose_name=_('article image'),
-        upload_to='articleimages/%Y/%m/%d/')
-    # Tags, example image.tags.add("red", "green", "delicious")
-    tags = TaggableManager()
