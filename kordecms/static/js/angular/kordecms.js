@@ -500,6 +500,11 @@ kordeCms.controller('DashboardCtrl',
 kordeCms.controller('ArticlesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
         $scope.editorMode = true;
+
+        $scope.publishedText = function(article){
+            return article.isPublished ? "Publisert" : "Ikke publisert";
+        }
+
         ArticleFactory.list().then(function (response) {
             //Success
             $scope.articles = response.data;
@@ -516,6 +521,10 @@ kordeCms.controller('EditArticleCtrl',
         $scope.article = {};
         var isNew = true;
 
+        $scope.thumbnailUploaded = function(){
+            return $scope.article.thumbnail_image_src;
+        }
+
         ArticleFactory.get($routeParams.articleId).then(function (response) {
             //Success
             $scope.article = response.data;
@@ -523,7 +532,15 @@ kordeCms.controller('EditArticleCtrl',
             console.log(response.data);
         }, function (response) {
             //Error
-            $scope.article = {};
+            $scope.article = {
+                title: "Tittel...",
+                author_name: "Ole Nordviste",
+                created_at: Date.now(),
+                body: "Brødtekst...",
+                isPublished: "Ikke publisert",
+                thumbnail_image_src: "",
+                elements: [],
+            };
             isNew = true;
             console.log("No article found");
         });
@@ -535,6 +552,10 @@ kordeCms.controller('EditArticleCtrl',
         $scope.articleHasTags = function (article) {
             return article.tag_string.length > 0;
         };
+
+        $scope.addArticleElement = function(){
+            $scope.article.elements.push({ body: "EN GAY TEKST" });
+        }
 
         $scope.saveArticle = function(){
             if(newArticle){
@@ -594,16 +615,9 @@ kordeCms.controller('EditArticleCtrl',
             });
         }
 
-        $scope.uploadImage = function () {
-            $scope.showImageUpload = true;
-        }
-
-        $scope.closeImageUpload = function(){
-            $scope.showImageUpload = false;
-        }
-
         $scope.upload = function (file) {
-            $scope.element.image_src = file;
+            $scope.article.thumbnail_image_src = file;
+            console.log(file);
             PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
                 console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
                 $scope.showImageUpload = false;
