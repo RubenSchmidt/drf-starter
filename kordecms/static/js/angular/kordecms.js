@@ -13,6 +13,10 @@ kordeCms.config(function ($routeProvider) {
             controller: 'EditArticleCtrl',
             templateUrl: '/static/partials/edit-article.html'
         })
+        .when('/users/:userId', {
+            controller: 'EditUserCtrl',
+            templateUrl: '/static/partials/edit-user.html'
+        })
         .when('/users', {
             controller: 'UsersCtrl',
             templateUrl: '/static/partials/users.html'
@@ -710,6 +714,8 @@ kordeCms.controller('PageElementCtrl',
 kordeCms.controller('UsersCtrl',
     ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
 
+
+
         $scope.getRole = function(user){
             if (user.is_staff){
                 return "Admin";
@@ -731,6 +737,50 @@ kordeCms.controller('UsersCtrl',
         }, function (response) {
             //Error
         });
+    }]);
+
+kordeCms.controller('EditUserCtrl',
+    ['$scope', '$routeParams', '$location',  'UserFactory',  function ($scope, $routeParams, $location, UserFactory) {
+        console.log($routeParams.userId);
+
+        UserFactory.get($routeParams.userId).then(function (response) {
+            //Success
+            $scope.user = response.data;
+        }, function (response) {
+            //Error
+        });
+
+        $scope.updateUser = function(){
+            updateUser()
+        }
+
+        var updateUser = function(){
+            if (!$scope.user.username) {
+                //error
+            } else if (!$scope.user.email) {
+                //error
+            } else if (!$scope.user.first_name) {
+                //error
+            } else if (!$scope.user.last_name) {
+                //error
+
+            } else {
+                console.log($scope.user.is_staff)
+                if($scope.user.is_staff == true)
+                {
+                    $scope.user.is_staff = true
+                }
+                UserFactory.update($scope.user).then(function (response) {
+                    //Success
+                    $location.path('/users')
+                }, function (response) {
+                    //error
+                    console.log(response);
+                    $scope.errors = response.data;
+                });
+            }
+
+        }
     }]);
 
 

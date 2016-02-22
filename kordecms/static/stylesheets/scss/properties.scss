@@ -14,7 +14,7 @@ Created by Valdemar Rolfsen 2016
 // --------------------
 
 @for $i from 0 to 10 {
-  @for $j from 1 to 10 {
+  @for $j from 0 to 10 {
     .p-#{$i*10}-#{$j*10} {
       padding: #{$i*10}px #{$j*10}px;
     }
@@ -25,7 +25,7 @@ Created by Valdemar Rolfsen 2016
 // --------------------
 
 @for $i from 0 to 10 {
-  @for $j from 1 to 10 {
+  @for $j from 0 to 10 {
     .m-#{$i*10}-#{$j*10} {
       margin: #{$i*10}px #{$j*10}px;
     }

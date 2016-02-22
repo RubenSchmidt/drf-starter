@@ -95,7 +95,6 @@ def get_page_elements_sorted(request, slug):
     return Response(data=rows, status=status.HTTP_200_OK)
 
 
-
 class UserList(generics.ListCreateAPIView):
     model = User
     queryset = User.objects.all()
