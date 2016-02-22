@@ -103,7 +103,7 @@ class PageElement(KordeEditableModel):
 
     type = models.IntegerField(
         verbose_name=_('Element type'),
-        choices=TYPE_CHOICES)
+        choices=ELEMENT_TYPE_CHOICES)
 
     body = models.TextField(
         verbose_name=_('Element text'),
