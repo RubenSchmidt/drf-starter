@@ -99,7 +99,8 @@ class PageElement(KordeEditableModel):
     page = models.ForeignKey(
         Page,
         on_delete=models.CASCADE,
-        verbose_name=_('Parent page'))
+        verbose_name=_('Parent page'),
+        related_name='elements')
 
     type = models.IntegerField(
         verbose_name=_('Element type'),

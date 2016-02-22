@@ -4,10 +4,21 @@ from django.contrib.auth.models import User
 
 
 class PageSerializer(serializers.ModelSerializer):
+    elements = PageElementSerializer(many=True, read_only=True)
     thumbnail_url = serializers.ReadOnlyField()
 
     class Meta:
         model = Page
+
+    def create(self, validated_data):
+        """
+        Pops the element array and saves all of the elements individually.
+        """
+        elements_data = validated_data.pop('elements')
+        page = Page.objects.create(**validated_data)
+        for element_data in elements_data:
+            PageElement.objects.create(page=page, **element_data)
+        return page
 
 
 class PageElementSerializer(serializers.ModelSerializer):
@@ -37,6 +48,16 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('id', 'author', 'elements')
+
+    def create(self, validated_data):
+        """
+        Pops the element array and saves all of the elements individually.
+        """
+        elements_data = validated_data.pop('elements')
+        article = Article.objects.create(**validated_data)
+        for element_data in elements_data:
+            ArticleElement.objects.create(article=article, **element_data)
+        return article
 
 
 class ArticleCommentSerializer(serializers.ModelSerializer):
