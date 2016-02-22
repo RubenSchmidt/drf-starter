@@ -691,6 +691,10 @@ kordeCms.controller('PageElementCtrl',
 
 kordeCms.controller('UsersCtrl',
     ['$scope', 'UserFactory', function ($scope, UserFactory) {
+
+
+
+
         UserFactory.list().then(function (response) {
             //Success
             $scope.users = response.data;
