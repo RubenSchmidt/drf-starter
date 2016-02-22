@@ -206,6 +206,7 @@ class ArticleElement(models.Model):
         Article,
         verbose_name=_('Parent article'),
         on_delete=models.CASCADE,
+        related_name='elements'
     )
 
     # Either image or text

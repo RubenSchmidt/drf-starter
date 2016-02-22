@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
-from kordecms.models import Page, Article, ArticleComment, PageElement
+from kordecms.models import Page, Article, ArticleComment, PageElement, ArticleElement
 from kordecms.permissions import ArticleAuthorCanEditPermission, SafeMethodsOnlyPermission
 from kordecms.serializers import ArticleSerializer, ArticleCommentSerializer, UserSerializer, PageSerializer, \
-    PageElementSerializer
+    PageElementSerializer, ArticleElementSerializer
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import permissions, generics, status
 from rest_framework.decorators import api_view
@@ -122,7 +122,7 @@ class ArticleMixin(object):
         ArticleAuthorCanEditPermission
     ]
 
-    def perform_create(self, serializer ):
+    def perform_create(self, serializer):
         """Force author to the current user on save"""
         serializer.save(author=self.request.user)
 
@@ -133,6 +133,19 @@ class ArticleList(ArticleMixin, generics.ListCreateAPIView):
 
 class ArticleDetail(ArticleMixin, generics.RetrieveUpdateDestroyAPIView):
     pass
+
+
+class ArticleElementList(generics.ListCreateAPIView):
+    model = ArticleElement
+    queryset = ArticleElement.objects.all()
+    serializer_class = ArticleElementSerializer
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def get_queryset(self):
+        queryset = super(ArticleElementList, self).get_queryset()
+        return queryset.filter(article_id=self.kwargs.get('article_id'))
 
 
 class UserArticleList(generics.ListAPIView):
