@@ -142,7 +142,9 @@ kordeCms.factory('UserFactory',
             list: list,
             create: create,
             update: update,
-            destroy: destroy
+            destroy: destroy,
+            currentUser: currentUser,
+            updatePassword: updatePassword
         });
 
         function get(id) {
@@ -160,9 +162,16 @@ kordeCms.factory('UserFactory',
         function update(user) {
             return $http.put(endpoint + '/' + user.id, user)
         }
+        function updatePassword(user){
+            return $http.put(endpoint+'/'+ user.id, user)
+        }
 
         function destroy(id) {
             return $http.delete(endpoint + '/' + id)
+        }
+
+        function currentUser(){
+            return $http.get(endpoint+'/current-user')
         }
     }]);
 
@@ -814,7 +823,7 @@ kordeCms.controller('PageElementCtrl',
 
 kordeCms.controller('UsersCtrl',
     ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
-        
+
         $scope.getRole = function (user) {
             if (user.is_superuser) {
                 return "Admin";
@@ -825,10 +834,26 @@ kordeCms.controller('UsersCtrl',
         }
 
         $scope.deleteUser = function(userId){
-            UserFactory.destroy(userId);
-            $scope.users = $filter('filter')($scope.users, {id: '!'+userId});
-
+            if(UserFactory.destroy(userId)){
+                $scope.users = $filter('filter')($scope.users, {id: '!'+userId});
+            }
+            else{
+                //error - could not delete user
+            }
         }
+        $scope.canEditUser = function(user){
+            return (user.id == $scope.currentUser.id || $scope.currentUser.is_superuser)
+        }
+
+        $scope.canDeleteUser = function(user){
+            return (user.id != $scope.currentUser.id && $scope.currentUser.is_superuser)
+        }
+
+        UserFactory.currentUser().then(function success (response) {
+            $scope.currentUser = response.data;
+        }, function(response) {
+            //Error
+        });
 
         UserFactory.list().then(function (response) {
             //Success
@@ -836,11 +861,12 @@ kordeCms.controller('UsersCtrl',
         }, function (response) {
             //Error
         });
+
+
     }]);
 
 kordeCms.controller('EditUserCtrl',
-    ['$scope', '$routeParams', '$location',  'UserFactory',  function ($scope, $routeParams, $location, UserFactory) {
-        console.log($routeParams.userId);
+    ['$scope', '$routeParams', '$location', '$http', 'AuthService', 'UserFactory',  function ($scope, $routeParams, $location, $http, AuthService, UserFactory) {
 
         UserFactory.get($routeParams.userId).then(function (response) {
             //Success
@@ -848,6 +874,22 @@ kordeCms.controller('EditUserCtrl',
         }, function (response) {
             //Error
         });
+
+        UserFactory.currentUser().then(function success (response) {
+            $scope.currentUser = response.data;
+        }, function(response) {
+            //Error
+        });
+
+
+        $scope.canEditUser = function(user){
+            return (user.id == $scope.currentUser.id || $scope.currentUser.is_superuser)
+        }
+
+        $scope.canChangeRole = function(user){
+            return (user.id != $scope.currentUser.id && $scope.currentUser.is_superuser)
+        }
+
 
         $scope.updateUser = function(){
             updateUser()
@@ -867,6 +909,43 @@ kordeCms.controller('EditUserCtrl',
                 $scope.errors = {username: ["Dette feltet er påkrevd"], password: ["Dette feltet er påkrevd"]}
             }
         };
+
+
+        $scope.password = {old_password: "", new_password_1  : "", new_password_2 : ""}
+
+        $scope.updatePassword = function(){
+            updatePassword()
+        }
+
+
+        var updatePassword = function(){
+             if($scope.password.new_password_1 == $scope.password.new_password_2) {
+                 //New passwords match
+                 $http.post('/api/api-token-auth/', {username: $scope.user.username, password: $scope.password.old_password}).then(function (response) {
+                        //Old password correct
+                            if (response.status === 200 && response.data.token) {
+                                $scope.user.password = $scope.password.new_password_2;
+                                //Set new password to given new password
+                                UserFactory.updatePassword($scope.user).then(function (response) {
+                                    //Success - password updated
+                                    $location.path('/users')
+                                }, function (response) {
+                                    //error - could not set user password to given passord
+                                    $scope.errors = response.data;
+                                    console.log($scope.errors);
+                                });
+                            }
+                        }, function (response) {
+                            //Handle error
+                            $scope.errors = response.data;
+                            console.log(response.data);
+                            });
+             }
+             else{
+                $scope.errors = {newPassword: ["Forskjellig passord oppgitt"]}
+             }
+        };
+
     }]);
 
 
@@ -876,6 +955,8 @@ kordeCms.controller('NewUserCtrl',
         $scope.saveUser = function() {
             createUser()
         };
+
+        /*$scope.user.is_superuser = false;*/
         var createUser = function () {
             if ($scope.user){
                 $scope.user.is_staff = true;

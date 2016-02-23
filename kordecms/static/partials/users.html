@@ -29,15 +29,15 @@
                 <p> {{ user.last_login | date: "dd.MM.yyyy" }} </p>
             </div>
             <div class="col-md-1">
-                <button type="button" class="btn btn-danger" ng-click="deleteUser(user.id)">Slett</button>
+                <button type="button" class="btn btn-danger" ng-if="canDeleteUser(user)" ng-click="deleteUser(user.id)">Slett</button>
             </div>
             <div class="col-md-1">
                 <a href="#/users/{{user.id}}">
-                    <button type="button" class="btn btn-primary">Endre</button>
+                    <button type="button"  class="btn btn-primary" ng-if="canEditUser(user)">Endre</button>
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-if="currentUser.is_superuser">
             <div class="col-md-12 ">
                 <a href="#/new-user">
                     <button type="button" class="btn btn-success center-block">Legg til ny bruker</button>

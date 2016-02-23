@@ -196,3 +196,9 @@ def article_count(request):
         'article_count_p': article_count_p,
         'article_count_u': article_count_u
     })
+
+
+@api_view(['GET'])
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)

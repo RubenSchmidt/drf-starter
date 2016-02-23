@@ -6,7 +6,7 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <form ng-submit="updateUser()" class="form-horizontal user">
+        <form ng-submit="updateUser()" class="form-horizontal user" ng-if="canEditUser(user)">
             <div class="row">
                 <h3>Rediger brukerinformasjon</h3>
             </div>
@@ -17,7 +17,8 @@
                         </div>
                         <div class="col-md-6">
                             <p ng-if="errors.username">{{ errors.username[0] }}</p>
-                            <input id="username" name="username" type="text" value="Brukernavn" class="korde-very-thin contact-field" ng-model="user.username">
+                            <p>{{ user.username }}</p>
+                            <!-- <input id="username" name="username" type="text" value="Brukernavn" class="korde-very-thin contact-field" ng-model="user.username"> -->
                         </div>
                     </div>
                     <div class="form-group ">
@@ -46,7 +47,7 @@
                             <input id="lastname" name="last_name" type="text" placeholder="Etternavn" class="korde-very-thin contact-field" ng-model="user.last_name">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" ng-if="canChangeRole(user)">
                         <div class="col-md-1">
                             <p>Rolle</p>
                         </div>
@@ -68,7 +69,7 @@
 
                 </fieldset>
             </form>
-        <form ng-submit="saveUser()" class="form-horizontal user">
+        <form ng-submit="updatePassword()" class="form-horizontal user" ng-if="canEditUser(user)">
             <div class="row">
                 <h3>Rediger passord</h3>
             </div>
@@ -78,8 +79,8 @@
                             <p>Gammelt passord</p>
                         </div>
                         <div class="col-md-6">
-                            <p ng-if="errors.username">{{ errors.username[0] }}</p>
-                            <input id="username" name="username" type="text" placeholder="Gammelt passord" class="korde-very-thin contact-field">
+                            <p ng-if="errors.non_field_errors">Feil passord oppgitt</p>
+                            <input id="old-password" name="old-password" type="password" placeholder="Gammelt passord" class="korde-very-thin contact-field" ng-model="password.old_password">
                         </div>
                     </div>
                     <div class="form-group ">
@@ -87,7 +88,8 @@
                             <p>Nytt passord</p>
                         </div>
                         <div class="col-md-10">
-                            <input id="email" name="email" type="text" placeholder="Nytt passord" class="korde-very-thin contact-field" >
+                             <p ng-if="errors.password">{{ errors.password[0] }}</p>
+                            <input id="new_password_1" name="new_password_1" type="password" placeholder="Nytt passord" class="korde-very-thin contact-field" ng-model="password.new_password_1">
                         </div>
                     </div>
 
@@ -96,7 +98,8 @@
                             <p>Gjenta nytt passord</p>
                         </div>
                         <div class="col-md-10">
-                            <input id="firstname" name="first_name" type="text" placeholder="Nytt passord" class="korde-very-thin contact-field" >
+                            <p ng-if="errors.newPassword">{{ errors.newPassword[0] }}</p>
+                            <input id="new_password_2" name="new_password_2" type="password" placeholder="Gjenta passord" class="korde-very-thin contact-field" ng-model="password.new_password_2">
                         </div>
                     </div>
 

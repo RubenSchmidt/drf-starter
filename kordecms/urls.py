@@ -17,9 +17,11 @@ urlpatterns = [
     url(r'^pages/(?P<slug>[-_\w]+)/elements$', views.get_page_elements_sorted, name='page-element-sorted'),
     url(r'^pageelements/(?P<pk>\d+)$', views.PageElementDetail.as_view(), name='page-element-detail'),
 
+
     url(r'^users$', views.UserList.as_view(), name='user-list'),
     url(r'^users/(?P<pk>\d+)$', views.UserDetail.as_view(), name='user-detail'),
     url(r'^users/(?P<pk>\d+)/articles$', views.UserArticleList.as_view(), name='user-articles-list'),
+    url(r'^users/current-user$', views.current_user, name='current-user'),
 
     url(r'^articles$', views.ArticleList.as_view(), name='article-list'),
     url(r'^articles/(?P<pk>\d+)$', views.ArticleDetail.as_view(), name='article-detail'),
