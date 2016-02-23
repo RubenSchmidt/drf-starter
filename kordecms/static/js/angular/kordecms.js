@@ -765,11 +765,13 @@ kordeCms.controller('EditUserCtrl',
                 //error
 
             } else {
-                console.log($scope.user.is_staff)
-                if($scope.user.is_staff == true)
+                if($scope.user.is_staff == "admin")
                 {
                     $scope.user.is_staff = true
+                } else {
+                    $scope.user.is_staff = false
                 }
+
                 UserFactory.update($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')

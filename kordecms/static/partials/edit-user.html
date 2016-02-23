@@ -52,10 +52,10 @@
                     <div class="col-md-2 checkbox">
 
                         <div class="col-md-6">
-                            <label><input type="radio" name="has_role" value="user" ng-model="is_staff" value=false>Bruker</label>
+                            <label><input type="radio" name="has_role" value="user">Bruker</label>
                         </div>
                         <div class="col-md-6">
-                            <label><input type="radio" name="has_role" value="admin" ng-model="is_staff" value=true >Admin</label>
+                            <label><input type="radio" name="has_role" value="admin" ng-model="user.is_staff">Admin</label>
                         </div>
                     </div>
                 </div>
@@ -65,6 +65,7 @@
                         <button class="btn btn-primary">Oppdater bruker</button>
                     </div>
                 </div>
+
             </fieldset>
         </form>
     <form ng-submit="saveUser()" class="form-horizontal user">
