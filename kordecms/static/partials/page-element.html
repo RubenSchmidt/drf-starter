@@ -8,8 +8,8 @@
             <div class="p-10-0 t-center" >
                 <img class="h-300" ng-src="{{ element.image_url }}" alt="Element image">
             </div>
-            <div class="image-drop-area" ngf-drop="upload($file)">
-                <div class="upload-button" ngf-select="upload($file)">
+            <div class="image-drop-area" ngf-drop="setFile($file)">
+                <div class="upload-button" ngf-select="setFile($file)">
                     <p>Last opp bilde</p>
                 </div>
                 <h4 class="upload-text">
@@ -26,8 +26,10 @@
         </div>
 
         <div class="p-20-0 w-600 block-center t-center">
-            <button class="button-no-bg-confirm m-10-20 w-250">Save</button>
-            <button class="button-no-bg-decline m-10-20 w-250">Discard</button>
+            <button class="button-no-bg-confirm m-10-20 w-250" ng-click="updateElement(file)">Lagre</button>
+            <a ng-href="#/pages">
+                <button class="button-no-bg-decline m-10-20 w-250">Tilbake</button>
+            </a>
         </div>
     </div>
 </div>

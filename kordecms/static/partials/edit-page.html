@@ -10,7 +10,7 @@
                     <div class="p-10-20 t-very-thin">
                         <div class="content-box-image h-100" ng-style="{'background-image':'url({{element.image_url}})'}"
                              ng-if="element.type == 0"></div>
-                        <div class="font-size-20" ng-if="element.type == 1">
+                        <div class="font-size-20" ng-bind-html="element.body" ng-if="element.type == 1">
                             {{ element.body }}
                         </div>
                     </div>

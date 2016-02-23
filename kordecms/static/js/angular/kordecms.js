@@ -75,7 +75,7 @@ kordeCms.factory('PageElementFactory',
         }
 
         function update(element) {
-            return $http.put(endpoint + '/' + id, element)
+            return $http.put(endpoint + '/' + element.id, element)
         }
 
         function updateImageElement(element, file) {
@@ -134,7 +134,7 @@ kordeCms.factory('PageFactory',
             return $http.delete('/pages/' + pageslug)
         }
     }]);
-    kordeCms.factory('UserFactory',
+kordeCms.factory('UserFactory',
     ['$http', 'apiUrl', function ($http, apiUrl) {
         var endpoint = apiUrl + '/users';
         return ({
@@ -472,6 +472,7 @@ kordeCms.controller('PagesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', function ($scope, PageFactory, ArticleFactory, UserFactory) {
         PageFactory.list().then(function (response) {
             //Success
+            console.log(response.data);
             $scope.pages = response.data;
 
         }, function (response) {
@@ -771,12 +772,32 @@ kordeCms.controller('PageElementCtrl',
             //Error
         });
 
+        $scope.updateElement = function () {
+
+            if ($scope.file) {
+                // Uploads file
+                upload($scope.file);
+            } else {
+                // Updates text
+                PageElementFactory.update($scope.element).then(function success(response) {
+                    console.log("Updated");
+                }, function error(response) {
+                    console.log(response);
+                    console.log("Error when update");
+                })
+            }
+        }
+
+        $scope.setFile = function(file) {
+            $scope.file = file;
+        }
+
         // Function that checks the type of element
         $scope.checkType = function (check, answer) {
             return check === answer
         }
 
-        $scope.upload = function (file) {
+        var upload = function (file) {
             $scope.element.image_src = file;
             PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
                 console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
@@ -792,8 +813,7 @@ kordeCms.controller('PageElementCtrl',
 
 
 kordeCms.controller('UsersCtrl',
-    ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
-
+    ['$scope', '$filter', 'UserFactory', function ($scope, $filter, UserFactory) {
 
 
         $scope.getRole = function (user) {
@@ -805,9 +825,9 @@ kordeCms.controller('UsersCtrl',
             }
         }
 
-        $scope.deleteUser = function(userId){
+        $scope.deleteUser = function (userId) {
             UserFactory.destroy(userId);
-            $scope.users = $filter('filter')($scope.users, {id: '!'+userId});
+            $scope.users = $filter('filter')($scope.users, {id: '!' + userId});
 
         }
 
@@ -820,7 +840,7 @@ kordeCms.controller('UsersCtrl',
     }]);
 
 kordeCms.controller('EditUserCtrl',
-    ['$scope', '$routeParams', '$location',  'UserFactory',  function ($scope, $routeParams, $location, UserFactory) {
+    ['$scope', '$routeParams', '$location', 'UserFactory', function ($scope, $routeParams, $location, UserFactory) {
         console.log($routeParams.userId);
 
         UserFactory.get($routeParams.userId).then(function (response) {
@@ -830,11 +850,11 @@ kordeCms.controller('EditUserCtrl',
             //Error
         });
 
-        $scope.updateUser = function(){
+        $scope.updateUser = function () {
             updateUser()
         }
 
-        var updateUser = function(){
+        var updateUser = function () {
             if (!$scope.user.username) {
                 //error
             } else if (!$scope.user.email) {
@@ -846,11 +866,10 @@ kordeCms.controller('EditUserCtrl',
 
             } else {
                 $scope.user.is_staff = true
-                if($scope.user.is_superuser == "admin")
-                {
+                if ($scope.user.is_superuser == "admin") {
                     $scope.user.is_superuser = true
                 } else {
-                    $scope.user.is_superuser= false
+                    $scope.user.is_superuser = false
                 }
 
                 UserFactory.update($scope.user).then(function (response) {
@@ -867,8 +886,8 @@ kordeCms.controller('EditUserCtrl',
 
 
 kordeCms.controller('NewUserCtrl',
-      ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
-        $scope.saveUser = function() {
+    ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
+        $scope.saveUser = function () {
             createUser()
         };
         var createUser = function () {
@@ -885,11 +904,10 @@ kordeCms.controller('NewUserCtrl',
                 $scope.user.is_staff = true
 
                 // If user has checked "admin"-box
-                if($scope.user.is_superuser == "admin")
-                {
+                if ($scope.user.is_superuser == "admin") {
                     $scope.user.is_superuser = true
                 } else {
-                    $scope.user.is_superuser= false
+                    $scope.user.is_superuser = false
                 }
 
                 UserFactory.create($scope.user).then(function (response) {
