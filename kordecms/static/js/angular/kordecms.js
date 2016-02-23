@@ -770,7 +770,7 @@ kordeCms.controller('UsersCtrl',
 
 
         $scope.getRole = function (user) {
-            if (user.is_staff) {
+            if (user.is_superuser) {
                 return "Admin";
             }
             else {
@@ -818,11 +818,12 @@ kordeCms.controller('EditUserCtrl',
                 //error
 
             } else {
-                if($scope.user.is_staff == "admin")
+                $scope.user.is_staff = true
+                if($scope.user.is_superuser == "admin")
                 {
-                    $scope.user.is_staff = true
+                    $scope.user.is_superuser = true
                 } else {
-                    $scope.user.is_staff = false
+                    $scope.user.is_superuser= false
                 }
 
                 UserFactory.update($scope.user).then(function (response) {
@@ -830,7 +831,6 @@ kordeCms.controller('EditUserCtrl',
                     $location.path('/users')
                 }, function (response) {
                     //error
-                    console.log(response);
                     $scope.errors = response.data;
                 });
             }
@@ -855,10 +855,16 @@ kordeCms.controller('NewUserCtrl',
                 //error
 
             } else {
-                if($scope.user.is_staff == "admin")
+                $scope.user.is_staff = true
+
+                // If user has checked "admin"-box
+                if($scope.user.is_superuser == "admin")
                 {
-                    $scope.user.is_staff = true
+                    $scope.user.is_superuser = true
+                } else {
+                    $scope.user.is_superuser= false
                 }
+
                 UserFactory.create($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')
