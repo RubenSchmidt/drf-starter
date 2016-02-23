@@ -29,6 +29,12 @@ p.big {
 .t-center {
   text-align: center; }
 
+.t-left {
+  text-align: left; }
+
+.t-right {
+  text-align: right; }
+
 @media (min-width: 768px) {
   .font-size-14 {
     font-size: 14px; } }

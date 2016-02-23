@@ -1,7 +1,25 @@
+/* --------------------
 
+KORDE MIXINS
+
+Created by Valdemar Rolfsen 2016
+
+-------------------- */
+
+// Background
+// --------------------
 
 @mixin has-background-image() {
   display: inline-block;
   background-position: center center;
   background-size: cover;
+}
+
+// Shapes
+// --------------------
+
+@mixin circle($diameter) {
+  height: $diameter;
+  width: $diameter;
+  border-radius: 100%;
 }
