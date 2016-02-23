@@ -830,24 +830,7 @@ kordeCms.controller('EditUserCtrl',
         }
 
         var updateUser = function(){
-            if (!$scope.user.username) {
-                //error
-            } else if (!$scope.user.email) {
-                //error
-            } else if (!$scope.user.first_name) {
-                //error
-            } else if (!$scope.user.last_name) {
-                //error
-
-            } else {
-                $scope.user.is_staff = true
-                if($scope.user.is_superuser == "admin")
-                {
-                    $scope.user.is_superuser = true
-                } else {
-                    $scope.user.is_superuser= false
-                }
-
+            if($scope.user){
                 UserFactory.update($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')
@@ -856,8 +839,10 @@ kordeCms.controller('EditUserCtrl',
                     $scope.errors = response.data;
                 });
             }
-
-        }
+            else{
+                $scope.errors = {username: ["Dette feltet er påkrevd"], password: ["Dette feltet er påkrevd"]}
+            }
+        };
     }]);
 
 
@@ -867,35 +852,19 @@ kordeCms.controller('NewUserCtrl',
             createUser()
         };
         var createUser = function () {
-            if (!$scope.user.username) {
-                //error
-            } else if (!$scope.user.email) {
-                //error
-            } else if (!$scope.user.first_name) {
-                //error
-            } else if (!$scope.user.last_name) {
-                //error
-
-            } else {
+            if ($scope.user){
                 $scope.user.is_staff = true
-
-                // If user has checked "admin"-box
-                if($scope.user.is_superuser == "admin")
-                {
-                    $scope.user.is_superuser = true
-                } else {
-                    $scope.user.is_superuser= false
-                }
-
                 UserFactory.create($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')
                 }, function (response) {
                     //error
-                    console.log(response);
                     $scope.errors = response.data;
                 });
             }
-        };
+            else{
+                $scope.errors = {username: ["Dette feltet er påkrevd"], password: ["Dette feltet er påkrevd"]}
+            }
+        }
     }]);
 
