@@ -602,7 +602,7 @@ kordeCms.controller('EditArticleCtrl',
                 title: "Tittel...",
                 author_name: "Ole Nordviste",
                 created_at: Date.now(),
-                body: "Brødtekst...",
+                body_text: "Brødtekst...",
                 isPublished: "Ikke publisert",
                 thumbnail_image_src: "",
                 elements: [],
@@ -626,8 +626,11 @@ kordeCms.controller('EditArticleCtrl',
         $scope.addArticleElement = function () {
             //Image
             if ($scope.article.newElementType == 0) {
-                {
-                }
+                $scope.article.elements.push({
+                        type: $scope.article.newElementType,
+                        width_type: $scope.article.newElementWidth,
+                    }
+                );
             } // Text
             else if ($scope.article.newElementType == 1) {
                 $scope.article.elements.push({
@@ -636,12 +639,11 @@ kordeCms.controller('EditArticleCtrl',
                         width_type: $scope.article.newElementWidth,
                     }
                 );
-                //Reset menu
-                $scope.article.newElementType = 1;
-                $scope.article.newElementWidth = 1;
-                $scope.showNewElementMenu = false;
-
             }
+            //Reset menu
+            $scope.article.newElementType = 1;
+            $scope.article.newElementWidth = 1;
+            $scope.showNewElementMenu = false;
         }
 
         $scope.saveArticle = function () {
@@ -705,18 +707,8 @@ kordeCms.controller('EditArticleCtrl',
         }
 
         $scope.upload = function (file) {
-            $scope.article.thumbnail_image_src = file;
+            $scope.article.thumbnail_image_src = file.name;
             console.log(file);
-            PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
-                console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
-                $scope.showImageUpload = false;
-                $scope.element = response.data;
-            }, function (response) {
-                console.log('Error status: ' + response.status);
-            }, function (evt) {
-                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-            });
         };
 
     }]);
@@ -822,7 +814,8 @@ kordeCms.controller('PageElementCtrl',
 
 
 kordeCms.controller('UsersCtrl',
-    ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
+    ['$scope', '$filter', 'UserFactory', function ($scope, $filter, UserFactory) {
+
 
         $scope.getRole = function (user) {
             if (user.is_superuser) {
@@ -833,9 +826,9 @@ kordeCms.controller('UsersCtrl',
             }
         }
 
-        $scope.deleteUser = function(userId){
+        $scope.deleteUser = function (userId) {
             if(UserFactory.destroy(userId)){
-                $scope.users = $filter('filter')($scope.users, {id: '!'+userId});
+            $scope.users = $filter('filter')($scope.users, {id: '!' + userId});
             }
             else{
                 //error - could not delete user
@@ -866,7 +859,7 @@ kordeCms.controller('UsersCtrl',
     }]);
 
 kordeCms.controller('EditUserCtrl',
-    ['$scope', '$routeParams', '$location', '$http', 'AuthService', 'UserFactory',  function ($scope, $routeParams, $location, $http, AuthService, UserFactory) {
+    ['$scope', '$routeParams', '$location', 'UserFactory', function ($scope, $routeParams, $location, UserFactory) {
 
         UserFactory.get($routeParams.userId).then(function (response) {
             //Success
@@ -875,7 +868,7 @@ kordeCms.controller('EditUserCtrl',
             //Error
         });
 
-        UserFactory.currentUser().then(function success (response) {
+        $scope.updateUser = function () {
             $scope.currentUser = response.data;
         }, function(response) {
             //Error
@@ -886,13 +879,14 @@ kordeCms.controller('EditUserCtrl',
             return (user.id == $scope.currentUser.id || $scope.currentUser.is_superuser)
         }
 
-        $scope.canChangeRole = function(user){
+        var updateUser = function () {
             return (user.id != $scope.currentUser.id && $scope.currentUser.is_superuser)
         }
 
 
         $scope.updateUser = function(){
-            updateUser()
+                if ($scope.user.is_superuser == "admin") {
+                    $scope.user.is_superuser = false
         }
 
         var updateUser = function(){
@@ -950,11 +944,13 @@ kordeCms.controller('EditUserCtrl',
 
 
 kordeCms.controller('NewUserCtrl',
-      ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
+    ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
 
-        $scope.saveUser = function() {
+        $scope.saveUser = function () {
             createUser()
         };
+                if ($scope.user.is_superuser == "admin") {
+                    $scope.user.is_superuser = false
 
         /*$scope.user.is_superuser = false;*/
         var createUser = function () {

@@ -217,6 +217,24 @@ i.add-icon:hover {
     text-align:center;
 }
 
+.image-element img{
+    width:100%;
+    height:auto;
+}
+
+table.new-paragraph-table {
+    margin:auto;
+    width:auto;
+}
+
+
+.new-paragraph-table td{
+    padding-bottom:10px;
+    padding-left:10px;
+    text-align: left;
+    width:auto;
+}
+
 .article-wrapper-element img:hover {
 
 }
@@ -235,13 +253,18 @@ i.add-icon:hover {
     border-style: dashed;
 }
 
-.image-drop-area .upload-button {
+.upload-button {
     display:inline-block;
     border-radius:2px;
     margin-top:70px;
     margin-left:180px;
     padding:10px 15px 0px 15px;
     background:#32ADA1;
+}
+
+.new-paragraph{
+    margin-top:20px;
+    margin-left:10px;
 }
 
 .image-drop-area .upload-text {
@@ -256,7 +279,7 @@ i.add-icon:hover {
     font-size:18px;
 }
 
-.image-drop-area .upload-button:hover {
+.upload-button:hover {
     cursor:pointer;
     background:lightgray;
 }
