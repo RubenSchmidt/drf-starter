@@ -56,6 +56,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ArticleElementSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleElement
+        fields = ('id','type', 'width_type', 'text', 'image_src')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -64,7 +65,9 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ('id', 'title', 'author_name', 'body_text', 'thumbnail_image_src', 'created_at', 'tag_string', 'author', 'elements')
+        fields = (
+            'id', 'title', 'author_name', 'body_text', 'thumbnail_image_src', 'created_at', 'tag_string', 'author',
+            'elements')
 
     def create(self, validated_data):
         """
@@ -75,6 +78,26 @@ class ArticleSerializer(serializers.ModelSerializer):
         for element_data in elements_data:
             ArticleElement.objects.create(article=article, **element_data)
         return article
+
+    # TODO this needs to be implemented for article update to work
+    # def update(self, instance, validated_data):
+    #
+    #     # Update the book instance
+    #     instance.title = validated_data['title']
+    #     instance.save()
+    #
+    #     # Delete any pages not included in the request
+    #     page_ids = [item['page_id'] for item in validated_data['pages']]
+    #     for page in instance.books:
+    #         if page.id not in page_ids:
+    #             page.delete()
+    #
+    #     # Create or update page instances that are in the request
+    #     for item in validated_data['pages']:
+    #         page = Page(id=item['page_id'], text=item['text'], book=instance)
+    #         page.save()
+    #
+    #     return instance
 
 
 class ArticleCommentSerializer(serializers.ModelSerializer):

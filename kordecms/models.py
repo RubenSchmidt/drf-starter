@@ -170,8 +170,7 @@ class Article(KordeEditableModel):
     )
 
     body_text = models.TextField(
-        verbose_name=_('article body text'),
-        blank=True
+        verbose_name=_('article body text')
     )
 
     thumbnail_image_src = models.ImageField(
