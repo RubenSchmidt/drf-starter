@@ -135,6 +135,13 @@ class ArticleList(ArticleMixin, generics.ListCreateAPIView):
 class ArticleDetail(ArticleMixin, generics.RetrieveUpdateDestroyAPIView):
     pass
 
+class ArticleCount(generics.ListAPIView):
+
+    filter_fields = ('is_published')
+
+    def get(self, request, format=None):
+        article_count = Article.objects.count()
+        return Response({'article_count':article_count})
 
 class ArticleElementList(generics.ListCreateAPIView):
     model = ArticleElement
@@ -177,3 +184,12 @@ class ArticleCommentList(ArticleCommentMixin, generics.ListAPIView):
 
 class ArticleCommentDetail(ArticleCommentMixin, generics.RetrieveUpdateDestroyAPIView):
     pass
+
+@api_view(['GET'])
+def article_count(request):
+    article_count_p = Article.objects.filter(is_published=True).count()
+    article_count_u = Article.objects.filter(is_published=False).count()
+    return Response({
+        'article_count_p':article_count_p,
+        'article_count_u':article_count_u
+    })

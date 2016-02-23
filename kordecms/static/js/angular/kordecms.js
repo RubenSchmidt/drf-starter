@@ -174,7 +174,8 @@ kordeCms.factory('ArticleFactory',
             list: list,
             create: create,
             update: update,
-            destroy: destroy
+            destroy: destroy,
+            count: count
         });
         function get(id) {
             return $http.get(endpoint + '/' + id)
@@ -194,6 +195,10 @@ kordeCms.factory('ArticleFactory',
 
         function destroy(id) {
             return $http.delete(endpoint + '/' + id)
+        }
+
+        function count() {
+            return $http.get(endpoint + '/count')
         }
     }]);
 
@@ -496,9 +501,26 @@ kordeCms.controller('EditPageCtrl',
     }]);
 
 kordeCms.controller('DashboardCtrl',
-    ['$scope', 'GlobalEditorService', function ($scope, GlobalEditorService) {
+    ['$scope', 'ArticleFactory', 'PageFactory', function ($scope, ArticleFactory, PageFactory) {
+
+        // Retrieves the number of published and unpublished articles
+        ArticleFactory.count().then(function success(response) {
+            var data = response.data;
+            $scope.articles = {};
+            $scope.articles.published = data.article_count_p;
+            $scope.articles.unpublished = data.article_count_u;
+        }, function error() {
+            console.log('Something went wrong!');
+        });
+
+        PageFactory.list().then(function success(response) {
+            $scope.pages = response.data;
+            console.log($scope.pages);
+        }, function error(response) {
+            $scope.error = response.data;
+        });
+
         $scope.editorMode = true;
-        $scope.test = 'Hei på deg';
     }]);
 
 kordeCms.controller('ArticlesCtrl',

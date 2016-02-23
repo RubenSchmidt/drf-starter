@@ -1,41 +1,43 @@
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Deres artikler</h1>
-            <!--<a href="#/articles/new"><i class="add-article fa fa-plus-circle fa-4x"></i></a>-->
+<div class="has-navbar">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Deres artikler</h1>
+                <!--<a href="#/articles/new"><i class="add-article fa fa-plus-circle fa-4x"></i></a>-->
+            </div>
+            <!-- /.col-lg-12 -->
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
-    <div class="row article" ng-repeat="article in articles">
-        <a class="no-style" href="#/articles/{{ article.id }}">
-            <div class="article-wrapper">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h2>{{ article.title }}</h2>
+        <div class="row article" ng-repeat="article in articles">
+            <a class="no-style" href="#/articles/{{ article.id }}">
+                <div class="article-wrapper">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2>{{ article.title }}</h2>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-12">
-                        <h4 class="article-inline-header">{{ article.created_at | date:'dd/MM-yyyy' }}</h4>
-                        <h4 class="article-inline-header">{{ article.author_name }}</h4>
-                        <h4 class="article-inline-header">{{ publishedText(article) }}</h4>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4 class="article-inline-header">{{ article.created_at | date:'dd/MM-yyyy' }}</h4>
+                            <h4 class="article-inline-header">{{ article.author_name }}</h4>
+                            <h4 class="article-inline-header">{{ publishedText(article) }}</h4>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div ng-repeat="element in article.elements">
-                        <div class="{{ getColumnClass(element) }}">
-                            <div class="article-wrapper article-wrapper-element">
-                                <div ng-if="isTextElement(element)">
-                                    <p>{{ element.text }}</p>
-                                </div>
-                                <div ng-if="!isImageElement(element)">
-                                    <img src="{{ element.image_src }}"/>
+                    <div class="row">
+                        <div ng-repeat="element in article.elements">
+                            <div class="{{ getColumnClass(element) }}">
+                                <div class="article-wrapper article-wrapper-element">
+                                    <div ng-if="isTextElement(element)">
+                                        <p>{{ element.text }}</p>
+                                    </div>
+                                    <div ng-if="!isImageElement(element)">
+                                        <img src="{{ element.image_src }}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
 </div>
