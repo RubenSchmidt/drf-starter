@@ -761,7 +761,7 @@ kordeCms.controller('LoginCtrl',
     }]);
 
 kordeCms.controller('PageElementCtrl',
-    ['$scope', '$routeParams', 'GlobalEditorService', 'PageElementFactory', function ($scope, $routeParams, GlobalEditorService, PageElementFactory) {
+    ['$scope', '$routeParams', 'GlobalEditorService', 'PageElementFactory', 'SweetAlert', function ($scope, $routeParams, GlobalEditorService, PageElementFactory, SweetAlert) {
         $scope.editorMode = true;
 
         PageElementFactory.get($routeParams.id).then(function (response) {
@@ -780,10 +780,9 @@ kordeCms.controller('PageElementCtrl',
             } else {
                 // Updates text
                 PageElementFactory.update($scope.element).then(function success(response) {
-                    console.log("Updated");
+                    SweetAlert.swal({title: "Lagret", type: "success", showConfirmButton: false, timer: 1000});
                 }, function error(response) {
                     console.log(response);
-                    console.log("Error when update");
                 })
             }
         }
@@ -801,6 +800,7 @@ kordeCms.controller('PageElementCtrl',
             $scope.element.image_src = file;
             PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
                 console.log('Success ' + response.config.data.file.name + 'uploaded. Response: ' + response.data);
+                SweetAlert.swal({title: "Lagret", type: "success", showConfirmButton: false, timer: 1000})
                 $scope.element = response.data;
             }, function (response) {
                 console.log('Error status: ' + response.status);
