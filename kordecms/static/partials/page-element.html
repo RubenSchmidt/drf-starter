@@ -1,14 +1,15 @@
 <div class="has-sidebar has-navbar">
     <div class="p-20-50">
         <div class="t-center t-very-thin m-20-0">
-            <h1>{{ element.description }}</h1>
+            <h1 class="page-header">{{ element.description }}</h1>
+            <small>Trykk på teksten for å redigere</small>
         </div>
-        <div ng-if="element.type == 0">
+        <div ng-if="checkType(element.type, 0)">
             <div class="p-10-0 t-center" >
                 <img class="h-300" ng-src="{{ element.image_url }}" alt="Element image">
             </div>
-            <div class="image-drop-area" ngf-drop="upload($file)">
-                <div class="upload-button" ngf-select="upload($file)">
+            <div class="image-drop-area" ngf-drop="setFile($file)">
+                <div class="upload-button" ngf-select="setFile($file)">
                     <p>Last opp bilde</p>
                 </div>
                 <h4 class="upload-text">
@@ -18,20 +19,17 @@
             </div>
         </div>
 
-        <div ng-if="element.type == 1">
-            <div class="p-10-0" >
+        <div ng-if="checkType(element.type, 1)">
+            <div class="p-10-0 w-600 block-center">
                 <div hallo-editor ng-model="element.body"></div>
             </div>
         </div>
 
-
-        <div class="p-20-0">
-            <button type="button" class="btn btn-danger btn-xl">
-                <div class="font-size-20">Tilbake</div>
-            </button>
-            <button type="button" class="btn btn-success btn-xl">
-                <div class="font-size-20">Lagre</div>
-            </button>
+        <div class="p-20-0 w-600 block-center t-center">
+            <button class="button-no-bg-confirm m-10-20 w-250" ng-click="updateElement(file)">Lagre</button>
+            <a ng-href="#/pages">
+                <button class="button-no-bg-decline m-10-20 w-250">Tilbake</button>
+            </a>
         </div>
     </div>
 </div>

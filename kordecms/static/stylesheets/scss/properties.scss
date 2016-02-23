@@ -35,7 +35,7 @@ Created by Valdemar Rolfsen 2016
 // Height
 // --------------------
 
-@for $i from 1 to 50 {
+@for $i from 1 to 70 {
   .h-#{$i*10} {
     height: #{$i*10}px;
   }
@@ -44,7 +44,7 @@ Created by Valdemar Rolfsen 2016
 // Width
 // --------------------
 
-@for $i from 1 to 50 {
+@for $i from 1 to 70 {
   .w-#{$i*10} {
     width: #{$i*10}px;
   }
@@ -130,6 +130,12 @@ Created by Valdemar Rolfsen 2016
   }
 }
 
+// Positioning
+// --------------------
+.block-center {
+  display: block;
+  margin: 0 auto;
+}
 
 // Shadows
 // --------------------

@@ -25,4 +25,38 @@ Created by Valdemar Rolfsen 2016
   .button-circle:focus {
     outline: none; }
 
+.button-no-bg-confirm {
+  padding: 15px 40px;
+  background: none;
+  border: 2px solid #33cd5f;
+  color: #33cd5f;
+  -webkit-transition: background-color 200ms linear;
+  -moz-transition: background-color 200ms linear;
+  -o-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear; }
+  @media (max-width: 768px) {
+    .button-no-bg-confirm {
+      width: 100%; } }
+  .button-no-bg-confirm:hover {
+    background: #33cd5f;
+    color: #fff; }
+
+.button-no-bg-decline {
+  padding: 15px 40px;
+  background: none;
+  border: 2px solid #ef473a;
+  color: #ef473a;
+  -webkit-transition: background-color 200ms linear;
+  -moz-transition: background-color 200ms linear;
+  -o-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear; }
+  @media (max-width: 768px) {
+    .button-no-bg-decline {
+      width: 100%; } }
+  .button-no-bg-decline:hover {
+    background: #ef473a;
+    color: #fff; }
+
 /*# sourceMappingURL=buttons.css.map */
