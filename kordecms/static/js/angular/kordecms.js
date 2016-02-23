@@ -854,7 +854,7 @@ kordeCms.controller('UsersCtrl',
     }]);
 
 kordeCms.controller('EditUserCtrl',
-    ['$scope', '$routeParams', '$location', 'UserFactory', function ($scope, $routeParams, $location, UserFactory) {
+    ['$scope', '$routeParams', '$location', '$http', 'UserFactory', function ($scope, $routeParams, $location, $http, UserFactory) {
 
         UserFactory.get($routeParams.userId).then(function (response) {
             //Success
@@ -863,11 +863,14 @@ kordeCms.controller('EditUserCtrl',
             //Error
         });
 
-        $scope.updateUser = function () {
+        UserFactory.currentUser($routeParams.userId).then(function (response) {
+            //Success
             $scope.currentUser = response.data;
-        }, function(response) {
+        }, function (response) {
             //Error
         });
+
+
 
 
         $scope.canEditUser = function(user){
@@ -879,61 +882,64 @@ kordeCms.controller('EditUserCtrl',
         }
 
 
-        $scope.updateUser = function(){
-                if ($scope.user.is_superuser == "admin") {
-                    $scope.user.is_superuser = false
-        }
-
-        var updateUser = function(){
-            if($scope.user){
-                UserFactory.update($scope.user).then(function (response) {
-                    //Success
-                    $location.path('/users')
-                }, function (response) {
-                    //error
-                    $scope.errors = response.data;
-                });
+        $scope.updateUser = function() {
+            updateUser()
             }
-            else{
-                $scope.errors = {username: ["Dette feltet er påkrevd"], password: ["Dette feltet er påkrevd"]}
+
+            var updateUser = function () {
+                if ($scope.user) {
+                    UserFactory.update($scope.user).then(function (response) {
+                        //Success
+                        $location.path('/users')
+                    }, function (response) {
+                        //error
+                        $scope.errors = response.data;
+                    });
+                }
+                else {
+                    $scope.errors = {username: ["Dette feltet er påkrevd"], password: ["Dette feltet er påkrevd"]}
+                }
+            };
+
+
+
+            $scope.password = {old_password: "", new_password_1: "", new_password_2: ""}
+
+            $scope.updatePassword = function () {
+                updatePassword()
             }
-        };
 
 
-        $scope.password = {old_password: "", new_password_1  : "", new_password_2 : ""}
-
-        $scope.updatePassword = function(){
-            updatePassword()
-        }
-
-
-        var updatePassword = function(){
-             if($scope.password.new_password_1 == $scope.password.new_password_2) {
-                 //New passwords match
-                 $http.post('/api/api-token-auth/', {username: $scope.user.username, password: $scope.password.old_password}).then(function (response) {
+            var updatePassword = function () {
+                if ($scope.password.new_password_1 == $scope.password.new_password_2) {
+                    //New passwords match
+                    $http.post('/api/api-token-auth/', {
+                        username: $scope.user.username,
+                        password: $scope.password.old_password
+                    }).then(function (response) {
                         //Old password correct
-                            if (response.status === 200 && response.data.token) {
-                                $scope.user.password = $scope.password.new_password_2;
-                                //Set new password to given new password
-                                UserFactory.updatePassword($scope.user).then(function (response) {
-                                    //Success - password updated
-                                    $location.path('/users')
-                                }, function (response) {
-                                    //error - could not set user password to given passord
-                                    $scope.errors = response.data;
-                                    console.log($scope.errors);
-                                });
-                            }
-                        }, function (response) {
-                            //Handle error
-                            $scope.errors = response.data;
-                            console.log(response.data);
+                        if (response.status === 200 && response.data.token) {
+                            $scope.user.password = $scope.password.new_password_2;
+                            //Set new password to given new password
+                            UserFactory.updatePassword($scope.user).then(function (response) {
+                                //Success - password updated
+                                $location.path('/users')
+                            }, function (response) {
+                                //error - could not set user password to given passord
+                                $scope.errors = response.data;
+                                console.log($scope.errors);
                             });
-             }
-             else{
-                $scope.errors = {newPassword: ["Forskjellig passord oppgitt"]}
-             }
-        };
+                        }
+                    }, function (response) {
+                        //Handle error
+                        $scope.errors = response.data;
+                        console.log(response.data);
+                    });
+                }
+                else {
+                    $scope.errors = {newPassword: ["Forskjellig passord oppgitt"]}
+                }
+            };
 
     }]);
 
@@ -944,8 +950,7 @@ kordeCms.controller('NewUserCtrl',
         $scope.saveUser = function () {
             createUser()
         };
-                if ($scope.user.is_superuser == "admin") {
-                    $scope.user.is_superuser = false
+
 
         /*$scope.user.is_superuser = false;*/
         var createUser = function () {
