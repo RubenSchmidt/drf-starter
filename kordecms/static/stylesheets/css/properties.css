@@ -942,6 +942,9 @@ Created by Valdemar Rolfsen 2016
 .bg-dark {
   background: #222; }
 
+.bg-none {
+  background: none; }
+
 .color-light {
   color: #fff; }
 
@@ -971,6 +974,66 @@ Created by Valdemar Rolfsen 2016
 
 .color-dark {
   color: #222; }
+
+.border-light {
+  border-color: #fff; }
+
+.border-stable {
+  border-color: #f8f8f8; }
+
+.border-stable-dark {
+  border-color: #BBBBBB; }
+
+.border-positive {
+  border-color: #387ef5; }
+
+.border-calm {
+  border-color: #11c1f3; }
+
+.border-balanced {
+  border-color: #33cd5f; }
+
+.border-energized {
+  border-color: #ffc900; }
+
+.border-assertive {
+  border-color: #ef473a; }
+
+.border-royal {
+  border-color: #886aea; }
+
+.border-dark {
+  border-color: #222; }
+
+.border-0 {
+  border-width: 0px; }
+
+.border-1 {
+  border-width: 1px; }
+
+.border-2 {
+  border-width: 2px; }
+
+.border-3 {
+  border-width: 3px; }
+
+.border-4 {
+  border-width: 4px; }
+
+.border-5 {
+  border-width: 5px; }
+
+.border-6 {
+  border-width: 6px; }
+
+.border-7 {
+  border-width: 7px; }
+
+.border-8 {
+  border-width: 8px; }
+
+.border-9 {
+  border-width: 9px; }
 
 .center-shadow {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3); }

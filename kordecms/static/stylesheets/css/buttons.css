@@ -18,9 +18,11 @@ All variables used by Korde AS
 Created by Valdemar Rolfsen 2016
 
 */
-.btn-circle {
-  height: 150px;
-  width: 150px;
+.button-circle {
+  height: 60px;
+  width: 60px;
   border-radius: 100%; }
+  .button-circle:focus {
+    outline: none; }
 
 /*# sourceMappingURL=buttons.css.map */

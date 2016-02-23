@@ -16,8 +16,11 @@ Created by Valdemar Rolfsen 2016
 // Round buttons
 // --------------------
 
-.btn-circle {
-
+.button-circle {
   // Includes
-  @include circle(150px);
+  @include circle(60px);
+
+  &:focus {
+    outline: none;
+  }
 }

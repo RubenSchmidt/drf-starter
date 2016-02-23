@@ -73,6 +73,8 @@ Created by Valdemar Rolfsen 2016
 
 .bg-dark { background: $dark; }
 
+.bg-none { background: none; }
+
 
 // Color
 // --------------------
@@ -96,6 +98,37 @@ Created by Valdemar Rolfsen 2016
 .color-royal { color: $royal; }
 
 .color-dark { color: $dark; }
+
+// Borders
+// --------------------
+
+// Colors
+.border-light { border-color: $light; }
+
+.border-stable { border-color: $stable; }
+
+.border-stable-dark { border-color: $stable_dark; }
+
+.border-positive { border-color: $positive; }
+
+.border-calm { border-color: $calm; }
+
+.border-balanced { border-color: $balanced; }
+
+.border-energized { border-color: $energized; }
+
+.border-assertive { border-color: $assertive; }
+
+.border-royal { border-color: $royal; }
+
+.border-dark { border-color: $dark; }
+
+// Width
+@for $i from 0 to 10 {
+  .border-#{$i} {
+    border-width: #{$i}px;
+  }
+}
 
 
 // Shadows
