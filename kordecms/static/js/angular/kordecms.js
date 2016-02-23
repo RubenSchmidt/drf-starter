@@ -813,7 +813,8 @@ kordeCms.controller('PageElementCtrl',
 
 
 kordeCms.controller('UsersCtrl',
-    ['$scope', '$filter', 'UserFactory', function ($scope, $filter, UserFactory) {
+    ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
+
 
 
         $scope.getRole = function (user) {
@@ -825,9 +826,9 @@ kordeCms.controller('UsersCtrl',
             }
         }
 
-        $scope.deleteUser = function (userId) {
+        $scope.deleteUser = function(userId){
             UserFactory.destroy(userId);
-            $scope.users = $filter('filter')($scope.users, {id: '!' + userId});
+            $scope.users = $filter('filter')($scope.users, {id: '!'+userId});
 
         }
 
@@ -840,7 +841,7 @@ kordeCms.controller('UsersCtrl',
     }]);
 
 kordeCms.controller('EditUserCtrl',
-    ['$scope', '$routeParams', '$location', 'UserFactory', function ($scope, $routeParams, $location, UserFactory) {
+    ['$scope', '$routeParams', '$location',  'UserFactory',  function ($scope, $routeParams, $location, UserFactory) {
         console.log($routeParams.userId);
 
         UserFactory.get($routeParams.userId).then(function (response) {
@@ -850,33 +851,12 @@ kordeCms.controller('EditUserCtrl',
             //Error
         });
 
-        $scope.updateUser = function () {
+        $scope.updateUser = function(){
             updateUser()
         }
 
-<<<<<<< HEAD
         var updateUser = function(){
             if($scope.user){
-=======
-        var updateUser = function () {
-            if (!$scope.user.username) {
-                //error
-            } else if (!$scope.user.email) {
-                //error
-            } else if (!$scope.user.first_name) {
-                //error
-            } else if (!$scope.user.last_name) {
-                //error
-
-            } else {
-                $scope.user.is_staff = true
-                if ($scope.user.is_superuser == "admin") {
-                    $scope.user.is_superuser = true
-                } else {
-                    $scope.user.is_superuser = false
-                }
-
->>>>>>> 14667ea5dd36d8b2df1cca4adf137380f1250c71
                 UserFactory.update($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')
@@ -893,24 +873,13 @@ kordeCms.controller('EditUserCtrl',
 
 
 kordeCms.controller('NewUserCtrl',
-    ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
-        $scope.saveUser = function () {
+      ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
+        $scope.saveUser = function() {
             createUser()
         };
         var createUser = function () {
             if ($scope.user){
                 $scope.user.is_staff = true
-<<<<<<< HEAD
-=======
-
-                // If user has checked "admin"-box
-                if ($scope.user.is_superuser == "admin") {
-                    $scope.user.is_superuser = true
-                } else {
-                    $scope.user.is_superuser = false
-                }
-
->>>>>>> 14667ea5dd36d8b2df1cca4adf137380f1250c71
                 UserFactory.create($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')
