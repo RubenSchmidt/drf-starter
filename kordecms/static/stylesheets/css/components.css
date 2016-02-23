@@ -12,7 +12,8 @@ Created by Valdemar Rolfsen 2016
 
 */
 .korde-content-box {
-  display: inline-block; }
+  display: inline-block;
+  vertical-align: top; }
   .korde-content-box .content-box-header {
     width: 100%;
     font-weight: 600;
