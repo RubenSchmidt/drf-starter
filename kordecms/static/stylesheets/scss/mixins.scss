@@ -23,3 +23,14 @@ Created by Valdemar Rolfsen 2016
   width: $diameter;
   border-radius: 100%;
 }
+
+// Transitions
+// --------------------
+
+@mixin smoothBackgroundShift() {
+	-webkit-transition: background-color 200ms linear;
+    -moz-transition: background-color 200ms linear;
+    -o-transition: background-color 200ms linear;
+    -ms-transition: background-color 200ms linear;
+    transition: background-color 200ms linear;
+}
