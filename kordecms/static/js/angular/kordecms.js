@@ -771,6 +771,11 @@ kordeCms.controller('PageElementCtrl',
             //Error
         });
 
+        // Function that checks the type of element
+        $scope.checkType = function (check, answer) {
+            return check === answer
+        }
+
         $scope.upload = function (file) {
             $scope.element.image_src = file;
             PageElementFactory.updateImageElement($scope.element, file).then(function (response) {
