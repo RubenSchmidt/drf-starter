@@ -1,12 +1,37 @@
-<div class="page-wrapper">
-    <div class="element-description">
-        <div ngf-drop="upload($file)" ngf-drag-over-class="'dragover'"
-             ng-if="element.type === 0">
-            <img src="{{ element.image_src }}"/>
+<div class="has-sidebar">
+    <div class="p-20-50">
+        <div class="t-center t-very-thin m-20-0">
+            <h1>{{ element.description }}</h1>
+        </div>
+        <div ng-if="element.type == 0">
+            <div class="p-10-0 t-center" >
+                <img class="h-300" ng-src="{{ element.image_url }}" alt="Element image">
+            </div>
+            <div class="image-drop-area" ngf-drop="upload($file)">
+                <div class="upload-button" ngf-select="upload($file)">
+                    <p>Last opp bilde</p>
+                </div>
+                <h4 class="upload-text">
+                    eller dra inn og slipp et bilde her
+                </h4>
+
+            </div>
         </div>
 
-        <span class="title">
-        {{ element.description }}
-        </span>
+        <div ng-if="element.type == 1">
+            <div class="p-10-0" >
+                <div hallo-editor ng-model="element.body"></div>
+            </div>
+        </div>
+
+
+        <div class="p-20-0">
+            <button type="button" class="btn btn-danger btn-xl">
+                <div class="font-size-20">Tilbake</div>
+            </button>
+            <button type="button" class="btn btn-success btn-xl">
+                <div class="font-size-20">Lagre</div>
+            </button>
+        </div>
     </div>
 </div>
