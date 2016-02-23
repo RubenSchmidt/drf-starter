@@ -69,6 +69,11 @@ class PageElementList(generics.ListAPIView):
 
 @api_view(['GET'])
 def get_page_elements_sorted(request, slug):
+    """
+    Return the page elements in a list of rows, with the columns inside each row.
+    :param slug: Page name slug
+    :param request:
+    """
     queryset = PageElement.objects.filter(page__slug=slug).order_by('row', 'col')
     if not queryset:
         return Response(_('Could not find the page elements'), status=status.HTTP_404_NOT_FOUND)
@@ -135,13 +140,6 @@ class ArticleList(ArticleMixin, generics.ListCreateAPIView):
 class ArticleDetail(ArticleMixin, generics.RetrieveUpdateDestroyAPIView):
     pass
 
-class ArticleCount(generics.ListAPIView):
-
-    filter_fields = ('is_published')
-
-    def get(self, request, format=None):
-        article_count = Article.objects.count()
-        return Response({'article_count':article_count})
 
 class ArticleElementList(generics.ListCreateAPIView):
     model = ArticleElement
@@ -185,11 +183,16 @@ class ArticleCommentList(ArticleCommentMixin, generics.ListAPIView):
 class ArticleCommentDetail(ArticleCommentMixin, generics.RetrieveUpdateDestroyAPIView):
     pass
 
+
 @api_view(['GET'])
 def article_count(request):
+    """
+    Returns the amount of published and unpublished articles
+    :param request:
+    """
     article_count_p = Article.objects.filter(is_published=True).count()
     article_count_u = Article.objects.filter(is_published=False).count()
     return Response({
-        'article_count_p':article_count_p,
-        'article_count_u':article_count_u
+        'article_count_p': article_count_p,
+        'article_count_u': article_count_u
     })
