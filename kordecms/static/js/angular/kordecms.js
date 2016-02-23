@@ -814,9 +814,7 @@ kordeCms.controller('PageElementCtrl',
 
 kordeCms.controller('UsersCtrl',
     ['$scope', '$filter', 'UserFactory',  function ($scope, $filter, UserFactory) {
-
-
-
+        
         $scope.getRole = function (user) {
             if (user.is_superuser) {
                 return "Admin";
@@ -874,12 +872,13 @@ kordeCms.controller('EditUserCtrl',
 
 kordeCms.controller('NewUserCtrl',
       ['$scope', '$location', 'UserFactory', function ($scope, $location, UserFactory) {
+
         $scope.saveUser = function() {
             createUser()
         };
         var createUser = function () {
             if ($scope.user){
-                $scope.user.is_staff = true
+                $scope.user.is_staff = true;
                 UserFactory.create($scope.user).then(function (response) {
                     //Success
                     $location.path('/users')
