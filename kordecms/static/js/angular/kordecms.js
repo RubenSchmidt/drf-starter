@@ -874,8 +874,6 @@ kordeCms.controller('NewUserCtrl',
                     $scope.errors = response.data;
                 });
             }
-
         };
-
     }]);
 
