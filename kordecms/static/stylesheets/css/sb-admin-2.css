@@ -131,7 +131,17 @@ form.article {
     width: auto;
     padding: 5px 7px 5px 10px;
     margin-right: 10px;
+    margin-bottom:20px;
     font-size: 16px;
+}
+.no-style {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.no-style:hover {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .input-tag {
@@ -198,6 +208,24 @@ i.add-icon:hover {
     margin: 20px 15px 20px 15px;
 }
 
+.article-wrapper-element {
+    margin: 0px 15px 0px 15px;
+    padding: 10px 30px 10px 40px;
+    border: 2px solid white;
+}
+
+.image-element{
+    text-align:center;
+}
+
+.article-wrapper-element img:hover {
+
+}
+
+.article-wrapper-element:hover {
+    border: 2px solid lightgray;
+}
+
 .image-drop-area {
     margin:auto;
     margin-top:30px;
@@ -249,6 +277,15 @@ i.add-icon:hover {
 
 .article-icon-container-inner {
     display:inline-block;
+}
+
+.article-new-container-inner {
+    display:inline-block;
+}
+.article-thumbnail-image{
+    width:auto;
+    max-width:500px;
+    height:auto;
 }
 
 .article-icon-container-inner:hover {

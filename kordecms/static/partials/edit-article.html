@@ -14,9 +14,9 @@
     </div>
     <form ng-submit="saveArticle()">
         <div class="row">
-            <div hallo-editor class="feedback-input" ng-model="article.title"></div>
+            <h2 hallo-editor class="feedback-input" ng-model="article.title"></h2>
             <div>
-                <div hallo-editor class="feedback-input text-area" ng-model="article.body"></div>
+                <div hallo-editor class="feedback-input text-area" ng-model="article.body_text"></div>
             </div>
 
             <h3 ng-if="!thumbnailUploaded()" style="text-align:center;">Last opp forsidebilde til artikkelen:</h3>
@@ -27,23 +27,57 @@
             </div>
             <div class="thumbnail-container" ng-if="thumbnailUploaded()">
                 <h3>Thumbnail image:</h3>
-                <img src="{{ article.thumbnail_image_src }}"/>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="article-wrapper" ng-repeat="element in article.elements">
-                <p>{{ element.body }}</p>
+                <img src="{{ article.thumbnail_image_src }}" class="article-thumbnail-image"/>
             </div>
         </div>
         <div class="row">
-            <div class="article-icon-container">
-                <div class="article-icon-container-inner" ng-click="addArticleElement()">
+            <h3>Elementer i artikkelen:</h3>
+             <p ng-if="article.elements.length == 0">Artikkelen har ingen elementer...</p>
+            <div ng-repeat="element in article.elements">
+                <div class="{{ getColumnClass(element) }}">
+                    <div class="article-wrapper article-wrapper-element">
+                        <div ng-if="isTextElement(element)">
+                            <div hallo-editor ng-model="element.text"></div>
+                        </div>
+                        <div ng-if="!isImageElement(element)">
+                            <img src="{{ element.image_src }}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="article-icon-container" ng-if="!showNewElementMenu">
+                <div class="article-icon-container-inner" ng-click="toggleShowNewElementMenu()">
                     <i class="article-icon fa fa-plus-circle fa-4x"></i>
                     <h4 class="article-icon-text">Add element</h4>
                     <div style="clear:both"></div>
                 </div>
             </div>
+            <div class="article-icon-container" ng-if="showNewElementMenu">
+                <div class="article-new-container-inner">
+                    <p>Velg størrelse: (1 = hel, 0 = halv)</p>
+                    <input type="text" ng-model="article.newElementWidth" value="1"/>
+                    <p>Velg type: (1 = tekst, 0 = bilde)</p>
+                    <input type="text" ng-model="article.newElementType" value="1"/>
+                    <div class="upload-button" ng-click="" ng-if="showNewElementUploadButton()"><p>Last opp bilde</p>
+                    </div>
+                    <div class="upload-button" ng-click="addArticleElement()" ng-if="!showNewElementUploadButton()"><p>
+                        Legg til paragraf</p></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div ng-if="article.tag_string">
+                <div class="tag turqoise" ng-repeat="tag in article.tag_string.split(',')">
+                    {{ tag }}
+                    <i class="delete-icon" ng-click="deleteTag(tag, article)">&times</i>
+                </div>
+            </div>
+            <div class="tag input-tag turqoise">
+                <input type="text" ng-model="newTagInput[article.id]" placeholder="#tag..."/>
+            </div>
+            <i class="add-icon fa fa-plus fa-2x" ng-click="addTag(article)"></i>
         </div>
         <div class="row">
             <input type="checkbox" name="publish" class="feedback-checkbox" ng-model="article.is_published"/>

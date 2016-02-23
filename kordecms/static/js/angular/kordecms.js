@@ -505,8 +505,20 @@ kordeCms.controller('ArticlesCtrl',
     ['$scope', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
         $scope.editorMode = true;
 
-        $scope.publishedText = function(article){
+        $scope.publishedText = function (article) {
             return article.isPublished ? "Publisert" : "Ikke publisert";
+        }
+
+        $scope.isTextElement = function (element) {
+            return element.type == 1;
+        }
+
+        $scope.getColumnClass = function (element) {
+            var classString = "";
+            classString += (element.width_type == 1) ? "col-md-12" : "col-md-6";
+            classString += (element.type == 1) ? " text-element" : " image-element";
+
+            return classString;
         }
 
         ArticleFactory.list().then(function (response) {
@@ -523,16 +535,34 @@ kordeCms.controller('EditArticleCtrl',
         $scope.editorMode = true;
         $scope.newTagInput = {};
         $scope.article = {};
+        $scope.showNewElementMenu = false;
+        $scope.article.newElementType = 1;
+        $scope.article.newElementWidth = 1;
         var isNew = true;
 
-        $scope.thumbnailUploaded = function(){
+        $scope.showNewElementUploadButton = function () {
+            return $scope.showNewElementMenu && $scope.article.newElementType == "0";
+        }
+
+        $scope.thumbnailUploaded = function () {
             return $scope.article.thumbnail_image_src;
+        }
+
+        $scope.getColumnClass = function (element) {
+            var classString = "";
+
+            classString += (element.width_type == 1) ? "col-md-12" : "col-md-6";
+            classString += (element.type == 1) ? " text-element" : " image-element";
+
+            return classString;
         }
 
         ArticleFactory.get($routeParams.articleId).then(function (response) {
             //Success
             $scope.article = response.data;
             isNew = false;
+            $scope.article.newElementType = 1;
+            $scope.article.newElementWidth = 1;
             console.log(response.data);
         }, function (response) {
             //Error
@@ -549,26 +579,47 @@ kordeCms.controller('EditArticleCtrl',
             console.log("No article found");
         });
 
-        $scope.pageHeader = function(){
+        $scope.isTextElement = function (element) {
+            return element.type == 1;
+        }
+
+        $scope.pageHeader = function () {
             return isNew ? "Skriv en ny artikkel" : "Rediger artikkel";
         };
 
-        $scope.articleHasTags = function (article) {
-            return article.tag_string.length > 0;
-        };
-
-        $scope.addArticleElement = function(){
-            $scope.article.elements.push({ body: "EN GAY TEKST" });
+        $scope.toggleShowNewElementMenu = function () {
+            $scope.showNewElementMenu = !$scope.showNewElementMenu;
         }
 
-        $scope.saveArticle = function(){
-            if(newArticle){
+        $scope.addArticleElement = function () {
+            //Image
+            if ($scope.article.newElementType == 0) {
+                {
+                }
+            } // Text
+            else if ($scope.article.newElementType == 1) {
+                $scope.article.elements.push({
+                        text: "Skriv inn teksten her...",
+                        type: $scope.article.newElementType,
+                        width_type: $scope.article.newElementWidth,
+                    }
+                );
+                //Reset menu
+                $scope.article.newElementType = 1;
+                $scope.article.newElementWidth = 1;
+                $scope.showNewElementMenu = false;
+
+            }
+        }
+
+        $scope.saveArticle = function () {
+            if (isNew) {
                 createArticle();
             } else {
-                ArticleFactory.update(article).then(function(response){
+                ArticleFactory.update($scope.article).then(function (response) {
                     //Success
-                }, function(response){
-                    console.log(response);
+                }, function (response) {
+                    console.log("Error in update article: " + response);
                 });
             }
         };
@@ -578,6 +629,7 @@ kordeCms.controller('EditArticleCtrl',
                 //error
             } else if (!$scope.article.body) {
                 //error
+                console.log("Error in create article: " + response);
             } else {
                 ArticleFactory.create($scope.article).then(function (response) {
                     //Success
@@ -601,6 +653,7 @@ kordeCms.controller('EditArticleCtrl',
                     //Success
                 }, function (response) {
                     //error
+                    console.log(response);
                 });
             }
         };
@@ -716,11 +769,11 @@ kordeCms.controller('UsersCtrl',
 
 
 
-        $scope.getRole = function(user){
-            if (user.is_staff){
+        $scope.getRole = function (user) {
+            if (user.is_staff) {
                 return "Admin";
             }
-            else{
+            else {
                 return "Bruker";
             }
         }
