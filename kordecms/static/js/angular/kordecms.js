@@ -9,6 +9,10 @@ kordeCms.config(function ($routeProvider) {
             controller: 'DashboardCtrl',
             templateUrl: '/static/partials/dashboard.html'
         })
+        .when('/articles/new/', {
+            controller: 'EditArticleCtrl',
+            templateUrl: '/static/partials/edit-article.html'
+        })
         .when('/articles/:articleId', {
             controller: 'EditArticleCtrl',
             templateUrl: '/static/partials/edit-article.html'
@@ -567,18 +571,7 @@ kordeCms.controller('EditArticleCtrl',
         $scope.editorMode = true;
         $scope.newTagInput = {};
         $scope.article = {};
-        $scope.showNewElementMenu = false;
-        $scope.article.newElementType = 1;
-        $scope.article.newElementWidth = 1;
         var isNew = true;
-
-        $scope.showNewElementUploadButton = function () {
-            return $scope.showNewElementMenu && $scope.article.newElementType == "0";
-        }
-
-        $scope.thumbnailUploaded = function () {
-            return $scope.article.thumbnail_image_src;
-        }
 
         $scope.getColumnClass = function (element) {
             var classString = "";
@@ -589,15 +582,8 @@ kordeCms.controller('EditArticleCtrl',
             return classString;
         }
 
-        ArticleFactory.get($routeParams.articleId).then(function (response) {
-            //Success
-            $scope.article = response.data;
-            isNew = false;
-            $scope.article.newElementType = 1;
-            $scope.article.newElementWidth = 1;
-            console.log(response.data);
-        }, function (response) {
-            //Error
+        if(!$routeParams.articleId){
+            //Create new article object
             $scope.article = {
                 title: "Tittel...",
                 author_name: "Ole Nordviste",
@@ -606,22 +592,29 @@ kordeCms.controller('EditArticleCtrl',
                 isPublished: "Ikke publisert",
                 thumbnail_image_src: "",
                 elements: [],
+                newElementType: 1,
+                newElementWidth: 1,
             };
             isNew = true;
-            console.log("No article found");
-        });
-
-        $scope.isTextElement = function (element) {
-            return element.type == 1;
+            console.log("New article mode");
+        } else {
+            //Get existing article
+            ArticleFactory.get($routeParams.articleId).then(function (response) {
+                //Success
+                $scope.article = response.data;
+                $scope.article.newElementType = 1;
+                $scope.article.newElementWidth = 1;
+                isNew = false;
+                console.log(response.data);
+        }, function (response) {
+            //Error
+                console.log(response);
+            });
         }
 
         $scope.pageHeader = function () {
             return isNew ? "Skriv en ny artikkel" : "Rediger artikkel";
         };
-
-        $scope.toggleShowNewElementMenu = function () {
-            $scope.showNewElementMenu = !$scope.showNewElementMenu;
-        }
 
         $scope.addArticleElement = function () {
             //Image
@@ -677,6 +670,7 @@ kordeCms.controller('EditArticleCtrl',
 
         };
 
+        //Vil vi lagre artikkelen hver gang en tag legges til eller slettes?
         $scope.addTag = function (article) {
             var list = article.tag_string.split(',');
             var id = article.id.toString();
@@ -691,6 +685,7 @@ kordeCms.controller('EditArticleCtrl',
                 });
             }
         };
+
         $scope.deleteTag = function (tag_name, article) {
             var list = article.tag_string.split(',');
             var index = list.indexOf(tag_name);
@@ -705,7 +700,7 @@ kordeCms.controller('EditArticleCtrl',
                 console.log(response);
             });
         }
-
+        
         $scope.upload = function (file) {
             $scope.article.thumbnail_image_src = file.name;
             console.log(file);
