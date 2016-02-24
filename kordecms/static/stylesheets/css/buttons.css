@@ -59,4 +59,38 @@ Created by Valdemar Rolfsen 2016
     background: #ef473a;
     color: #fff; }
 
+.button-no-bg-delete {
+  padding: 5px 30px;
+  background: none;
+  border: 2px solid #ef473a;
+  color: #ef473a;
+  -webkit-transition: background-color 200ms linear;
+  -moz-transition: background-color 200ms linear;
+  -o-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear; }
+  @media (max-width: 768px) {
+    .button-no-bg-delete {
+      width: 100%; } }
+  .button-no-bg-delete:hover {
+    background: #ef473a;
+    color: #fff; }
+
+.button-no-bg-edit {
+  padding: 5px 30px;
+  background: none;
+  border: 2px solid #32ADA1;
+  color: #32ADA1;
+  -webkit-transition: background-color 200ms linear;
+  -moz-transition: background-color 200ms linear;
+  -o-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear; }
+  @media (max-width: 768px) {
+    .button-no-bg-edit {
+      width: 100%; } }
+  .button-no-bg-edit:hover {
+    background: #32ADA1;
+    color: #fff; }
+
 /*# sourceMappingURL=buttons.css.map */

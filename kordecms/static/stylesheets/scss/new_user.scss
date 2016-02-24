@@ -1,0 +1,53 @@
+@import "mixins",
+        "variables";
+
+
+.contact-form{
+
+
+  input, textarea {
+    width: 100%;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid #bbb;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input {
+    height: 40px;
+  }
+  textarea  {
+    resize: none;
+  }
+}
+
+input[type=radio], input[type=checkbox] {
+		display:none;
+	}
+
+input[type=radio] + label, input[type=checkbox] + label {
+  display:inline-block;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 0;
+  font-weight: 100;
+  font-size: 18px;
+  line-height: 40px;
+  color: $turcoise;
+  background: none;
+  border: solid 2px;
+  border-color: $turcoise;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+
+
+	}
+input[type=radio]:checked + label, input[type=checkbox]:checked + label{
+  background-color: $turcoise;
+  color: $light;
+
+	}

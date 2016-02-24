@@ -8,52 +8,54 @@
         </div>
         <!-- /.row -->
 
-         <form ng-submit="saveUser()" class="form-horizontal user">
+         <form ng-submit="saveUser()" class="form-horizontal user contact-form t-very-thin font-size-18">
             <fieldset>
                 <div class="form-group">
-                    <div class="col-md-10">
+                    <div class="col-md-4 col-md-offset-4">
                         <p ng-if="errors.username">{{ errors.username[0] }}</p>
                         <input id="username" name="username" type="text" placeholder="Brukernavn" class="korde-very-thin contact-field" ng-model="user.username">
                     </div>
                 </div>
                  <div class="form-group">
-                    <div class="col-md-10">
+                    <div class="col-md-4 col-md-offset-4">
                          <p ng-if="errors.password">{{ errors.password[0] }}</p>
                         <input id="password" name="password" type="text" placeholder="Passord" class="korde-very-thin contact-field" ng-model="user.password">
                     </div>
                 </div>
                 <div class="form-group ">
-                    <div class="col-md-10">
+                    <div class="col-md-4 col-md-offset-4">
                         <input id="email" name="email" type="text" placeholder="E-post" class="korde-very-thin contact-field" ng-model="user.email">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-10">
+                    <div class="col-md-4 col-md-offset-4">
                         <input id="firstname" name="first_name" type="text" placeholder="Fornavn" class="korde-very-thin contact-field" ng-model="user.first_name">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-10">
+                    <div class="col-md-4 col-md-offset-4">
                         <input id="lastname" name="last_name" type="text" placeholder="Etternavn" class="korde-very-thin contact-field" ng-model="user.last_name">
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-2 checkbox">
+                    <div class="col-md-4 col-md-offset-4">
 
                         <div class="col-md-6">
-                            <label><input type="radio" name="has_role" ng-value=false ng-model="user.is_superuser" ng-checked=true>Bruker</label>
+                            <input type="radio" id="radio1" name="radios" ng-value=false ng-model="user.is_superuser" ng-checked=true>
+                            <label for="radio1">Bruker</label>
                         </div>
                         <div class="col-md-6">
-                            <label><input type="radio" name="has_role" ng-value=true ng-model="user.is_superuser">Admin</label>
+                           <input type="radio" id="radio2" name="radios" ng-value=true ng-model="user.is_superuser">
+                            <label for="radio2">Admin</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-12">
-                        <button class="btn btn-success">Opprett bruker</button>
+                    <div class="col-md-4 col-md-offset-4">
+                        <button class="button-no-bg-confirm center-block">Opprett bruker</button>
                     </div>
                 </div>
             </fieldset>
