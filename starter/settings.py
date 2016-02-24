@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'startapp',
     'kordecms',
+    'kordebooking',
     'rest_framework',
     'taggit'
 ]
