@@ -2,7 +2,7 @@
  * Created by rubenschmidt on 24.02.2016.
  */
 kordeCms.controller('EditArticleCtrl',
-    ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'UserFactory', 'GlobalEditorService', function ($scope, $routeParams, PageFactory, ArticleFactory, UserFactory, GlobalEditorService) {
+    ['$scope', '$routeParams', 'PageFactory', 'ArticleFactory', 'SweetAlert', function ($scope, $routeParams, PageFactory, ArticleFactory, SweetAlert) {
         $scope.editorMode = true;
         $scope.newTagInput = {};
         $scope.article = {};
@@ -13,8 +13,9 @@ kordeCms.controller('EditArticleCtrl',
         //Set default values for new element
         function initNewElement(){
             $scope.newElement = {
-                'type': 0,
-                'width_type':0
+                'type': 1,
+                'width_type':0,
+                'hasImage': false
             };
         }
 
@@ -28,7 +29,7 @@ kordeCms.controller('EditArticleCtrl',
                 //Success
                 $scope.article = response.data;
                 isNew = false;
-                console.log(response.data);
+                $scope.newElement.article = $scope.article.id;
         }, function (response) {
             //Error
                 console.log(response);
@@ -39,25 +40,69 @@ kordeCms.controller('EditArticleCtrl',
             return isNew ? "Skriv en ny artikkel" : "Rediger artikkel";
         };
 
-        $scope.addArticleElement = function () {
-            //Is either 1 or 0, which implies image or text
-            if($scope.newElement.type) {
-                $scope.newElement.text = "Skriv noe her!..."
-            }
+        $scope.addNewElement = function(){
 
-            $scope.article.elements.push(angular.copy($scope.newElement));
-            //Reset element
-            initNewElement();
+            if($scope.newElement.type == 1){
+                //We are adding a new text element
+                ArticleFactory
+                    .addNewElement($scope.newElement)
+                    .then(function(response){
+                    //Success
+                    $scope.article.elements.push(response.data);
+                }, function(response){
+                    //Error
+                    $scope.errors = response.data;
+                });
+            }else {
+                console.log("ohter");
+                //We are adding a new image element
+                if(angular.isUndefined($scope.newElement.file)){
+                    SweetAlert.swal({
+                        title: 'Du må velge et bilde!',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+                //Add a new element, with the file set.
+                ArticleFactory
+                    .addNewElement($scope.newElement, $scope.newElement.file)
+                    .then(function(response){
+                    //Success
+                    $scope.article.elements.push(response.data);
+                }, function(response){
+                    //Error
+                    $scope.errors = response.data;
+                });
+            }
         };
 
-        $scope.saveArticle = function () {
+
+        $scope.setNewElementImage = function(file){
+            $scope.newElement.file = file;
+            console.log(file);
+        };
+
+        $scope.setNewElementType = function(type, width){
+            //Type is either 0 or 1, if width is set, we are setting the width_type
+            if(width){
+                $scope.newElement.width_type = type;
+            }else {
+                $scope.newElement.type = type;
+            }
+        };
+
+        $scope.saveArticle = function (file) {
             if (isNew) {
                 createArticle();
             } else {
-                ArticleFactory.update($scope.article).then(function (response) {
+                console.log($scope.article);
+                ArticleFactory.update($scope.article, file).then(function (response) {
                     //Success
                 }, function (response) {
                     console.log(response);
+                    SweetAlert.swal({
+                        title: "Noe gikk galt!"
+                    })
                 });
             }
         };
@@ -76,7 +121,7 @@ kordeCms.controller('EditArticleCtrl',
                 }, function (response) {
                     //error
                     console.log(response);
-                    $scope.errors;
+                    $scope.errors = response.data;
                 });
             }
 
@@ -112,10 +157,4 @@ kordeCms.controller('EditArticleCtrl',
                 console.log(response);
             });
         }
-
-        $scope.upload = function (file) {
-            $scope.article.thumbnail_image_src = file.name;
-            console.log(file);
-        };
-
     }]);

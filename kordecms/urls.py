@@ -26,7 +26,9 @@ urlpatterns = [
     url(r'^articles$', views.ArticleList.as_view(), name='article-list'),
     url(r'^articles/(?P<pk>\d+)$', views.ArticleDetail.as_view(), name='article-detail'),
     url(r'^articles/(?P<pk>\d+)/comments$', views.ArticleCommentList.as_view(), name='article-comments-list'),
+    url(r'^articles/(?P<pk>\d+)/elements$', views.ArticleElementList.as_view(), name='article-elements-list'),
     url(r'^articles/count$', views.article_count, name='article-count'),
+
 
     url(r'^comments/(?P<pk>\d+)$', views.ArticleCommentDetail.as_view(), name='article-comment-detail'),
 ]

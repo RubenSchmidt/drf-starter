@@ -14,6 +14,31 @@ def index_view(request):
     return render(request, 'index.html', {})
 
 
+@api_view(['GET'])
+def current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+
+class UserList(generics.ListCreateAPIView):
+    model = User
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    permission_classes = [
+        permissions.IsAdminUser
+    ]
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = User
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+
 class PageList(generics.ListCreateAPIView):
     model = Page
     queryset = Page.objects.all()
@@ -100,25 +125,6 @@ def get_page_elements_sorted(request, slug):
     return Response(data=rows, status=status.HTTP_200_OK)
 
 
-class UserList(generics.ListCreateAPIView):
-    model = User
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-    permission_classes = [
-        permissions.IsAdminUser
-    ]
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    model = User
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]
-
-
 class ArticleMixin(object):
     model = Article
     queryset = Article.objects.all().order_by('-created_at')
@@ -151,7 +157,18 @@ class ArticleElementList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = super(ArticleElementList, self).get_queryset()
-        return queryset.filter(article_id=self.kwargs.get('article_id'))
+        return queryset.filter(article_id=self.kwargs.get('pk'))
+
+    def perform_create(self, serializer):
+        obj = serializer.validated_data
+        # Type is image
+        if obj['type'] == 0:
+            # New image file is uploaded
+            if self.request.FILES.get('file'):
+                serializer.save(image_src=self.request.FILES.get('file'))
+                return
+        # save the normal way
+        serializer.save()
 
 
 class UserArticleList(generics.ListAPIView):
@@ -196,9 +213,3 @@ def article_count(request):
         'article_count_p': article_count_p,
         'article_count_u': article_count_u
     })
-
-
-@api_view(['GET'])
-def current_user(request):
-    serializer = UserSerializer(request.user)
-    return Response(serializer.data)

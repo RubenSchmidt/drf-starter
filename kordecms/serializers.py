@@ -46,7 +46,7 @@ class UserSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         for attr, value in validated_data.items():
             if attr == 'password':
-                #checking if password is changed to avoid double hashing
+                # checking if password is changed to avoid double hashing
                 if instance.password != value:
                     instance.set_password(value)
             else:
@@ -61,7 +61,7 @@ class ArticleElementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ArticleElement
-        fields = ('id', 'type', 'width_type', 'text', 'image_url')
+        fields = ('id', 'article', 'type', 'width_type', 'text', 'image_url')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -79,6 +79,9 @@ class ArticleSerializer(serializers.ModelSerializer):
         """
         Pops the element array and saves all of the elements individually.
         """
+        # Get the request object
+        request = self.context.get("request")
+
         elements_data = validated_data.pop('elements')
         article = Article.objects.create(**validated_data)
         for element_data in elements_data:
@@ -91,6 +94,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         instance.body_text = validated_data.get('body_text', instance.body_text)
         instance.tag_string = validated_data.get('tag_string', instance.tag_string)
         instance.save()
+
         # Maps for id->instance id->data item.
         all_elements = instance.elements.all()
         element_mapping = {element.id: element for element in all_elements}
@@ -107,8 +111,7 @@ class ArticleSerializer(serializers.ModelSerializer):
                     article=instance,
                     type=data.get('type'),
                     width_type=data.get('width_type'),
-                    text=data.get('text'),
-                    image_src=data.get('image_src'))
+                    text=data.get('text'))
                 new.save()
             else:
                 ArticleElement.objects.update_or_create(id=data.get('id'), defaults=data)
