@@ -14,8 +14,7 @@ kordeCms.controller('EditArticleCtrl',
         function initNewElement(){
             $scope.newElement = {
                 'type': 0,
-                'width_type':0,
-                'image_src': ''
+                'width_type':0
             };
         }
 
@@ -41,7 +40,11 @@ kordeCms.controller('EditArticleCtrl',
         };
 
         $scope.addArticleElement = function () {
-            console.log($scope.newElement);
+            //Is either 1 or 0, which implies image or text
+            if($scope.newElement.type) {
+                $scope.newElement.text = "Skriv noe her!..."
+            }
+
             $scope.article.elements.push(angular.copy($scope.newElement));
             //Reset element
             initNewElement();

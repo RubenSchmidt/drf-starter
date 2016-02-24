@@ -194,6 +194,12 @@ class Article(KordeEditableModel):
         super(Article, self).save(*args, **kwargs)  # Call the "real" save() method.
 
     @property
+    def thumbnail_image_url(self):
+        if self.thumbnail_image_src:
+            return self.thumbnail_image_src.url
+        return None
+
+    @property
     def tags_list(self):
         return [tag.name for tag in self.tags.all()]
 
@@ -231,7 +237,8 @@ class ArticleElement(models.Model):
 
     text = models.TextField(
         verbose_name=_('article paragraph'),
-        blank=True
+        blank=True,
+        null=True
     )
 
     image_src = models.ImageField(
@@ -242,6 +249,12 @@ class ArticleElement(models.Model):
 
     def __str__(self):
         return "{}, {}".format(ELEMENT_TYPE_CHOICES[self.type][1], self.article)
+
+    @property
+    def image_url(self):
+        if self.image_src:
+            return self.image_src.url
+        return None
 
 
 class ArticleComment(models.Model):

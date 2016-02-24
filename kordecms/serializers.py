@@ -57,19 +57,22 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ArticleElementSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
+    image_url = serializers.ReadOnlyField()
+
     class Meta:
         model = ArticleElement
-        fields = ('id', 'type', 'width_type', 'text', 'image_src')
+        fields = ('id', 'type', 'width_type', 'text', 'image_url')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
     # Creates a nested relationship with all its elements, the related name is set in ArticleElement
     elements = ArticleElementSerializer(many=True)
+    thumbnail_image_url = serializers.ReadOnlyField()
 
     class Meta:
         model = Article
         fields = (
-            'id', 'title', 'author_name', 'body_text', 'thumbnail_image_src', 'created_at', 'tag_string', 'author',
+            'id', 'title', 'author_name', 'body_text', 'thumbnail_image_url', 'created_at', 'tag_string', 'author',
             'elements')
 
     def create(self, validated_data):

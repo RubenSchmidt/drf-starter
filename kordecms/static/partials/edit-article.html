@@ -2,7 +2,7 @@
     <div class="p-20-20">
         <h1 class="page-header">{{ pageHeader() }}</h1>
         <div class="w-800 block-center">
-            <div class="edit-article-cover h-300" style="background-image: url({{ article.thumbnail_image_src }});">
+            <div class="edit-article-cover h-300" style="background-image: url({{ article.thumbnail_image_url }});">
                 <div class="cover-editor p-0-10 font-size-16" data-toggle="modal" data-target="#fileModal">
                     Endre bilde <span class="fa fa-pencil"></span>
                 </div>
@@ -28,7 +28,7 @@
             <div class="row">
                 <div class="inline" ng-class="{'col-md-6': !element.width_type, 'col-md-12': element.width_type}" ng-repeat="element in article.elements">
                     <div ng-if="element.type" hallo-editor class="p-10-20 hidden-input" ng-model="element.text"></div>
-                    <img ng-if="!element.type" class="width-fill" src="{{ element.image_src }}" alt="">
+                    <img ng-if="!element.type" class="width-fill" src="{{ element.image_url }}" alt="">
                 </div>
             </div>
             <div class="divider m-20-0"></div>
@@ -37,7 +37,7 @@
             <h3 class="m-20-0 t-very-thin t-upper">Legg til nytt element</h3>
             <label>
                 Tekst
-                <input ng-init="1" type="radio" name="newElementType" ng-model="newElement.type" ng-value="1" checked="true">
+                <input type="radio" name="newElementType" ng-model="newElement.type" ng-value="1" checked="true">
             </label>
             <label>
                 Bilde
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="row">
-                <h3 ng-show="!article.thumbnail_image_src" style="text-align:center;">Last opp forsidebilde til artikkelen:</h3>
+                <h3 ng-show="!article.thumbnail_image_url" style="text-align:center;">Last opp forsidebilde til artikkelen:</h3>
                 <div class="image-drop-area" ngf-drop="upload($file)" ngf-drag-over-class="'dragover'"
                      ng-show="!thumbnailUploaded()">
                     <div class="upload-button" ngf-select ng-model="element.image_file" name="newImage"
@@ -106,7 +106,7 @@
                 </div>
                 <div class="thumbnail-container" ng-show="thumbnailUploaded()">
                     <h3>Thumbnail image:</h3>
-                    <img ng-src="{{ article.thumbnail_image_src }}" class="article-thumbnail-image"/>
+                    <img ng-src="{{ article.thumbnail_image_url }}" class="article-thumbnail-image"/>
                 </div>
             </div>
             <div class="row">
@@ -119,7 +119,7 @@
                                 <div hallo-editor ng-model="element.text"></div>
                             </div>
                             <div ng-if="element.type == 0">
-                                <img src="{{ element.image_src }}"/>
+                                <img src="{{ element.image_url }}"/>
                             </div>
                         </div>
                     </div>
