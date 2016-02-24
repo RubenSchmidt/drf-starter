@@ -47,22 +47,28 @@
                             <input id="lastname" name="last_name" type="text" placeholder="Etternavn" class="korde-very-thin contact-field" ng-model="user.last_name">
                         </div>
                     </div>
-                    <div class="form-group" ng-if="canChangeRole(user)">
+                    <div class="form-group" >
                         <div class="col-md-2">
                             <h5>Rolle</h5>
                         </div>
-                        <div class="col-md-2 checkbox">
-                            <div class="col-md-6">
-                                <label><input type="radio" name="has_role" ng-value=false ng-model="user.is_superuser" checked="checked">Bruker</label>
+                            <div class="col-md-6 checkbox" ng-if="canChangeRole(user)">
+                                <div class="col-md-6">
+                                <input type="radio" id="radio1" name="radios" ng-value=false ng-model="user.is_superuser">
+                                <label for="radio1">Bruker</label>
                             </div>
                             <div class="col-md-6">
-                               <label><input type="radio" name="has_role" ng-value=true ng-model="user.is_superuser">Admin</label>
+                               <input type="radio" id="radio2" name="radios" ng-value=true ng-model="user.is_superuser">
+                                <label for="radio2">Admin</label>
                             </div>
+                        </div>
+                        <div class="col-md-6" ng-if="!canChangeRole(user)">
+                            <h5>{{ getRole(user) }}</h5>
+
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <button class="button-no-bg-edit">Oppdater bruker</button>
                         </div>
                     </div>
@@ -104,7 +110,7 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-8">
                             <button class="button-no-bg-edit">Oppdater passord</button>
                         </div>
                     </div>
