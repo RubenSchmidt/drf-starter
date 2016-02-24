@@ -1,3 +1,30 @@
+<div class="has-navbar has-sidebar">
+    <div class="row">
+        <div class="t-center p-10-0">
+            <label>
+                <input type="text" class="font-size-30 t-center" ng-model="article.title">
+            </label>
+        </div>
+    </div>
+    <div class="row p-0-20">
+            <div class="font-size-15">
+                Publisert: {{ article.created_at | date:'dd/MM-yyyy' }}
+            </div>
+            <div class="font-size-15">
+                Skrevet av: {{ article.author_name }}
+            </div>
+    </div>
+    <div class="row t-center">
+        <div>
+            <label>
+                <input type="text">
+            </label>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="has-navbar">
     <div id="page-wrapper">
         <div class="row">
@@ -16,9 +43,7 @@
         <form ng-submit="saveArticle()">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="article-wrapper article-wrapper-element">
-                        <div hallo-editor ng-model="article.title"></div>
-                    </div>
+                    <h1 ng-model="article.title"></h1>
                 </div>
             </div>
             <div class="row">
@@ -41,7 +66,7 @@
                 </div>
                 <div class="thumbnail-container" ng-show="thumbnailUploaded()">
                     <h3>Thumbnail image:</h3>
-                    <img src="{{ article.thumbnail_image_src }}" class="article-thumbnail-image"/>
+                    <img ng-src="{{ article.thumbnail_image_src }}" class="article-thumbnail-image"/>
                 </div>
             </div>
             <div class="row">
