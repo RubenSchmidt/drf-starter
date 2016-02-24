@@ -23,18 +23,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div ng-repeat="element in article.elements">
-                            <div class="{{ getColumnClass(element) }}">
-                                <div class="article-wrapper article-wrapper-element">
-                                    <div ng-if="isTextElement(element)">
-                                        <p>{{ element.text }}</p>
-                                    </div>
-                                    <div ng-if="!isImageElement(element)">
-                                        <img src="{{ element.image_src }}"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {{ article.body_text }}
                     </div>
                 </div>
             </a>
