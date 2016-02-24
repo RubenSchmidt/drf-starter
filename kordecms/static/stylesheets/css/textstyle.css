@@ -231,4 +231,7 @@ p.big {
 .t-upper {
   text-transform: uppercase; }
 
+.t-capitalize {
+  text-transform: capitalize; }
+
 /*# sourceMappingURL=textstyle.css.map */

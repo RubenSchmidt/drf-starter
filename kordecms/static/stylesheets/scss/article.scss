@@ -1,0 +1,39 @@
+/* --------------------
+
+KORDE ARTICLE
+
+Created by Valdemar Rolfsen 2016
+
+-------------------- */
+
+// Imports
+// --------------------
+
+@import "mixins",
+        "variables";
+
+.edit-article-cover {
+  position: relative;
+  width: 100%;
+  @include has-background-image();
+
+  .cover-editor {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    opacity: 0;
+    cursor: pointer;
+
+    height: 40px;
+    line-height: 40px;
+
+    background: #fff;
+
+    @include trans();
+  }
+
+  &:hover .cover-editor {
+    opacity: 1;
+  }
+}

@@ -1,29 +1,36 @@
 <div class="has-navbar has-sidebar">
-    <div class="row">
-        <div class="t-center p-10-0">
-            <label>
-                <input type="text" class="font-size-30 t-center" ng-model="article.title">
-            </label>
+    <div class="p-20-20">
+        <h1 class="page-header">{{ pageHeader() }}</h1>
+        <div class="w-800 block-center">
+            <div class="edit-article-cover h-300" style="background-image: url({{ article.thumbnail_image_src }});">
+                <div class="cover-editor p-0-10 font-size-16">Endre bilde <span class="fa fa-pencil"></span></div>
+            </div>
+            <div class="row m-10-0">
+                <div class="t-center">
+                    <input type="text" class="font-size-40 hidden-input t-center" ng-model="article.title">
+                </div>
+            </div>
+            <div class="row p-0-20 t-center">
+                <div class="font-size-12">
+                    Publisert: {{ article.created_at | date:'dd/MM-yyyy' }}
+                </div>
+                <div class="font-size-12">
+                    Skrevet av: {{ article.author_name }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="inline" ng-class="{'col-md-6': !element.width_type, 'col-md-12': element.width_type}" ng-repeat="element in article.elements">
+                    <div ng-if="element.type" hallo-editor class="p-10-20 hidden-input" ng-model="element.text"></div>
+                    <img ng-if="!element.type" class="width-fill" src="{{ element.image_src }}" alt="">
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row p-0-20">
-            <div class="font-size-15">
-                Publisert: {{ article.created_at | date:'dd/MM-yyyy' }}
-            </div>
-            <div class="font-size-15">
-                Skrevet av: {{ article.author_name }}
-            </div>
-    </div>
-    <div class="row t-center">
-        <div>
-            <label>
-                <input type="text">
-            </label>
+        <div class="t-center">
+            <button class="button-no-bg-confirm m-10-20 w-250" ng-click="updateElement(file)">Lagre</button>
+            <button class="button-no-bg-decline m-10-20 w-250" ng-click="updateElement(file)">Tilbake</button>
         </div>
     </div>
 </div>
-
-
 
 <div class="has-navbar">
     <div id="page-wrapper">

@@ -44,10 +44,14 @@ Created by Valdemar Rolfsen 2016
 // Width
 // --------------------
 
-@for $i from 1 to 70 {
+@for $i from 1 to 90 {
   .w-#{$i*10} {
     width: #{$i*10}px;
   }
+}
+
+.width-fill {
+  width: 100%;
 }
 
 // Background
@@ -132,9 +136,16 @@ Created by Valdemar Rolfsen 2016
 
 // Positioning
 // --------------------
+
 .block-center {
   display: block;
   margin: 0 auto;
+}
+
+// Displays
+// --------------------
+.inline {
+  display: inline-block;
 }
 
 // Shadows

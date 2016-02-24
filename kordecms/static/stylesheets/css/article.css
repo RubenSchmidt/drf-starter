@@ -1,0 +1,44 @@
+/* --------------------
+
+KORDE ARTICLE
+
+Created by Valdemar Rolfsen 2016
+
+-------------------- */
+/* --------------------
+
+KORDE MIXINS
+
+Created by Valdemar Rolfsen 2016
+
+-------------------- */
+/*
+
+All variables used by Korde AS
+Created by Valdemar Rolfsen 2016
+
+*/
+.edit-article-cover {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  background-position: center center;
+  background-size: cover; }
+  .edit-article-cover .cover-editor {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    opacity: 0;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    background: #fff;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease; }
+  .edit-article-cover:hover .cover-editor {
+    opacity: 1; }
+
+/*# sourceMappingURL=article.css.map */

@@ -48,6 +48,22 @@ $footer-height:           40px;
   }
 }
 
+// Inputs
+// --------------------
+
+.hidden-input {
+  background: none;
+  border: 0;
+  transition: 0.5s;
+
+  &:focus {
+    background: $light;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+    outline: none;
+  }
+}
+
+
 // Divider
 // --------------------
 
