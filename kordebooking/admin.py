@@ -8,11 +8,11 @@ class BookingAdmin(admin.ModelAdmin):
     model = Booking
 
 
-admin.register(Booking, BookingAdmin)
+admin.site.register(Booking, BookingAdmin)
 
 
 class BookingItemAdmin(admin.ModelAdmin):
     model = BookingItem
 
 
-admin.register(BookingItem, BookingItemAdmin)
+admin.site.register(BookingItem, BookingItemAdmin)
