@@ -65,7 +65,6 @@ kordeCms.run(function ($rootScope, $location, $route, AuthService) {
 kordeCms.value('apiUrl', '/api');
 
 
-
 kordeCms.factory('PageElementFactory',
     ['$http', 'Upload', 'apiUrl', function ($http, Upload, apiUrl) {
         var endpoint = apiUrl + '/pageelements';
@@ -810,7 +809,7 @@ kordeCms.controller('PageElementCtrl',
 
 
 kordeCms.controller('UsersCtrl',
-    ['$scope', '$filter', 'SweetAlert', 'UserFactory', function ($scope, $filter, SweetAlert, UserFactory) {
+    ['$scope', '$filter', 'UserFactory', function ($scope, $filter, UserFactory) {
 
 
         $scope.getRole = function (user) {
@@ -822,23 +821,14 @@ kordeCms.controller('UsersCtrl',
             }
         }
 
-
-         $scope.deleteUser = function (user) {
-            //Show alert popup
-            SweetAlert.swal({
-                title: 'Vil du slette ' + user.username + '?',
-                showCancelButton: true,
-                confirmButtonText: 'Ja',
-                cancelButtonText: 'Nei',
-                closeOnConfirm: true
-            }, function (isConfirm) {
-                if (isConfirm) {
-                   if(UserFactory.destroy(user.id)){
-                       $scope.users = $filter('filter')($scope.users, {id: '!' + user.id});
-                    }
-                }
-            });
-        };
+        $scope.deleteUser = function (userId) {
+            if(UserFactory.destroy(userId)){
+            $scope.users = $filter('filter')($scope.users, {id: '!' + userId});
+            }
+            else{
+                //error - could not delete user
+            }
+        }
         $scope.canEditUser = function(user){
             return (user.id == $scope.currentUser.id || $scope.currentUser.is_superuser)
         }

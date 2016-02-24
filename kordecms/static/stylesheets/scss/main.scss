@@ -1,3 +1,10 @@
+
+button {
+  &:focus {
+    outline:none;
+  }
+}
+
 .loader {
   margin: 0 auto;
   width: 60px;

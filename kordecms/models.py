@@ -240,6 +240,9 @@ class ArticleElement(models.Model):
         null=True,
         blank=True)
 
+    def __str__(self):
+        return "{}, {}".format(ELEMENT_TYPE_CHOICES[self.type][1], self.article)
+
 
 class ArticleComment(models.Model):
     """

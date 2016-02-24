@@ -37,3 +37,29 @@ Created by Valdemar Rolfsen 2016
     opacity: 1;
   }
 }
+
+.article-element-picker {
+  button {
+    width: 100px;
+    height: 50px;
+
+    border: 1px solid #333;
+    color: #333;
+    background: none;
+
+    @include smoothBackgroundShift();
+
+    &:hover {
+      background: #fff;
+    }
+  }
+
+  .button-active {
+    background: #333;
+    color: #fff;
+
+    &:hover {
+      background: #555;
+    }
+  }
+}

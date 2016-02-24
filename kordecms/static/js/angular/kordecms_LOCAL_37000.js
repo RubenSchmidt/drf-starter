@@ -65,7 +65,6 @@ kordeCms.run(function ($rootScope, $location, $route, AuthService) {
 kordeCms.value('apiUrl', '/api');
 
 
-
 kordeCms.factory('PageElementFactory',
     ['$http', 'Upload', 'apiUrl', function ($http, Upload, apiUrl) {
         var endpoint = apiUrl + '/pageelements';
