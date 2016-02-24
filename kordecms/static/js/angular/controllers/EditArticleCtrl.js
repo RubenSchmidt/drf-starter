@@ -6,30 +6,21 @@ kordeCms.controller('EditArticleCtrl',
         $scope.editorMode = true;
         $scope.newTagInput = {};
         $scope.article = {};
+        // Initialize new element with default values
+        initNewElement();
         var isNew = true;
 
-        $scope.getColumnClass = function (element) {
-            var classString = "";
-
-            classString += (element.width_type == 1) ? "col-md-12" : "col-md-6";
-            classString += (element.type == 1) ? " text-element" : " image-element";
-
-            return classString;
+        //Set default values for new element
+        function initNewElement(){
+            $scope.newElement = {
+                'type': 0,
+                'width_type':0,
+                'image_src': ''
+            };
         }
 
         if(!$routeParams.articleId){
             //Create new article object
-            $scope.article = {
-                title: "Tittel...",
-                author_name: "Ole Nordviste",
-                created_at: Date.now(),
-                body_text: "Brødtekst...",
-                isPublished: "Ikke publisert",
-                thumbnail_image_src: "",
-                elements: [],
-                newElementType: 1,
-                newElementWidth: 1,
-            };
             isNew = true;
             console.log("New article mode");
         } else {
@@ -37,8 +28,6 @@ kordeCms.controller('EditArticleCtrl',
             ArticleFactory.get($routeParams.articleId).then(function (response) {
                 //Success
                 $scope.article = response.data;
-                $scope.article.newElementType = 1;
-                $scope.article.newElementWidth = 1;
                 isNew = false;
                 console.log(response.data);
         }, function (response) {
@@ -52,27 +41,11 @@ kordeCms.controller('EditArticleCtrl',
         };
 
         $scope.addArticleElement = function () {
-            //Image
-            if ($scope.article.newElementType == 0) {
-                $scope.article.elements.push({
-                        type: $scope.article.newElementType,
-                        width_type: $scope.article.newElementWidth,
-                    }
-                );
-            } // Text
-            else if ($scope.article.newElementType == 1) {
-                $scope.article.elements.push({
-                        text: "Skriv inn teksten her...",
-                        type: $scope.article.newElementType,
-                        width_type: $scope.article.newElementWidth,
-                    }
-                );
-            }
-            //Reset menu
-            $scope.article.newElementType = 1;
-            $scope.article.newElementWidth = 1;
-            $scope.showNewElementMenu = false;
-        }
+            console.log($scope.newElement);
+            $scope.article.elements.push(angular.copy($scope.newElement));
+            //Reset element
+            initNewElement();
+        };
 
         $scope.saveArticle = function () {
             if (isNew) {
@@ -81,7 +54,7 @@ kordeCms.controller('EditArticleCtrl',
                 ArticleFactory.update($scope.article).then(function (response) {
                     //Success
                 }, function (response) {
-                    console.log("Error in update article: " + response);
+                    console.log(response);
                 });
             }
         };
@@ -100,6 +73,7 @@ kordeCms.controller('EditArticleCtrl',
                 }, function (response) {
                     //error
                     console.log(response);
+                    $scope.errors;
                 });
             }
 

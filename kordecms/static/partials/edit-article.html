@@ -21,6 +21,11 @@
                 </div>
             </div>
             <div class="row">
+                <div class="inline col-xs-12">
+                    <div hallo-editor class="p-10-20" ng-model="article.body_text"></div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="inline" ng-class="{'col-md-6': !element.width_type, 'col-md-12': element.width_type}" ng-repeat="element in article.elements">
                     <div ng-if="element.type" hallo-editor class="p-10-20 hidden-input" ng-model="element.text"></div>
                     <img ng-if="!element.type" class="width-fill" src="{{ element.image_src }}" alt="">
@@ -30,14 +35,31 @@
         </div>
         <div class="article-element-picker t-center m-30-0">
             <h3 class="m-20-0 t-very-thin t-upper">Legg til nytt element</h3>
+            <label>
+                Tekst
+                <input ng-init="1" type="radio" name="newElementType" ng-model="newElement.type" ng-value="1" checked="true">
+            </label>
+            <label>
+                Bilde
+                <input type="radio" name="newElementType" ng-model="newElement.type" ng-value="0">
+            </label>
+            <label>
+                Hel
+                <input type="radio" name="newElementWidthType" ng-model="newElement.width_type" ng-value="1" checked>
+            </label>
+            <label>
+                Halv
+                <input type="radio" name="newElementWidthType" ng-model="newElement.width_type" ng-value="0">
+            </label>
+
             <button>Tekst</button>
             <button class="button-active">Bilde</button>
             <button>Hel</button>
             <button class="button-active">Halv</button>
-            <button><span class="fa fa-plus"></span> Legg til</button>
+            <button ng-click="addArticleElement()"><span class="fa fa-plus"></span> Legg til</button>
         </div>
         <div class="t-center">
-            <button class="button-no-bg-confirm m-10-20 w-250" ng-click="updateElement(file)">Lagre</button>
+            <button class="button-no-bg-confirm m-10-20 w-250" ng-click="saveArticle()">Lagre</button>
             <button class="button-no-bg-decline m-10-20 w-250" ng-click="updateElement(file)">Tilbake</button>
         </div>
     </div>
