@@ -98,6 +98,7 @@ kordeCms.controller('EditArticleCtrl',
                 console.log($scope.article);
                 ArticleFactory.update($scope.article, file).then(function (response) {
                     //Success
+                    SweetAlert.swal({title: "Lagret", type: "success", showConfirmButton: false, timer: 1000});
                 }, function (response) {
                     console.log(response);
                     SweetAlert.swal({
