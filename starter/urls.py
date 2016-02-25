@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^api/', include('kordecms.urls')),
+    url(r'^booking/', include('kordebooking.urls')),
     url(r'^admin/', admin.site.urls),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
